@@ -1,0 +1,59 @@
+:root{
+    --mainGrey: #9ea399;
+    --link: #377bb9;
+    --activeLink: #337ab7;
+    --cyan: #3bc4d0;
+    --darkGrey: #464e58;
+    --lightBlue: #eef3f7;
+    --hover: #ffa602;
+    --lightHover: #d0dfe6;
+  }
+  a{
+    text-decoration: none;
+    color: var(--link);
+  }
+  a:active{
+    text-decoration: none;
+    color: var(--activeLink);
+  }
+  textarea:focus, input:focus, button:focus{
+    outline: none;
+  }
+  .mainTable{
+    border-collapse: collapse; 
+  }
+  .mainTable tr:nth-of-type(odd) { 
+      background: var(--lightBlue); 
+    }
+  .mainTable th { 
+      background: var(--cyan); 
+      color: white; 
+    font-weight: bold; 
+    padding: 10px;
+    margin-bottom: 30px;
+    }
+    .mainTable td
+    {
+      text-align: center;
+      border: none;
+      padding: 10px;
+      width: 200px;
+    }
+    .mainTable td:first-child{
+      width: 300px;
+      text-align: left;
+      padding-left: 30px;
+    }
+    .mainTable tr:hover{
+      background: var(--lightHover);
+    }
+  
+    .sorting-wrapper{
+      display: flex;
+    }
+
+    .content-wrapper{
+        position: absolute;
+        top: 80px;
+        left: 230px;
+    }
