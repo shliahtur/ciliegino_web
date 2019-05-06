@@ -1,5 +1,5 @@
 .side-bar{
-    width: 150px;
+    width: 170px;
     position: fixed;
     height: 100vh;
     padding-top: 30px;
@@ -14,7 +14,7 @@
   }
   .side-bar button{
       color: white;
-      width: 150px;
+      width: 170px;
       height: 50px;
       border: none;
       font-family: inherit;
@@ -36,7 +36,7 @@
     height: 40px;
     width: 40px;
     background-size: 34px;
-    margin-left: 95px;
+    margin-left: 115px;
     margin-top: -10px;
     margin-bottom: 15px;
   }

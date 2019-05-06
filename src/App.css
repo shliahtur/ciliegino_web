@@ -19,41 +19,10 @@
   textarea:focus, input:focus, button:focus{
     outline: none;
   }
-  .mainTable{
-    border-collapse: collapse; 
-  }
-  .mainTable tr:nth-of-type(odd) { 
-      background: var(--lightBlue); 
-    }
-  .mainTable th { 
-      background: var(--cyan); 
-      color: white; 
-    font-weight: bold; 
-    padding: 10px;
-    margin-bottom: 30px;
-    }
-    .mainTable td
-    {
-      text-align: center;
-      border: none;
-      padding: 10px;
-      width: 200px;
-    }
-    .mainTable td:first-child{
-      width: 300px;
-      text-align: left;
-      padding-left: 30px;
-    }
-    .mainTable tr:hover{
-      background: var(--lightHover);
-    }
-  
-    .sorting-wrapper{
-      display: flex;
-    }
 
     .content-wrapper{
         position: absolute;
         top: 80px;
         left: 230px;
+        max-width: 1400px;
     }

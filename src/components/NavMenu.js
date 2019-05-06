@@ -6,10 +6,9 @@ export default props => (
 
     <nav className="nav-bar">
      <ul>
-      <li><Link className="nav_link" to={'/'} >Главная</Link></li>
-      <li><Link className="nav_link" to={'/fetchdata'}>Таблица1</Link></li>
-      <li><Link className="nav_link" to={'/'}>Таблица2</Link></li>
-      <li><Link className="nav_link" to={'/'}>Таблица3</Link></li>
+      <li><Link className="nav_link" to={'/'}>Меню</Link></li>
+      <li><Link className="nav_link" to={'/'}>Меню</Link></li>
+      <li><Link className="nav_link" to={'/'}>Меню</Link></li>
       </ul>
     </nav>
 );

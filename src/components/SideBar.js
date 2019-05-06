@@ -11,24 +11,23 @@ class SideBar extends Component {
                 <ul>
                     <li>
                         <Link to="/">
-                            <button type="button">Заява</button>
-                        </Link>
-                    </li>
-                    <li>
-                        <Link to="/fetchdata">
-                            <button type="button">Таблиця</button>
+                            <button type="button">Главная</button>
                         </Link>
                     </li>
                     <li>
                         <Link to="/datatable">
-                            <button type="button">Табла2</button>
+                            <button type="button">React таблица</button>
                         </Link>
                     </li>
                     <li>
-                        <Link to="/">
-                            <button type="button">Заява</button>
+                        <Link to="/fetchdata">
+                            <button type="button">Redux Fetch</button>
                         </Link>
                     </li>
+
+                        <Link to="/newdocument">
+                            <button type="button">Новий документ</button>
+                        </Link>
                 </ul>
             </div>
         );
