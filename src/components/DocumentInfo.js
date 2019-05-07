@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import { Link } from 'react-router-dom';
-import { actionCreators } from '../store/Documents';
+
 
 
 const BASE_PATH = '/api/RequestData/RegRequestsSelectById/';
 
-class DocItem extends Component {
+class DocumentInfo extends Component {
 
   state = {
     searchQuery: '',
@@ -50,4 +49,4 @@ class DocItem extends Component {
   }
 }
 
-export default DocItem;
+export default DocumentInfo;

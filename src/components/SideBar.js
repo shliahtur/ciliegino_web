@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import '../styles/SideBar.css';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 class SideBar extends Component {
     state = {}
@@ -10,24 +10,19 @@ class SideBar extends Component {
                 <div className="logo"></div>
                 <ul>
                     <li>
-                        <Link to="/">
+                        <NavLink to="/">
                             <button type="button">Главная</button>
-                        </Link>
+                        </NavLink>
                     </li>
                     <li>
-                        <Link to="/datatable">
-                            <button type="button">React таблица</button>
-                        </Link>
-                    </li>
-                    <li>
-                        <Link to="/fetchdata">
-                            <button type="button">Redux Fetch</button>
-                        </Link>
+                        <NavLink to="/documents">
+                            <button type="button">Список</button>
+                        </NavLink>
                     </li>
 
-                        <Link to="/newdocument">
-                            <button type="button">Новий документ</button>
-                        </Link>
+                    <NavLink to="/documents/new">
+                        <button type="button">Новий документ</button>
+                    </NavLink>
                 </ul>
             </div>
         );
