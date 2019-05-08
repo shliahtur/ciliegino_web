@@ -26,3 +26,9 @@
         left: 230px;
         max-width: 1400px;
     }
+
+.form-container{
+  width: 600px;
+  display: flex;
+  justify-content: space-around;
+}

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Preloader from './Preloader';
+import {tempDocs} from '../temp-data/temp-docs';
 import '../styles/datatables.css';
 
 const $ = require('jquery');
@@ -13,6 +14,7 @@ const columns = [
     width: 120,
     data: 'counterPartyName',
     // render: (text, document) => <Link to={'document/' + document}>{text}</Link>
+
   },
   {
     title: 'Код за ЄДРПОУ',
@@ -36,11 +38,11 @@ const columns = [
   },
 ];
 
-class DocumentList extends Component {
+class TempDocumentList extends Component {
 
   componentDidMount(props) {
     $(this.refs.main).DataTable({
-      data: this.props.documents,
+      data: tempDocs,
       columns,
       // processing : true,
       // serverSide : true,
@@ -82,7 +84,7 @@ class DocumentList extends Component {
 
   render() {
 
-    if (this.props.documents.length) {
+  if (tempDocs.length) {
       return (
         <div>
           <table ref="main" />
@@ -97,6 +99,4 @@ class DocumentList extends Component {
 }
 
 
-const mapStateToProps = (state) => ({ documents: state.documents });
-
-export default connect(mapStateToProps)(DocumentList);
+export default TempDocumentList;

@@ -9,6 +9,8 @@ import DocumentEdit from './DocumentEdit';
 import {Router, Route, Switch} from 'react-router-dom'
 import history from '../history';
 
+import TempDocumentList from './TempDocumentList';
+
 import '../styles/App.css'
 
 class App extends Component {
@@ -31,6 +33,7 @@ const Main = () => (
   <Switch>
     <Route exact path="/" component={Home} />
     <Route exact path="/documents" component={DocumentList} />
+    <Route exact path="/dummy_documents" component={TempDocumentList} /> 
     <Route exact path="/documents/new" component={DocumentAdd} />
     <Route exact path="/documents/:id" component={DocumentInfo} />
     <Route exact path="/documents/:id/edit" component={DocumentEdit} />

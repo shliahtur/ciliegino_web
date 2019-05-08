@@ -2,11 +2,19 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { addDocument } from '../actions';
 import Input from './Input';
+import DatePicker from './DatePicker';
+
 
 class DocumentAdd extends React.Component {
-  state = { title: '', content: '' };
+  state = {
+
+  };
 
   handleChange = (event) => {
+    this.setState({ [event.target.name]: event.target.value });
+  };
+
+  handleDateChange = (event) => {
     this.setState({ [event.target.name]: event.target.value });
   };
 
@@ -16,24 +24,44 @@ class DocumentAdd extends React.Component {
   };
 
   render() {
+    console.log(this.state)
     return (
       <div>
         <h1>Новый документ</h1>
+
         <form onSubmit={this.handleSubmit}>
+          <div className="form-container">
+            <div className="input-block">
+              <DatePicker id="DocumentDate" label="DocumentDate" onChange={this.handleChange} />
 
-          <Input id="number" label="CounterPartyCode" type="text" onChange={this.handleChange} />
+              <Input id="CounterPartyCode" label="CounterPartyCode" type="text" onChange={this.handleChange} />
 
-          <Input id="number" label="CounterPartyName" type="text" onChange={this.handleChange} />
+              <Input id="CounterPartyName" label="CounterPartyName" type="text" onChange={this.handleChange} />
 
-          <Input id="number" label="DocumentDate" type="date" onChange={this.handleChange} /> 
+              <DatePicker id="RecieveDate" label="RecieveDate" onChange={this.handleChange} />
 
-          <Input id="number" label="RecieveDate" type="date" onChange={this.handleChange} />  
+              <Input id="CounterPartyName" label="CounterPartyName" type="text" onChange={this.handleChange} />
 
-          <Input id="number" label="CounterPartyName" type="text" onChange={this.handleChange} /> 
-        
-          <Input id="number" label="CounterPartyName" type="text" onChange={this.handleChange} />
-          
+              <Input id="CounterPartyName" label="CounterPartyName" type="text" onChange={this.handleChange} />
+            </div>
+
+            <div className="input-block">
+              <DatePicker id="DocumentDate" label="DocumentDate" onChange={this.handleChange} />
+
+              <Input id="CounterPartyCode" label="CounterPartyCode" type="text" onChange={this.handleChange} />
+
+              <Input id="CounterPartyName" label="CounterPartyName" type="text" onChange={this.handleChange} />
+
+              <DatePicker id="RecieveDate" label="RecieveDate" onChange={this.handleChange} />
+
+              <Input id="CounterPartyName" label="CounterPartyName" type="text" onChange={this.handleChange} />
+
+              <Input id="CounterPartyName" label="CounterPartyName" type="text" onChange={this.handleChange} />
+            </div>
+
+          </div>
           <button type="submit" className="btn btn-dark">Create</button>
+
         </form>
       </div>
     );

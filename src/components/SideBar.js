@@ -19,10 +19,16 @@ class SideBar extends Component {
                             <button type="button">Список</button>
                         </NavLink>
                     </li>
-
+                    <li>
+                        <NavLink to="/dummy_documents">
+                            <button type="button">DummyTable</button>
+                        </NavLink>
+                    </li>
+                    <li>
                     <NavLink to="/documents/new">
                         <button type="button">Новий документ</button>
                     </NavLink>
+                    </li>
                 </ul>
             </div>
         );
