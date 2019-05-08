@@ -9,9 +9,12 @@ registerLocale('uk', uk);
 setDefaultLocale('uk')
 
 
+
 const DatePicker = ({
-        value, id, className, label, error, ...attrs
+       startDate, value, id, className, label, error, ...attrs
 }) => {
+
+
     const classes = classNames(
         'input',
         className,
@@ -19,7 +22,7 @@ const DatePicker = ({
     );
 
     return (
-        <React.Fragment>
+        <div className="datepicker-wrapper">
         <div className="labelsWrapper">
         {label
           && <label className="inputLabel" htmlFor={id}>{label}</label>
@@ -31,11 +34,13 @@ const DatePicker = ({
             <ReactDatePicker
                 className={classes}
                 onChangeRaw={this.handleDateChangeRaw}
+                onChange={this.handleChange}
+                selected={this.startDate}
                 locale="uk"
                 dateFormat="dd MMMM yyyy"
                 name={id}
             />
-        </React.Fragment>
+        </div>
 
     );
 };
