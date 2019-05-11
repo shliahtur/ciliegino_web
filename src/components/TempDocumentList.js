@@ -13,7 +13,10 @@ const columns = [
     title: 'Найменування',
     width: 120,
     data: 'counterPartyName',
-    // render: (text, document) => <Link to={'document/' + document}>{text}</Link>
+    render: (data) => {
+     data = '<a href="/documents/' + 1 + '">' + data + '</a>';
+      return data;
+    },
 
   },
   {
@@ -41,12 +44,14 @@ const columns = [
 class TempDocumentList extends Component {
 
   componentDidMount(props) {
+
     $(this.refs.main).DataTable({
       data: tempDocs,
       columns,
       // processing : true,
       // serverSide : true,
       processing: true,
+      
       language: {
         "sProcessing": "<h1>...</h1>",
         "sLengthMenu": "Показати _MENU_ записів",
@@ -68,7 +73,8 @@ class TempDocumentList extends Component {
           "sSortDescending": ": активувати для сортування стовпців за спаданням"
         }
 
-      }
+      },
+     
     })
   }
 

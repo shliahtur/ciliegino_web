@@ -32,3 +32,46 @@
   display: flex;
   justify-content: space-around;
 }
+.btn-group{
+  display: flex;
+}
+.action-btn{
+  cursor: pointer;
+  width: 140px;
+  height: 40px;
+  border-radius: 40px;
+  border: none;
+  color: white;
+  font-weight: 600;
+  padding-left: 25px
+}
+.info-btn{
+  background-color: rgb(179, 217, 235);
+}
+.info-btn:hover{
+  background-color: #337ab7;
+}
+.info-btn-icon{
+  width: 20px;
+  height: 20px;
+  background: url('../img/edit_icon.svg') no-repeat;
+  background-size: 16px;
+  position: absolute;
+  left: 18px;
+  top: 11px;
+}
+.delete-btn{
+  background-color: rgb(224, 86, 86);
+}
+.delete-btn:hover{
+  background-color: rgb(155, 53, 53);
+}
+.delete-btn-icon{
+  width: 20px;
+  height: 20px;
+  background: url('../img/delete_icon.svg') no-repeat;
+  background-size: 14px;
+  position: absolute;
+  top: 13px;
+  left: 21px;
+}

@@ -66,9 +66,6 @@ class DocumentEdit extends React.Component {
         reasonText: reasonText,
         code: code
 
-
-
-
     }
     this.props.updateDocument(document);
   };

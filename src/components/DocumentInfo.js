@@ -1,52 +1,41 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-
-
-
-const BASE_PATH = '/api/RequestData/RegRequestsSelectById/';
+import { getDocument, deleteDocument } from '../actions';
 
 class DocumentInfo extends Component {
-
-  state = {
-    searchQuery: '',
-    result: {},
-  }
-
   componentDidMount() {
-    const {id} = this.props.match.params
-    const { searchQuery, hitsPerPage, page } = this.state;
-    this.fetchData(searchQuery, hitsPerPage, page);
-  }
-
-  fetchData = (searchQuery, id) => {
-    fetch(`${BASE_PATH}${'/1'}`)
-      .then(res => res.json())
-      .then(result => this.setNews(result))
-      .catch(error => error);
-  }
-  
-  setNews = result => {
-    this.setState({ result });
+    this.props.getDocument(this.props.match.params.id);
   }
 
   render() {
-    const {result} = this.state;
-    let document = result;
+    const document = this.props.document;
     return (
-      <React.Fragment>
-        <Link to='/datatable'><button>До списку</button></Link>
-              <p>Найменування: {document.counterPartyName}</p>
-              <p>Код за ЄДРПОУ: {document.counterPartyCode}</p>
-              <p>Дата запиту: {document.documentDate}</p>
-              <p>Дата отримання: {document.receiveDate}</p>
-              <p>Емітент: {document.issuerName}</p>
-              <p>Код за ЄДРПОУ: {document.issuerCode}</p>
-              <p>ISIN: {document.isin}</p>
+      <div>
+        <div className="btn-group">
+          <Link to="/documents" className="btn btn-secondary">
+            <div className="cancel-btn-icon"></div>
+            <input type="button" value="Редагувати" className="action-btn cancel-btn" />
+          </Link>
+          <Link to={{ pathname: `/documents/${document.id}/edit`, state: { document: document } }}>
+            <div className="info-btn-icon"></div>
+            <input type="button" value="Редагувати" className="action-btn info-btn" />
+          </Link>
+          <div style={{ position: "relative" }}>
+            <div className="delete-btn-icon"></div>
+            <button className="action-btn delete-btn" type="button" onClick={() => this.props.deleteDocument(document.id)}>Видалити</button>
+          </div>
 
-        </React.Fragment>
-    );
+        </div>
+        <h2>{document.id}: {document.counterPartyName}</h2>
+        <p>{document.counterPartyCode}</p>
+      </div>
+    )
   }
 }
 
-export default DocumentInfo;
+const mapStateToProps = (state) => ({ document: state.document });
+
+const mapDispatchToProps = { getDocument, deleteDocument };
+
+export default connect(mapStateToProps, mapDispatchToProps)(DocumentInfo);

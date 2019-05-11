@@ -21,12 +21,19 @@ export const getDocuments = () => {
   };
 };
 
-export const addDocument = ({ title, content }) => {
+export const addDocument = ({ counterPartyCode, counterPartyName, documentDate, recieveDate,
+inNum, outNum, inDate, outDate, requestId, recordDate, issuerCode, issuerEdrici, issuerName,
+isin, fitext, reasonCode, reasonText, code  }) => {
     return (dispatch) => {
-      return axios.post(`${apiUrl}/RegRequestCreate`, {title, content})
+      return axios.post(`${apiUrl}/RegRequestCreate`, {counterPartyCode, counterPartyName, documentDate, recieveDate,
+        inNum, outNum, inDate, outDate, requestId, recordDate, issuerCode, issuerEdrici, issuerName,
+        isin, fitext, reasonCode, reasonText, code})
         .then(response => {
           let data = response.data;
-          dispatch({type: ADD_DOCUMENT, payload: {title: data.title, content: data.content}})
+          dispatch({type: ADD_DOCUMENT, payload: {counterPartyCode: data.counterPartyCode, counterPartyName: data.counterPartyName, documentDate: data.documentDate, recieveDate: data.recieveDate,
+            inNum: data.inNum, outNum: data.outNum, inDate: data.inDate, outDate: data.outDate, requestId: data.requestId, recordDate: data.recordDate, issuerCode: data.issuerCode, issuerEdrici: data.issuerEdrici,
+            issuerName: data.issuerName,
+            isin: data.isin, fitext: data.fitext, reasonCode: data.reasonCode, reasonText: data.reasonText, code: data.code}})
         })
         .then(() => {
           history.push("/documents")
