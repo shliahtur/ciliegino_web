@@ -22,7 +22,6 @@ const DatePicker = ({
         { error },
     ); 
    
-
     return (
         <div className="datepicker-wrapper">
         <div className="labelsWrapper">

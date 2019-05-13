@@ -8,51 +8,52 @@ import DatePicker from './DatePicker';
 class DocumentAdd extends React.Component {
 
   state = {
-    counterPartyCode: "",
-    counterPartyName: "",
-    inNum: "",
-    outNum: "",
-    requestId: "1",
-    issuerCode: "",
-    issuerEdrici: "",
-    issuerName: "",
-    isin: "", 
-    fitext: "",
-    reasonCode: "",
-    reasonText: "",
-    code: "",
-    documentDate: new Date(),
-    receiveDate: new Date(),
-    recordDate: new Date(),
-    inDate: new Date(),
-    outDate: new Date(),
+    RequestTypeId: "2",
+    CounterPartyCode: "123123",
+    CounterPartyName: "Test",
+    InNum: "1",
+    OutNum: "1",
+    RequestId: "1",
+    IssuerCode: "123123",
+    IssuerEdrici: "123123",
+    IssuerName: "TestTest",
+    Isin: "12323", 
+    Fitext: "text",
+    ReasonCode: "1",
+    ReasonText: "1",
+    Code: "1",
+    DocumentDate: new Date(),
+    ReceiveDate: new Date(),
+    RecordDate: new Date(),
+    InDate: new Date(),
+    OutDate: new Date(),
   };
   handleChange = (event) => {
     this.setState({ [event.target.name]: event.target.value });
   };
   handleDocumentDate = (date) => {
     this.setState({
-       documentDate : date
+       DocumentDate : date
     });
   }
   handleRecieveDate = (date) => {
     this.setState({
-       receiveDate : date
+       ReceiveDate : date
     });
   }
   handleRecordDate = (date) => {
     this.setState({
-       recordDate : date
+       RecordDate : date
     });
   }
   handleInDate = (date) => {
     this.setState({
-       inDate : date
+       InDate : date
     });
   }
   handleOutDate = (date) => {
     this.setState({
-       outDate : date
+       OutDate : date
     });
   }
 
@@ -72,41 +73,43 @@ class DocumentAdd extends React.Component {
           <div className="form-container">
             <div className="input-block">
 
-              <Input id="counterPartyCode" label="CounterPartyCode" name="counterPartyCode" value={this.state.counterPartyCode} type="text"  onChange={this.handleChange} />
+              <Input id="RequestTypeId" label="RequestTypeId" name="RequestTypeId" value={this.state.RequestTypeId} type="text"  onChange={this.handleChange} />
 
-              <Input id="counterPartyName" label="CounterPartyName" name="counterPartyName" value={this.state.counterPartyName} type="text" onChange={this.handleChange} />
+              <Input id="counterPartyCode" label="CounterPartyCode" name="CounterPartyCode" value={this.state.CounterPartyCode} type="text"  onChange={this.handleChange} />
 
-              <DatePicker id="documentDate" label="DocumentDate" data={this.state.documentDate} onChange={this.handleDocumentDate} />  
+              <Input id="counterPartyName" label="CounterPartyName" name="CounterPartyName" value={this.state.CounterPartyName} type="text" onChange={this.handleChange} />
 
-              <DatePicker id="recieveDate" label="RecieveDate" data={this.state.receiveDate} onChange={this.handleRecieveDate} />
+              <DatePicker id="documentDate" label="DocumentDate" data={this.state.DocumentDate} onChange={this.handleDocumentDate} />  
 
-              <Input id="inNum" label="InNum" type="text" name="inNum" value={this.state.inNum} onChange={this.handleChange} />
+              <DatePicker id="recieveDate" label="RecieveDate" data={this.state.ReceiveDate} onChange={this.handleRecieveDate} />
 
-              <Input id="outNum" label="OutNum" type="text" name="outNum" value={this.state.outNum} onChange={this.handleChange} />
+              <Input id="inNum" label="InNum" type="text" name="InNum" value={this.state.InNum} onChange={this.handleChange} />
 
-              <DatePicker id="inDate" label="InDate" data={this.state.inDate} onChange={this.handleInDate} />
+              <Input id="outNum" label="OutNum" type="text" name="OutNum" value={this.state.OutNum} onChange={this.handleChange} />
 
-              <DatePicker id="outDate" label="OutDate" data={this.state.outDate} onChange={this.handleOutDate} />
+              <DatePicker id="inDate" label="InDate" data={this.state.InDate} onChange={this.handleInDate} />
+
+              <DatePicker id="outDate" label="OutDate" data={this.state.OutDate} onChange={this.handleOutDate} />
                        
-              <Input id="requestId" label="requestId" type="text" name="requestId" value={this.state.requestId} onChange={this.handleChange} />
+              <Input id="requestId" label="requestId" type="text" name="RequestId" value={this.state.RequestId} onChange={this.handleChange} />
 
-              <DatePicker id="recordDate" label="RecordDate" data={this.state.recordDate} onChange={this.handleRecordDate} />
+              <DatePicker id="recordDate" label="RecordDate" data={this.state.RecordDate} onChange={this.handleRecordDate} />
 
-              <Input id="issuerCode" label="issuerCode" type="text" name="issuerCode" value={this.state.issuerCode} onChange={this.handleChange} />
+              <Input id="issuerCode" label="issuerCode" type="text" name="IssuerCode" value={this.state.IssuerCode} onChange={this.handleChange} />
 
-              <Input id="issuerEdrici" label="issuerEdrici" type="text" name="issuerEdrici" value={this.state.issuerEdrici} onChange={this.handleChange} />
+              <Input id="issuerEdrici" label="issuerEdrici" type="text" name="IssuerEdrici" value={this.state.IssuerEdrici} onChange={this.handleChange} />
 
-              <Input id="issuerName" label="issuerName" type="text" name="issuerName" value={this.state.issuerName}  onChange={this.handleChange} />
+              <Input id="issuerName" label="issuerName" type="text" name="IssuerName" value={this.state.IssuerName}  onChange={this.handleChange} />
 
-              <Input id="issin" label="issin" type="text" name="issin" value={this.state.issin} onChange={this.handleChange} />
+              <Input id="issin" label="issin" type="text" name="Isin" value={this.state.Isin} onChange={this.handleChange} />
 
-              <Input id="fitext" label="fitext" type="text" name="fitext" value={this.state.fitext} onChange={this.handleChange} />
+              <Input id="fitext" label="fitext" type="text" name="Fitext" value={this.state.Fitext} onChange={this.handleChange} />
 
-              <Input id="reasonCode" label="reasonCode" type="text" name="reasonCode" value={this.state.reasonCode} onChange={this.handleChange} />
+              <Input id="reasonCode" label="reasonCode" type="text" name="ReasonCode" value={this.state.ReasonCode} onChange={this.handleChange} />
 
-              <Input id="reasonText" label="reasonText" type="text" name="reasonText" value={this.state.reasonText} onChange={this.handleChange} />
+              <Input id="reasonText" label="reasonText" type="text" name="ReasonText" value={this.state.ReasonText} onChange={this.handleChange} />
 
-              <Input id="code" label="code" type="text" name="code" value={this.state.code} onChange={this.handleChange} />
+              <Input id="code" label="code" type="text" name="Code" value={this.state.Code} onChange={this.handleChange} />
 
 
             </div>

@@ -12,7 +12,10 @@ const columns = [
     title: 'Найменування',
     width: 120,
     data: 'counterPartyName',
-    // render: (text, document) => <Link to={'document/' + document}>{text}</Link>
+    render: (data) => {
+      data = '<a href="/documents/' + 4 + '">' + data + '</a>';
+       return data;
+     },
   },
   {
     title: 'Код за ЄДРПОУ',
