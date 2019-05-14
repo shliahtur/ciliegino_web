@@ -7,6 +7,7 @@ export const RECEIVE_DOCUMENT = 'RECEIVE_DOCUMENT';
 export const REMOVE_DOCUMENT = 'REMOVE_DOCUMENT';
 export const UPDATE_DOCUMENT = 'UPDATE_DOCUMENT';
 export const REPLACE_DOCUMENT = 'REPLACE_DOCUMENT';
+export const RECEIVE_DICTIONARIES = 'RECEIVE_DICTIONARIES';
 
 
 const apiUrl = 'https://localhost:44326/api/RequestData';
@@ -90,5 +91,15 @@ export const updateDocument = (document) => {
         history.push(`/documents/${documentId}`)
       })
       .catch(error => { throw (error) });
+  };
+};
+
+export const getDictionaries = () => {
+  return (dispatch) => {
+    return axios.get(`${apiUrl}/GetRefrences`)
+      .then(response => {
+        dispatch({ type: RECEIVE_DICTIONARIES, dictionaries: response.data })
+      })
+      .catch(error => { throw (error); });
   };
 };

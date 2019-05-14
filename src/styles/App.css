@@ -75,3 +75,6 @@
   top: 13px;
   left: 21px;
 }
+.input-block{
+  overflow: auto;
+}

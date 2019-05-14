@@ -1,4 +1,4 @@
-import { RECEIVE_DOCUMENTS, ADD_DOCUMENT, REMOVE_DOCUMENT, REPLACE_DOCUMENT } from '../actions';
+import { RECEIVE_DOCUMENTS, ADD_DOCUMENT, REMOVE_DOCUMENT, REPLACE_DOCUMENT} from '../actions';
 
 const initialState = { documents: [] }
 export default function documentsReducer(state = initialState, action) {

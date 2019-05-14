@@ -1,0 +1,110 @@
+.fake-options{
+    display: none;
+    position: absolute;
+    z-index: 1;
+}
+.show-modal{
+ display: block;
+ box-shadow: 3px 4px 20px 0px #dadada;
+}
+
+.fake-select {
+    position: absolute;
+    left: 50%;
+    z-index: 1;
+}
+
+.fake-options button {
+    background: white;
+    text-align: left;
+    display: block;
+    border: 1px solid #c2cad8;
+    cursor: pointer;
+    margin-top: -1px;
+    padding: 10px;
+}
+
+.fake-options button:hover {
+    background: DodgerBlue;
+    color: white;
+    cursor: default;
+}
+
+.fake-options button:focus {
+    outline: none;
+}
+
+.fake-arrow {
+    font-style: normal;
+    border: solid black;
+    border-width: 0 1px 1px 0;
+    display: inline-block;
+    padding: 3px;
+    transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+    transition: 100ms;
+    position: absolute;
+    right: 22px;
+    margin-top: 14px;
+}
+.arrow-down{
+    transform: rotate(225deg); 
+    -webkit-transform: rotate(225deg);
+    margin-top: 17px
+}
+
+input {
+    box-sizing: border-box;
+    height: 40px;
+    width: 100%;
+    padding: 12px;
+    padding-right: 38px;
+    border: 1px solid #EBEBEB;
+  }
+  
+  .input[disabled] {
+    cursor: not-allowed;
+  }
+  
+  .input[name="checkbox"],
+  .input[name="radio"] {
+    width: 40px;
+    height: 40px;
+    margin: 0 auto;
+  }
+  
+  .input.error {
+    border-color: #D43728;
+    background-color: rgba(212, 55, 40, 0.2);
+  }
+  
+  .inputWrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+  }
+  
+  .labelsWrapper {
+    margin-bottom: 5px;
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .inputRequired {
+    color: #777;
+  }
+  
+  .inputRequired,
+  .selectLabel {
+    font-weight: 600;
+    font-size: 14px;
+    margin-top: 20px;
+    margin-bottom: 8px;
+  }
+  
+  .inputError {
+    margin-top: 5px;
+    color: #D43728;
+    font-size: 12px;
+  }

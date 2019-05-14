@@ -1,4 +1,4 @@
-import { RECEIVE_DOCUMENT, UPDATE_DOCUMENT } from '../actions';
+import { RECEIVE_DOCUMENT, UPDATE_DOCUMENT} from '../actions';
 
 export default function documentReducer(state = {}, action) {
   switch (action.type) {
@@ -9,7 +9,7 @@ export default function documentReducer(state = {}, action) {
         id: action.id,
         title: action.payload.title,
         content: action.payload.content,
-      }
+      }  
     default:
       return state;
   }

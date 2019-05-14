@@ -1,11 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { addDocument } from '../actions';
+import { addDocument, getDictionaries } from '../actions';
 import Input from './Input';
 import DatePicker from './DatePicker';
+import Select from './Select';
 
 
 class DocumentAdd extends React.Component {
+
 
   state = {
     RequestTypeId: "2",
@@ -27,6 +29,7 @@ class DocumentAdd extends React.Component {
     RecordDate: new Date(),
     InDate: new Date(),
     OutDate: new Date(),
+    dictionaries: []
   };
   handleChange = (event) => {
     this.setState({ [event.target.name]: event.target.value });
@@ -63,8 +66,16 @@ class DocumentAdd extends React.Component {
     this.props.addDocument(this.state);
   };
 
+
+  componentDidMount() {
+
+     this.props.getDictionaries();
+
+  }
+
   render() {
-    console.log(this.state)
+    const dictionaries = this.props.dictionaries;
+ 
     return (
       <div>
         <h1>Новый документ</h1>
@@ -72,7 +83,11 @@ class DocumentAdd extends React.Component {
         <form onSubmit={this.handleSubmit}>
           <div className="form-container">
             <div className="input-block">
+ 
 
+
+              <Select id="doc-select" width={600} options={dictionaries.item1} label="Выпадающий список"/> 
+                      
               <Input id="RequestTypeId" label="RequestTypeId" name="RequestTypeId" value={this.state.RequestTypeId} type="text"  onChange={this.handleChange} />
 
               <Input id="counterPartyCode" label="CounterPartyCode" name="CounterPartyCode" value={this.state.CounterPartyCode} type="text"  onChange={this.handleChange} />
@@ -109,7 +124,7 @@ class DocumentAdd extends React.Component {
 
               <Input id="reasonText" label="reasonText" type="text" name="ReasonText" value={this.state.ReasonText} onChange={this.handleChange} />
 
-              <Input id="code" label="code" type="text" name="Code" value={this.state.Code} onChange={this.handleChange} />
+              <Input id="code" label="code" type="text" name="Code" value={this.state.Code} onChange={this.handleChange} /> 
 
 
             </div>
@@ -122,6 +137,8 @@ class DocumentAdd extends React.Component {
   }
 }
 
-const mapDispatchToProps = { addDocument };
+const mapDispatchToProps = {getDictionaries, addDocument };
 
-export default connect(null, mapDispatchToProps)(DocumentAdd);
+const mapStateToProps = (state) => ({ dictionaries: state.dictionaries });
+
+export default connect(mapStateToProps, mapDispatchToProps)(DocumentAdd);
