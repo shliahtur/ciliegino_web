@@ -8,7 +8,6 @@ import Select from './Select';
 
 class DocumentAdd extends React.Component {
 
-
   state = {
     RequestTypeId: "2",
     CounterPartyCode: "123123",
@@ -31,6 +30,7 @@ class DocumentAdd extends React.Component {
     OutDate: new Date(),
     dictionaries: []
   };
+  
   handleChange = (event) => {
     this.setState({ [event.target.name]: event.target.value });
   };
@@ -83,11 +83,13 @@ class DocumentAdd extends React.Component {
         <form onSubmit={this.handleSubmit}>
           <div className="form-container">
             <div className="input-block">
- 
-
 
               <Select id="doc-select" width={600} options={dictionaries.item1} label="Выпадающий список"/> 
-                      
+
+              <Select id="doc-select" width={600} options={dictionaries.item2} label="Выпадающий список"/> 
+
+              <Select id="doc-select" width={600} options={dictionaries.item3} label="Выпадающий список"/>  
+
               <Input id="RequestTypeId" label="RequestTypeId" name="RequestTypeId" value={this.state.RequestTypeId} type="text"  onChange={this.handleChange} />
 
               <Input id="counterPartyCode" label="CounterPartyCode" name="CounterPartyCode" value={this.state.CounterPartyCode} type="text"  onChange={this.handleChange} />

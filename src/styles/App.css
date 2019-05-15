@@ -37,35 +37,34 @@
 }
 .action-btn{
   cursor: pointer;
-  width: 140px;
+  width: 40px;
   height: 40px;
   border-radius: 40px;
   border: none;
   color: white;
   font-weight: 600;
-  padding-left: 25px
+  padding-left: 25px;
+  transition: 100ms;
+
 }
-.info-btn{
+
+.edit-btn{
   background-color: rgb(179, 217, 235);
 }
-.info-btn:hover{
-  background-color: #337ab7;
-}
-.info-btn-icon{
+
+.edit-btn-icon{
   width: 20px;
   height: 20px;
   background: url('../img/edit_icon.svg') no-repeat;
   background-size: 16px;
   position: absolute;
-  left: 18px;
+  left: 70px;
   top: 11px;
 }
 .delete-btn{
   background-color: rgb(224, 86, 86);
 }
-.delete-btn:hover{
-  background-color: rgb(155, 53, 53);
-}
+
 .delete-btn-icon{
   width: 20px;
   height: 20px;

@@ -5,7 +5,7 @@
 }
 .show-modal{
  display: block;
- box-shadow: 3px 4px 20px 0px #dadada;
+ box-shadow: 3px 4px 20px 0px #e4e4e4;
 }
 
 .fake-select {
@@ -53,7 +53,8 @@
     margin-top: 17px
 }
 
-input {
+input { 
+    cursor: pointer;
     box-sizing: border-box;
     height: 40px;
     width: 100%;

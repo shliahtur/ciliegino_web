@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import '../styles/Input.css';
 
 const Input = ({
-  id, className, label, error, ...attrs
+  defaultValue, id, className, label, error, ...attrs
 }) => {
   const classes = classNames(
     'input',
@@ -25,6 +25,7 @@ const Input = ({
       <input
         name={id}
         id={id}
+        value={defaultValue}
         className={classes}
         {...attrs}
       />

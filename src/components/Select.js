@@ -20,10 +20,8 @@ class Select extends Component {
     selectItem = (item) => {
         this.setState({
           selectedItem: item,
-          on: false,
         })
       }
-
 
 render() {
     const {
@@ -54,20 +52,20 @@ render() {
                     && <span className="selectRequired">Required</span>
                 }
             </div>
-            <div>
+            <div tabindex="1">
             <i className={arrowClasses}></i> 
-            <input type="text" value={this.state.selectedItem} name={id} className={classes} {...attrs} placeholder={'Оберіть значення'} spellcheck="false" style={{width: `${width}px`}} onClick={this.toggle} />
-            </div>
+            <input type="text" readOnly onBlur={this.toggle} value={this.state.selectedItem} name={id} className={classes} {...attrs} placeholder={'Оберіть значення'} spellcheck="false" style={{width: `${width}px`}} onClick={this.toggle} />
+           
             {
                 options != undefined &&
                 <div className={optionClasses}>
                 {this.props.options.map(opt =>
-                    <button type="button" onClick={() => this.selectItem(opt.description)} key={opt.id} value={opt.code} style={{width: `${width}px`}}>
+                    <button type="button" onMouseDown={() => this.selectItem(opt.description)} key={opt.id} value={opt.code} style={{width: `${width}px`}}>
                       {opt.description} 
                     </button>)}
                 </div>
             }
-
+          </div>
             {error
                 && <span className="selectError">{error}</span>
             }

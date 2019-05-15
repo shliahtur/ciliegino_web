@@ -6,44 +6,47 @@ import '../styles/datatables.css';
 const $ = require('jquery');
 $.DataTable = require('datatables.net');
 
-const columns = [
-  {
-    title: 'Найменування',
-    width: 120,
-    data: 'counterPartyName',
-    render: (data) => {
-      data = '<a href="/documents/' + 4 + '">' + data + '</a>';
-       return data;
-     },
-  },
-  {
-    title: 'Код за ЄДРПОУ',
-    width: 120,
-    data: 'counterPartyCode'
-  },
-  {
-    title: 'Дата запиту',
-    width: 70,
-    data: 'documentDate'
-  },
-  {
-    title: 'Дата отримання',
-    width: 70,
-    data: 'receiveDate'
-  },
-  {
-    title: 'ISIN',
-    width: 70,
-    data: 'isin'
-  },
-];
 
 class DocumentList extends Component {
 
   componentDidMount(props) {
     $(this.refs.main).DataTable({
       data: this.props.documents,
-      columns,
+      columns: [   
+      {
+        title: 'Найменування',
+        width: 120,
+        data: 'counterPartyName',
+        render: (data) => {
+          return '<a href="/documents/' + this.props.documents.filter(el => el.counterPartyName == data)[0].requestId + '">' + data + '</a>';
+         },
+      },
+      {
+        title: 'Код за ЄДРПОУ',
+        width: 120,
+        data: 'counterPartyCode'
+      },
+      {
+        title: 'Дата запиту',
+        width: 70,
+        data: 'documentDate',
+        render: (data) => {
+          return data.substring(0, 10)
+        }
+      },
+      {
+        title: 'Дата отримання',
+        width: 70,
+        data: 'receiveDate',
+        render: (data) => {
+          return data.substring(0, 10)
+        }
+      },
+      {
+        title: 'ISIN',
+        width: 70,
+        data: 'isin'
+      }],
       // processing : true,
       // serverSide : true,
       processing: true,
