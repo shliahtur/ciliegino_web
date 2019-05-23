@@ -11,17 +11,7 @@ class SideBar extends Component {
                 <ul>
                     <li>
                         <NavLink to="/">
-                            <button type="button">Главная</button>
-                        </NavLink>
-                    </li>
-                    <li>
-                        <NavLink to="/documents">
                             <button type="button">Список</button>
-                        </NavLink>
-                    </li>
-                    <li>
-                        <NavLink to="/dummy_documents">
-                            <button type="button">DummyTable</button>
                         </NavLink>
                     </li>
                     <li>

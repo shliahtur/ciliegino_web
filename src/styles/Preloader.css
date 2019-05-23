@@ -1,7 +1,8 @@
 .preloader{
-
+  position: absolute;
+  margin-top: 200px;
+  left: 45%;
 }
-
 
 .lds-ring {
     display: inline-block;

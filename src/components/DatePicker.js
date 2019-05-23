@@ -12,7 +12,7 @@ setDefaultLocale('uk')
 
 
 const DatePicker = ({
-     data, onChange, value, id, className, label, error, ...attrs
+     data, onChange, value, id, className, maxDate, label, error, ...attrs
       }) => {
 
 
@@ -40,6 +40,7 @@ const DatePicker = ({
                 locale="uk"
                 dateFormat="dd MMMM yyyy"          
                 name={id}
+                maxDate={maxDate}
             />   
         </div>
     );

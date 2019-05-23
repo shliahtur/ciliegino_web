@@ -8,10 +8,10 @@ export default function documentsReducer(state = initialState, action) {
         case ADD_DOCUMENT:
             return [action.payload, ...state];
         case REMOVE_DOCUMENT:
-            return state.filter(document => document.id !== action.payload.id);
+            return state.filter(document => document.RequestId !== action.payload.RequestId);
         case REPLACE_DOCUMENT:
             return state.map((document) => {
-                if (document.id === action.payload.id) {
+                if (document.RequestId === action.payload.RequestId) {
                     return {
                         ...document,
                         title: action.payload.title,

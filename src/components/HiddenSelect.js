@@ -9,6 +9,7 @@ class Select extends Component {
         ...this.props,
         on: false,
         selectedItem: this.props.value,
+        reasonCode: ""
     }
 
     toggle = () => {
@@ -18,11 +19,16 @@ class Select extends Component {
     }
     
     selectItem = (desc, code) => {
-     
         this.setState({
           selectedItem: desc,
+          reasonCode: code,
           on: false
         })
+      }
+
+      handleClick = (e, desc, code) => {
+        this.selectItem(desc, code);
+        this.props.onChange(e);
       }
 
 render() {
@@ -60,12 +66,13 @@ render() {
             </div>
             <div>
             <i className={arrowClasses}></i> 
-            <input type="text" readOnly value={this.state.selectedItem} onChange={onChange} name={id} className={classes} {...attrs} placeholder={'Оберіть значення'} spellCheck="false" style={{width: `${width}px`}} onClick={this.toggle} />
+            <input type="text" readOnly value={this.state.selectedItem} className={classes} {...attrs} placeholder={'Оберіть значення'} spellCheck="false" style={{width: `${width}px`}} onClick={this.toggle} />
+            <input type="hidden" value={this.state.reasonCode} /> 
             {
                 options != undefined &&
                 <div className={optionClasses}>
                 {this.props.options.map(opt =>
-                    <button type="button" onClick={() => this.selectItem(opt.Description)} key={opt.Id} value={opt.Code} style={{width: `${width}px`}}>
+                    <button type="button" onClick={(e) => this.handleClick(e, opt.Description, opt.Code)} key={opt.Id} name={id} value={opt.Code} style={{width: `${width}px`}}>
                       {opt.Description} 
                     </button>)}
                 </div>

@@ -6,7 +6,7 @@ export default function documentReducer(state = {}, action) {
       return action.document;
     case UPDATE_DOCUMENT:
       return {
-        id: action.id,
+        RequestId: action.RequestId,
         title: action.payload.title,
         content: action.payload.content,
       }  

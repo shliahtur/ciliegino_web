@@ -4,36 +4,42 @@ import { addDocument, getDictionaries } from '../actions';
 import Input from './Input';
 import DatePicker from './DatePicker';
 import Select from './Select';
+import HiddenSelect from './HiddenSelect'
 
 
 class DocumentAdd extends React.Component {
 
   state = {
-    RequestTypeId: "2",
-    CounterPartyCode: "123123",
-    CounterPartyName: "Test",
-    InNum: "1",
-    OutNum: "1",
-    RequestId: "1",
-    IssuerCode: "123123",
-    IssuerEdrici: "123123",
-    IssuerName: "TestTest",
-    Isin: "12323", 
-    Fitext: "text",
-    ReasonCode: "1",
-    ReasonText: "1",
-    Code: "1",
-    DocumentDate: new Date(),
-    ReceiveDate: new Date(),
-    RecordDate: new Date(),
-    InDate: new Date(),
-    OutDate: new Date(),
-    dictionaries: []
+      RequestTypeId: "",
+      CounterPartyCode: "",
+      CounterPartyName: "",
+      InNum: "",
+      OutNum: "",
+      RequestId: "",
+      IssuerCode: "",
+      IssuerEdrici: "",
+      IssuerName: "",
+      Isin: "", 
+      Fitext: "",
+      ReasonCode: "",
+      ReasonText: "",
+      DocumentDate: new Date(),
+      ReceiveDate: new Date(),
+      RecordDate: new Date(),
+      InDate: new Date(),
+      OutDate: new Date(),
+      dictionaries: []
   };
   
   handleChange = (event) => {
+    console.log("works!  " + event.target.name + " " +  event.target.value)
     this.setState({ [event.target.name]: event.target.value });
   };
+
+  handleSelect = (event) => {
+    console.log("works!  " + event.target.name + "  " + event.target.value)
+    this.setState({[event.target.name] : event.target.value});
+  }
   handleDocumentDate = (date) => {
     this.setState({
        DocumentDate : date
@@ -60,7 +66,6 @@ class DocumentAdd extends React.Component {
     });
   }
 
-
   handleSubmit = (event) => {
     event.preventDefault();
     this.props.addDocument(this.state);
@@ -68,9 +73,7 @@ class DocumentAdd extends React.Component {
 
 
   componentDidMount() {
-
      this.props.getDictionaries();
-
   }
 
   render() {
@@ -84,32 +87,26 @@ class DocumentAdd extends React.Component {
           <div className="form-container">
             <div className="input-block">
 
-              <Select id="doc-select" width={600} options={dictionaries.item1} label="Выпадающий список"/> 
+              <HiddenSelect id="ReasonCode" width={600} options={dictionaries.Item1} value={this.state.ReasonCode} onChange={this.handleSelect} label="ReasonText / Code"/> 
 
-              <Select id="doc-select" width={600} options={dictionaries.item2} label="Выпадающий список"/> 
-
-              <Select id="doc-select" width={600} options={dictionaries.item3} label="Выпадающий список"/>  
-
-              <Input id="RequestTypeId" label="RequestTypeId" name="RequestTypeId" value={this.state.RequestTypeId} type="text"  onChange={this.handleChange} />
+              <HiddenSelect id="RequestTypeId" width={600} options={dictionaries.Item3} value={this.state.RequestTypeId} onChange={this.handleChange} label="RequestTypeId"/>  
 
               <Input id="counterPartyCode" label="CounterPartyCode" name="CounterPartyCode" value={this.state.CounterPartyCode} type="text"  onChange={this.handleChange} />
 
               <Input id="counterPartyName" label="CounterPartyName" name="CounterPartyName" value={this.state.CounterPartyName} type="text" onChange={this.handleChange} />
 
-              <DatePicker id="documentDate" label="DocumentDate" data={this.state.DocumentDate} onChange={this.handleDocumentDate} />  
+              <DatePicker id="documentDate" maxDate={Date.now()} label="DocumentDate" data={this.state.DocumentDate} onChange={this.handleDocumentDate} />  
 
-              <DatePicker id="recieveDate" label="RecieveDate" data={this.state.ReceiveDate} onChange={this.handleRecieveDate} />
+              <DatePicker id="recieveDate" maxDate={Date.now()} label="RecieveDate" data={this.state.ReceiveDate} onChange={this.handleRecieveDate} />
 
               <Input id="inNum" label="InNum" type="text" name="InNum" value={this.state.InNum} onChange={this.handleChange} />
 
               <Input id="outNum" label="OutNum" type="text" name="OutNum" value={this.state.OutNum} onChange={this.handleChange} />
 
-              <DatePicker id="inDate" label="InDate" data={this.state.InDate} onChange={this.handleInDate} />
+              <DatePicker id="inDate" maxDate={Date.now()} label="InDate" data={this.state.InDate} onChange={this.handleInDate} />
 
-              <DatePicker id="outDate" label="OutDate" data={this.state.OutDate} onChange={this.handleOutDate} />
-                       
-              <Input id="requestId" label="requestId" type="text" name="RequestId" value={this.state.RequestId} onChange={this.handleChange} />
-
+              <DatePicker id="outDate" maxDate={Date.now()} label="OutDate" data={this.state.OutDate} onChange={this.handleOutDate} />
+    
               <DatePicker id="recordDate" label="RecordDate" data={this.state.RecordDate} onChange={this.handleRecordDate} />
 
               <Input id="issuerCode" label="issuerCode" type="text" name="IssuerCode" value={this.state.IssuerCode} onChange={this.handleChange} />
@@ -122,16 +119,9 @@ class DocumentAdd extends React.Component {
 
               <Input id="fitext" label="fitext" type="text" name="Fitext" value={this.state.Fitext} onChange={this.handleChange} />
 
-              <Input id="reasonCode" label="reasonCode" type="text" name="ReasonCode" value={this.state.ReasonCode} onChange={this.handleChange} />
-
-              <Input id="reasonText" label="reasonText" type="text" name="ReasonText" value={this.state.ReasonText} onChange={this.handleChange} />
-
-              <Input id="code" label="code" type="text" name="Code" value={this.state.Code} onChange={this.handleChange} /> 
-
-
             </div>
           </div>
-          <button type="submit" className="btn btn-dark">Create</button>
+          <button type="submit" className="submit-btn">Відравити</button>
 
         </form>
       </div>

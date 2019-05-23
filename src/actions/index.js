@@ -1,5 +1,6 @@
 import axios from 'axios';
 import history from '../history';
+import { showLoading, hideLoading } from 'react-redux-loading-bar'
 
 export const RECEIVE_DOCUMENTS = 'GET_DOCUMENTS';
 export const ADD_DOCUMENT = 'ADD_DOCUMENT';
@@ -10,52 +11,48 @@ export const REPLACE_DOCUMENT = 'REPLACE_DOCUMENT';
 export const RECEIVE_DICTIONARIES = 'RECEIVE_DICTIONARIES';
 
 
+
 const apiUrl = 'https://localhost:44326/api/RequestData';
 
 export const getDocuments = () => {
   return (dispatch) => {
+    dispatch(showLoading())
     return axios.get(`${apiUrl}/RegRequestsSelect`)
       .then(response => {
         dispatch({ type: RECEIVE_DOCUMENTS, documents: response.data })
+        dispatch(hideLoading())
       })
       .catch(error => { throw (error); });
   };
 };
 
 
-export const addDocument = ({ RequestTypeId, CounterPartyCode, CounterPartyName, DocumentDate, RecieveDate,
-  InNum, OutNum, InDate, OutDate, RequestId, RecordDate, IssuerCode, IssuerEdrici, IssuerName,
-  Isin, Fitext, ReasonCode, ReasonText, Code }) => {
+export const addDocument = (props) => {
   return (dispatch) => {
-
-    return axios.post(`${apiUrl}/RegRequestCreate`, {
-      RequestTypeId, CounterPartyCode, CounterPartyName, DocumentDate, RecieveDate,
-      InNum, OutNum, InDate, OutDate, RequestId, RecordDate, IssuerCode, IssuerEdrici, IssuerName,
-      Isin, Fitext, ReasonCode, ReasonText, Code
-      })
-      .then(response => {
-        let data = response.data;
-
-        dispatch({
-          type: ADD_DOCUMENT, payload: {
-            RequestTypeId: data.RequestTypeId, CounterPartyCode: data.CounterPartyCode, CounterPartyName: data.CounterPartyName, DocumentDate: data.DocumentDate, RecieveDate: data.RecieveDate,
-            InNum: data.InNum, OutNum: data.OutNum, InDate: data.InDate, OutDate: data.OutDate, RequestId: data.RequestId, RecordDate: data.RecordDate, IssuerCode: data.IssuerCode, IssuerEdrici: data.IssuerEdrici,
-            IssuerName: data.IssuerName, Isin: data.Isin, Fitext: data.Fitext, ReasonCode: data.ReasonCode, ReasonText: data.ReasonText, Code: data.Code
-          }
-        })
-      })
+    dispatch(showLoading())
+    axios.post(`${apiUrl}/RegRequestCreate`, props)
+      .then(({ data }) => {
+         (dispatch) => {    
+            dispatch({
+                type: ADD_DOCUMENT,
+                payload: data
+            });
+            dispatch(hideLoading())
+      }})
       .then(() => {
-        history.push("/documents")
+        history.push("/")
       })
       .catch(error => { throw (error) });
   };
 };
 
-export const getDocument = (id) => {
+export const getDocument = (RequestId) => {
   return (dispatch) => {
-    return axios.get(`${apiUrl}/RegRequestsSelectById/${id}`)
+    dispatch(showLoading())
+    return axios.get(`${apiUrl}/RegRequestsSelectById/${RequestId}`)
       .then(response => {
         dispatch({ type: RECEIVE_DOCUMENT, document: response.data });
+        dispatch(hideLoading())
       })
       .catch(error => {
         throw (error);
@@ -63,14 +60,16 @@ export const getDocument = (id) => {
   };
 };
 
-export const deleteDocument = (id) => {
+export const deleteDocument = (RequestId) => {
   return (dispatch) => {
-    return axios.delete(`${apiUrl}/${id}.json`)
+    dispatch(showLoading())
+    return axios.delete(`${apiUrl}/RegRequestDelete/${RequestId}`)
       .then(response => {
-        dispatch({ type: REMOVE_DOCUMENT, payload: { id } })
+        dispatch({ type: REMOVE_DOCUMENT, payload: { RequestId } })
+        dispatch(hideLoading())
       })
       .then(() => {
-        history.push("/documents")
+        history.push("/")
       })
       .catch(error => {
         throw (error);
@@ -79,13 +78,99 @@ export const deleteDocument = (id) => {
 };
 
 export const updateDocument = (document) => {
-  const documentId = document.id;
+  const documentId = document.RequestId;
   return (dispatch) => {
-    return axios.patch(`${apiUrl}/${document.id}.json`, { title: document.title, content: document.content })
+    dispatch(showLoading())
+    return axios.put(`${apiUrl}/RegRequestUpdate/${document.RequestId}`, { 
+      RequestId: document.RequestId,
+      CounterPartyCode: document.CounterPartyCode,
+      CounterPartyName: document.CounterPartyName,
+      InNum: document.InNum,
+      OutNum: document.OutNum,
+      RecordDate: document.RecordDate,
+      IssuerCode: document.IssuerCode,
+      IssuerEdrici: document.IssuerEdrici,
+      IssuerName: document.IssuerName,
+      Isin: document.Isin,
+      Fitext: document.Fitext,
+      PaperType_1: document.PaperType_1,
+      PaperType_2: document.PaperType_2,
+      PaperType_3: document.PaperType_3,
+      DigitType_1: document.DigitType_1,
+      DigitType_2: document.DigitType_2,
+      DigitType_3: document.DigitType_3,
+      WithBank: document.WithBank,
+      WithTemp: document.WithTemp,
+      IsTerm: document.IsTerm,
+      ReasonCode: document.ReasonCode,
+      ReasonText: document.ReasonText,
+      Code: document.Code,
+      InDate: document.InDate,
+      OutDate: document.OutDate,
+      DocumentDate: document.DocumentDate,
+      RecieveDate: document.RecieveDate,
+    })
       .then(response => {
         const data = response.data;
-        dispatch({ type: UPDATE_DOCUMENT, payload: { id: data.id, title: data.title, content: data.content } })
-        dispatch({ type: REPLACE_DOCUMENT, payload: { id: data.id, title: data.title, content: data.content } })
+        dispatch({ type: UPDATE_DOCUMENT, payload: { 
+          RequestId: data.RequestId,
+          CounterPartyCode: data.CounterPartyCode,
+          CounterPartyName: data.CounterPartyName,
+          InNum: data.InNum,
+          OutNum: data.OutNum,
+          RecordDate: data.RecordDate,
+          IssuerCode: data.IssuerCode,
+          IssuerEdrici: data.IssuerEdrici,
+          IssuerName: data.IssuerName,
+          Isin: data.Isin,
+          Fitext: data.Fitext,
+          PaperType_1: data.PaperType_1,
+          PaperType_2: data.PaperType_2,
+          PaperType_3: data.PaperType_3,
+          DigitType_1: data.DigitType_1,
+          DigitType_2: data.DigitType_2,
+          DigitType_3: data.DigitType_3,
+          WithBank: data.WithBank,
+          WithTemp: data.WithTemp,
+          IsTerm: data.IsTerm,
+          ReasonCode: data.ReasonCode,
+          ReasonText: data.ReasonText,
+          Code: data.Code,
+          InDate: data.InDate,
+          OutDate: data.OutDate,
+          DocumentDate: data.DocumentDate,
+          RecieveDate: data.RecieveDate,
+          } })
+        dispatch({ type: REPLACE_DOCUMENT, payload: { 
+          RequestId: data.RequestId,
+          CounterPartyCode: data.CounterPartyCode,
+          CounterPartyName: data.CounterPartyName,
+          InNum: data.InNum,
+          OutNum: data.OutNum,
+          RecordDate: data.RecordDate,
+          IssuerCode: data.IssuerCode,
+          IssuerEdrici: data.IssuerEdrici,
+          IssuerName: data.IssuerName,
+          Isin: data.Isin,
+          Fitext: data.Fitext,
+          PaperType_1: data.PaperType_1,
+          PaperType_2: data.PaperType_2,
+          PaperType_3: data.PaperType_3,
+          DigitType_1: data.DigitType_1,
+          DigitType_2: data.DigitType_2,
+          DigitType_3: data.DigitType_3,
+          WithBank: data.WithBank,
+          WithTemp: data.WithTemp,
+          IsTerm: data.IsTerm,
+          ReasonCode: data.ReasonCode,
+          ReasonText: data.ReasonText,
+          Code: data.Code,
+          InDate: data.InDate,
+          OutDate: data.OutDate,
+          DocumentDate: data.DocumentDate,
+          RecieveDate: data.RecieveDate, 
+        } })
+        dispatch(hideLoading())
       })
       .then(() => {
         history.push(`/documents/${documentId}`)
@@ -96,9 +181,11 @@ export const updateDocument = (document) => {
 
 export const getDictionaries = () => {
   return (dispatch) => {
+    dispatch(showLoading())
     return axios.get(`${apiUrl}/GetRefrences`)
       .then(response => {
         dispatch({ type: RECEIVE_DICTIONARIES, dictionaries: response.data })
+        dispatch(hideLoading())
       })
       .catch(error => { throw (error); });
   };

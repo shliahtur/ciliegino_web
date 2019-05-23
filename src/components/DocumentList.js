@@ -6,30 +6,40 @@ import '../styles/datatables.css';
 const $ = require('jquery');
 $.DataTable = require('datatables.net');
 
+function reloadTableData(documents){
+  const table = $('.dataTables_wrapper').find('table').DataTable()
+  table.clear()
+  table.rows.add(documents)
+  table.draw()
+}
 
 class DocumentList extends Component {
 
-  componentDidMount(props) {
-    $(this.refs.main).DataTable({
-      data: this.props.documents,
+  componentDidUpdate(){
+    reloadTableData(this.props.documents)
+  }
+
+  componentDidMount() {
+    $(this.refs.main).DataTable({  
+      data: this.props.documents,  
       columns: [   
-      {
+       {
         title: 'Найменування',
         width: 120,
-        data: 'counterPartyName',
+        data: 'CounterPartyName',
         render: (data) => {
-          return '<a href="/documents/' + this.props.documents.filter(el => el.counterPartyName == data)[0].requestId + '">' + data + '</a>';
+           return '<a href="/documents/' + this.props.documents.filter(el => el.CounterPartyName == data)[0].RequestId + '">' + data + '</a>';
          },
       },
       {
         title: 'Код за ЄДРПОУ',
         width: 120,
-        data: 'counterPartyCode'
+        data: 'CounterPartyCode'
       },
       {
         title: 'Дата запиту',
         width: 70,
-        data: 'documentDate',
+        data: 'DocumentDate',
         render: (data) => {
           return data.substring(0, 10)
         }
@@ -37,7 +47,7 @@ class DocumentList extends Component {
       {
         title: 'Дата отримання',
         width: 70,
-        data: 'receiveDate',
+        data: 'ReceiveDate',
         render: (data) => {
           return data.substring(0, 10)
         }
@@ -45,7 +55,7 @@ class DocumentList extends Component {
       {
         title: 'ISIN',
         width: 70,
-        data: 'isin'
+        data: 'ISIN'
       }],
       // processing : true,
       // serverSide : true,
@@ -58,7 +68,7 @@ class DocumentList extends Component {
         "sInfoEmpty": "Записи з 0 по 0 із 0 записів",
         "sInfoFiltered": "(відфільтровано з _MAX_ записів)",
         "sInfoPostFix": "",
-        "sSearch": "Пошук:",
+        "sSearch": "Пошук",
         "sUrl": "",
         "oPaginate": {
           "sFirst": "Перша",
@@ -73,31 +83,35 @@ class DocumentList extends Component {
 
       }
     })
+   
   }
 
+
   componentWillUnmount() {
-    $('.data-table-wrapper')
+    $('.dataTables_wrapper')
       .find('table')
       .DataTable()
       .destroy(true)
   }
-  shouldComponentUpdate(){
-    return true;
-}
+
+  shouldComponentUpdate(nextProps) {
+   // reloadTableData(nextProps.documents)
+    return true
+  }
+
 
   render() {
-
-    if (this.props.documents.length) {
+    //  if (this.props.documents > 0) {
       return (
         <div>
           <table ref="main" />
         </div>
       )
-    } else {
-      return (
-        <Preloader />
-      )
-    }
+  //   } else {
+  //     return (
+  //       <Preloader />
+  //     )
+  //  }
   }
 }
 

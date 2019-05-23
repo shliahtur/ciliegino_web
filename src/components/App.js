@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import Home from './Home';
-import NavMenu from './NavMenu';
 import SideBar from './SideBar';
 import DocumentAdd from './DocumentAdd';
 import DocumentInfo from './DocumentInfo';
@@ -8,8 +6,7 @@ import DocumentList from './DocumentList';
 import DocumentEdit from './DocumentEdit';
 import {Router, Route, Switch} from 'react-router-dom'
 import history from '../history';
-
-import TempDocumentList from './TempDocumentList';
+import LoadingBar from './LoadingBar';
 
 import '../styles/App.css'
 
@@ -18,7 +15,7 @@ class App extends Component {
     return (
       <Router history={history}>
         <div className="container">
-          <NavMenu />
+          <LoadingBar style={{ backgroundColor: 'blue', height: '5px' }}/>
           <SideBar />
           <div className="content-wrapper">
           <Main />
@@ -31,12 +28,10 @@ class App extends Component {
 
 const Main = () => (
   <Switch>
-    <Route exact path="/" component={Home} />
-    <Route exact path="/documents" component={DocumentList} />
-    <Route exact path="/dummy_documents" component={TempDocumentList} /> 
+    <Route exact path="/" component={DocumentList} />
     <Route exact path="/documents/new" component={DocumentAdd} />
-    <Route exact path="/documents/:id" component={DocumentInfo} />
-    <Route exact path="/documents/:id/edit" component={DocumentEdit} />
+    <Route exact path="/documents/:RequestId" component={DocumentInfo} />
+    <Route exact path="/documents/:RequestId/edit" component={DocumentEdit} />
   </Switch>
 );
 

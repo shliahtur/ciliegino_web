@@ -21,124 +21,101 @@ class DocumentEdit extends React.Component {
 
   handleSubmit = (event) => {
     event.preventDefault();
-    const id = this.props.document.id;
-    const counterPartyCode = this.state.counterPartyCode ? this.state.counterPartyCode : this.props.document.counterPartyCode;
-    const counterPartyName = this.state.counterPartyName ? this.state.counterPartyName : this.props.document.counterPartyName;
-    const documentDate = this.state.documentDate ? this.state.documentDate : this.props.document.documentDate;
-    const recieveDate = this.state.recieveDate ? this.state.recieveDate : this.props.document.recieveDate;
-    const inNum = this.state.inNum ? this.state.inNum : this.props.document.inNum;
-    const outNum = this.state.outNum ? this.state.outNum : this.props.document.outNum;
-    const inDate = this.state.inDate ? this.state.inDate : this.props.document.inDate;
-    const outDate = this.state.outDate ? this.state.outDate : this.props.document.outDate;
-    const recordDate = this.state.recordDate ? this.state.outDate : this.props.document.outDate;
-    const issuerCode = this.state.issuerCode ? this.state.issuerCode : this.props.document.issuerCode;
-    const issuerEdrici = this.state.issuerEdrici ? this.state.issuerEdrici : this.props.document.issuerEdrici;
-    const issuerName = this.state.issuerName ? this.state.issuerName : this.props.document.issuerName;
-    const isin = this.state.isin ? this.state.isin : this.props.document.isin;
-    const fitext = this.state.fitext ? this.state.fitext : this.props.document.fitext;
-    const paperType_1 = this.state.paperType_1 ? this.state.paperType_1 : this.props.document.paperType_1;
-    const paperType_2 = this.state.paperType_2 ? this.state.paperType_2 : this.props.document.paperType_2;
-    const paperType_3 = this.state.paperType_3 ? this.state.paperType_3 : this.props.document.paperType_3;
-    const digitType_1 = this.state.paperType_1 ? this.state.digitType_1 : this.props.document.digitType_1;
-    const digitType_2 = this.state.paperType_2 ? this.state.digitType_2 : this.props.document.digitType_2;
-    const digitType_3 = this.state.paperType_3 ? this.state.digitType_3 : this.props.document.digitType_3;
-    const withBank = this.state.withBank ? this.state.withBank : this.props.document.withBank;
-    const withTemp = this.state.withTemp ? this.state.withTemp : this.props.document.withTemp;
-    const isTerm = this.state.isTerm ? this.state.isTerm : this.props.document.isTerm;
-    const reasonCode = this.state.reasonCode ? this.state.reasonCode : this.props.document.reasonCode;
-    const reasonText = this.state.reasonText ? this.state.reasonText : this.props.document.reasonText;
-    const code = this.state.code ? this.state.code : this.props.document.code;
+    const RequestId = this.props.document.RequestId;
+    const CounterPartyCode = this.state.CounterPartyCode ? this.state.CounterPartyCode : this.props.document.CounterPartyCode;
+    const CounterPartyName = this.state.CounterPartyName ? this.state.CounterPartyName : this.props.document.CounterPartyName;
+    const DocumentDate = this.state.DocumentDate ? this.state.DocumentDate : this.props.document.DocumentDate;;
+    const RecieveDate = this.state.RecieveDate ? this.state.RecieveDate : this.props.document.RecieveDate;
+    const InNum = this.state.InNum ? this.state.InNum : this.props.document.InNum;
+    const OutNum = this.state.OutNum ? this.state.OutNum : this.props.document.OutNum;
+    const InDate = this.state.InDate ? this.state.InDate : this.props.document.InDate;
+    const OutDate = this.state.OutDate ? this.state.OutDate : this.props.document.OutDate;
+    const RecordDate = this.state.RecordDate ? this.state.OutDate : this.props.document.OutDate;
+    const IssuerCode = this.state.IssuerCode ? this.state.IssuerCode : this.props.document.IssuerCode;
+    const IssuerEdrici = this.state.IssuerEdrici ? this.state.IssuerEdrici : this.props.document.IssuerEdrici;
+    const IssuerName = this.state.IssuerName ? this.state.IssuerName : this.props.document.IssuerName;
+    const Isin = this.state.Isin ? this.state.Isin : this.props.document.Isin;
+    const Fitext = this.state.Fitext ? this.state.Fitext : this.props.document.Fitext;
+    const PaperType_1 = this.state.PaperType_1 ? this.state.PaperType_1 : this.props.document.PaperType_1;
+    const PaperType_2 = this.state.PaperType_2 ? this.state.PaperType_2 : this.props.document.PaperType_2;
+    const PaperType_3 = this.state.PaperType_3 ? this.state.PaperType_3 : this.props.document.PaperType_3;
+    const DigitType_1 = this.state.DigitType_1 ? this.state.DigitType_1 : this.props.document.DigitType_1;
+    const DigitType_2 = this.state.DigitType_2 ? this.state.DigitType_2 : this.props.document.DigitType_2;
+    const DigitType_3 = this.state.DigitType_3 ? this.state.DigitType_3 : this.props.document.DigitType_3;
+    const WithBank = this.state.WithBank ? this.state.WithBank : this.props.document.WithBank;
+    const WithTemp = this.state.WithTemp ? this.state.WithTemp : this.props.document.WithTemp;
+    const IsTerm = this.state.IsTerm ? this.state.IsTerm : this.props.document.IsTerm;
+    const ReasonCode = this.state.ReasonCode ? this.state.ReasonCode : this.props.document.ReasonCode;
+    const ReasonText = this.state.ReasonText ? this.state.ReasonText : this.props.document.ReasonText;
+    const Code = this.state.Code ? this.state.Code : this.props.document.Code;
 
-
-    const document = {
-      id: id,
-      counterPartyCode: counterPartyCode,
-      counterPartyName: counterPartyName,
-      documentDate: documentDate,
-      recieveDate: recieveDate,
-      inNum: inNum,
-      outNum: outNum,
-      unDate: inDate,
-      outDate: outDate,
-      recordDate: recordDate,
-      issuerCode: issuerCode,
-      issuerEdrici: issuerEdrici,
-      issuerName: issuerName,
-      isin: isin,
-      fitext: fitext,
-      paperType_1: paperType_1,
-      paperType_2: paperType_2,
-      paperType_3: paperType_3,
-      digitType_1: digitType_1,
-      digitType_2: digitType_2,
-      digitType_3: digitType_3,
-      withBank: withBank,
-      withTemp: withTemp,
-      isTerm: isTerm,
-      reasonCode: reasonCode,
-      reasonText: reasonText,
-      code: code
-
-    }
-    this.props.updateDocument(document);
+    const document = {RequestId: RequestId, CounterPartyCode: CounterPartyCode, CounterPartyName: CounterPartyName, InNum: InNum,
+    OutNum: OutNum, RecordDate: RecordDate, IssuerCode: IssuerCode, IssuerEdrici: IssuerEdrici, IssuerName: IssuerName, Isin: Isin,
+    Fitext: Fitext, PaperType_1: PaperType_1, PaperType_2: PaperType_2, PaperType_3: PaperType_3, DigitType_1: DigitType_1,
+    DigitType_2: DigitType_2, DigitType_3: DigitType_3, WithBank: WithBank, WithTemp: WithTemp, IsTerm: IsTerm, ReasonCode: ReasonCode,
+    ReasonText: ReasonText, Code: Code, InDate: InDate, OutDate: OutDate, DocumentDate: DocumentDate, RecieveDate: RecieveDate, }
+  
+      this.props.updateDocument(document);
   };
 
   handleCancel = () => {
-    this.props.history.push(`/documents/${this.props.document.requestId}`);
+    this.props.history.push(`/documents/${this.props.document.RequestId}`);
   }
 
   render() {
     const dictionaries = this.props.dictionaries;
     return (
       <div>
-        <form onSubmit={this.handleSubmit}>
+        <button type="button" onClick={this.handleCancel} className="btn btn-secondary">Назад</button>
+                
+         <form onSubmit={this.handleSubmit}>
         
-           <Select id="doc-select" width={600} options={dictionaries.item1} label="Выпадающий список" />
+          <Select id="doc-select" width={600} defaultValue={this.props.document.CounterPartyName} options={dictionaries.Item1} label="Выпадающий список" />
 
-          <Select id="doc-select" width={600} options={dictionaries.item2} label="Выпадающий список" />
+          <Select id="doc-select" width={600} defaultValue={this.props.document.Code} options={dictionaries.Item2} label="Code (RequestStateId)" />
 
-          <Select id="doc-select" width={600} options={dictionaries.item3} label="Выпадающий список" /> 
+          <Select id="doc-select" width={600} defaultValue={this.props.document.CounterPartyName} options={dictionaries.Item3} label="Выпадающий список" /> 
 
-          <Input id="RequestTypeId" label="RequestTypeId" name="RequestTypeId" defaultValue={this.props.document.requestTypeId} type="text" onChange={this.handleChange} />
+          <Input id="RequestTypeId" label="RequestTypeId" name="RequestTypeId" defaultValue={this.props.document.RequestTypeId} type="text" onChange={this.handleChange} />
 
-          <Input id="counterPartyCode" label="CounterPartyCode" name="CounterPartyCode" defaultValue={this.props.document.counterPartyCode} type="text" onChange={this.handleChange} />
+          <Input id="counterPartyCode" label="CounterPartyCode" name="CounterPartyCode" defaultValue={this.props.document.CounterPartyCode} type="text" onChange={this.handleChange} />
 
-          <Input id="counterPartyName" label="CounterPartyName" name="CounterPartyName" defaultValue={this.props.document.counterPartyName} type="text" onChange={this.handleChange} />
+          <Input id="counterPartyName" label="CounterPartyName" name="CounterPartyName" defaultValue={this.props.document.CounterPartyName} type="text" onChange={this.handleChange} />
 
-          <DatePicker id="documentDate" label="DocumentDate" data={this.props.document.documentDate} onChange={this.handledocumentDate} />
+          <DatePicker id="documentDate" maxDate={Date.now()} label="DocumentDate" data={this.props.document.documentDate ? this.props.document.documentDate : Date.now()} onChange={this.handledocumentDate} />  
 
-          <DatePicker id="recieveDate" label="RecieveDate" data={this.props.document.receiveDate} onChange={this.handleRecieveDate} />
+          <DatePicker id="recieveDate" maxDate={Date.now()} label="RecieveDate" data={this.props.document.receiveDate} onChange={this.handleRecieveDate} />  
 
-          <Input id="inNum" label="InNum" type="text" name="InNum" defaultValue={this.props.document.inNum} onChange={this.handleChange} />
+          <Input id="inNum" label="InNum" type="text" name="InNum" defaultValue={this.props.document.InNum} onChange={this.handleChange} />
 
-          <Input id="outNum" label="OutNum" type="text" name="OutNum" defaultValue={this.state.outNum} onChange={this.handleChange} />
+          <Input id="outNum" label="OutNum" type="text" name="OutNum" defaultValue={this.props.document.OutNum} onChange={this.handleChange} />
 
-          <DatePicker id="inDate" label="InDate" data={this.state.inDate} onChange={this.handleInDate} />
+          <DatePicker id="inDate" maxDate={Date.now()} label="InDate" data={this.state.inDate} onChange={this.handleInDate} />
 
-          <DatePicker id="outDate" label="OutDate" data={this.state.outDate} onChange={this.handleOutDate} />
+          <DatePicker id="outDate" maxDate={Date.now()} label="OutDate" data={this.state.outDate} onChange={this.handleOutDate} />  
 
-          <Input id="requestId" label="requestId" type="text" name="RequestId" defaultValue={this.state.requestId} onChange={this.handleChange} />
+          <Input id="requestId" label="requestId" type="text" name="RequestId" defaultValue={this.props.document.RequestId} onChange={this.handleChange} />
 
-          <DatePicker id="recordDate" label="RecordDate" data={this.state.recordDate} onChange={this.handleRecordDate} />
+          <DatePicker id="recordDate" label="RecordDate" data={this.state.recordDate} onChange={this.handleRecordDate} /> 
 
-          <Input id="issuerCode" label="issuerCode" type="text" name="IssuerCode" defaultValue={this.state.issuerCode} onChange={this.handleChange} />
+          <Input id="issuerCode" label="issuerCode" type="text" name="IssuerCode" defaultValue={this.props.document.IssuerCode} onChange={this.handleChange} />
 
-          <Input id="issuerEdrici" label="issuerEdrici" type="text" name="IssuerEdrici" defaultValue={this.state.issuerEdrici} onChange={this.handleChange} />
+          <Input id="issuerEdrici" label="issuerEdrici" type="text" name="IssuerEdrici" defaultValue={this.props.document.IssuerEdrici} onChange={this.handleChange} />
 
-          <Input id="issuerName" label="issuerName" type="text" name="IssuerName" defaultValue={this.state.issuerName} onChange={this.handleChange} />
+          <Input id="issuerName" label="issuerName" type="text" name="IssuerName" defaultValue={this.props.document.IssuerName} onChange={this.handleChange} />
 
-          <Input id="issin" label="issin" type="text" name="Isin" defaultValue={this.state.isin} onChange={this.handleChange} />
+          <Input id="issin" label="issin" type="text" name="Isin" defaultValue={this.props.document.Isin} onChange={this.handleChange} />
 
-          <Input id="fitext" label="fitext" type="text" name="Fitext" defaultValue={this.state.fitext} onChange={this.handleChange} />
+          <Input id="fitext" label="fitext" type="text" name="Fitext" defaultValue={this.props.document.Fitext} onChange={this.handleChange} />
 
-          <Input id="reasonCode" label="reasonCode" type="text" name="ReasonCode" defaultValue={this.state.reasonCode} onChange={this.handleChange} />
+          <Input id="reasonCode" label="reasonCode" type="text" name="ReasonCode" defaultValue={this.props.document.ReasonCode} onChange={this.handleChange} />
 
-          <Input id="reasonText" label="reasonText" type="text" name="ReasonText" defaultValue={this.state.reasonText} onChange={this.handleChange} />
+          <Input id="reasonText" label="reasonText" type="text" name="ReasonText" defaultValue={this.props.document.ReasonText} onChange={this.handleChange} />
 
-          <Input id="code" label="code" type="text" name="Code" defaultValue={this.state.code} onChange={this.handleChange} />
+          <Input id="code" label="code" type="text" name="Code" defaultValue={this.props.document.Code} onChange={this.handleChange} />
 
-          <button type="submit" className="btn btn-dark">Update</button>
-          <button type="button" onClick={this.handleCancel} className="btn btn-secondary">Cancel</button>
+          <button type="submit" className="btn btn-dark">Оновити</button>
+  
 
         </form>
       </div>

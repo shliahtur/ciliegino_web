@@ -2,7 +2,7 @@
     --mainGrey: #9ea399;
     --link: #377bb9;
     --activeLink: #337ab7;
-    --cyan: #9f90ab;
+    --cyan: #3bc4d0;
     --darkGrey: #464e58;
     --lightBlue: #eef3f7;
     --hover: #ffa602;
@@ -22,13 +22,7 @@
 
   .content-wrapper{
       position: absolute;
-      top: 80px;
+      top: 30px;
       left: 230px;
-      width: 80%;
-  }
-
-  .form-container{
-    width: 600px;
-    display: flex;
-    justify-content: space-around;
+      max-width: 1400px;
   }
