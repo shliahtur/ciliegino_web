@@ -1,0 +1,94 @@
+.close-btn {
+    position: absolute;
+    cursor: pointer;
+    right: 20px;
+    top: 20px;
+    width: 20px;
+    height: 20px;
+}
+
+.close-btn:before, .close-btn:after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    height: 20px;
+    border: 1px solid black;
+}
+
+.close-btn:before {
+    transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.close-btn:after {
+    transform: translate(-50%, -50%) rotate(-45deg);
+}
+.modalOverlay {
+    background-color: rgba(0, 0, 0, 0.5);
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
+  
+  .modalWindow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #FFF;
+    min-height: 200px;
+    width: 500px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  
+  .modalHeader,
+  .modalBody,
+  .modalFooter {
+    padding: 20px 24px
+  }
+  
+  .modalHeader {
+    min-height: 60px;
+    display: flex;
+    justify-content: space-between;
+    box-sizing: border-box;
+    align-items: center;
+  }
+  
+  .modalTitle {
+    font-size: 24px;
+    margin: 10px;
+  }
+  
+  .modalFooter {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+  }
+  
+  .modalFooter button:last-child {
+    margin-left: 10px;
+  }
+
+  .modal-btn{
+    width: 120px;
+    height: 50px;
+    border: none;
+    background: #b3b3b3;
+    color: white;
+    cursor: pointer;
+
+  }
+  .modal-cancel-btn:hover{
+    background: grey;
+  }
+  .modal-delete-btn{
+    background: #f16464;
+  }
+  .modal-delete-btn:hover{
+    background: #b63737;
+  }

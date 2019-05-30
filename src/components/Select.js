@@ -41,11 +41,11 @@ render() {
     );
 
      const optionClasses = classNames('fake-options', {
-        'show-modal': this.state.on == true
+        'show-modal': this.state.on === true
     })
     
      const arrowClasses = classNames('fake-arrow', {
-        'arrow-down': this.state.on == true
+        'arrow-down': this.state.on === true
     })
 
     return (
@@ -60,9 +60,9 @@ render() {
             </div>
             <div>
             <i className={arrowClasses}></i> 
-            <input type="text" readOnly value={this.state.selectedItem} onChange={onChange} name={id} className={classes} {...attrs} placeholder={'Оберіть значення'} spellCheck="false" style={{width: `${width}px`}} onClick={this.toggle} />
+            <input type="text" readOnly value={this.state.selectedItem} onChange={onChange} name={id} className={classes} {...attrs} placeholder={'Оберіть значення'} spellCheck="false" style={{width: `${width}px`}} onBlur={this.toggle} />
             {
-                options != undefined &&
+                options !== undefined &&
                 <div className={optionClasses}>
                 {this.props.options.map(opt =>
                     <button type="button" onClick={() => this.selectItem(opt.Description)} key={opt.Id} value={opt.Code} style={{width: `${width}px`}}>

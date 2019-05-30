@@ -19,12 +19,17 @@ class App extends Component {
           <SideBar />
           <div className="content-wrapper">
           <Main />
+          <Footer />
           </div>
         </div>
       </Router>
     );
   }
 }
+
+const Footer = () => (
+  <div style={{height: "100px"}}></div>
+)
 
 const Main = () => (
   <Switch>

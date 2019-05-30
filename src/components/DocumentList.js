@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import Preloader from './Preloader';
 import '../styles/datatables.css';
 
 const $ = require('jquery');
@@ -28,7 +27,7 @@ class DocumentList extends Component {
         width: 120,
         data: 'CounterPartyName',
         render: (data) => {
-           return '<a href="/documents/' + this.props.documents.filter(el => el.CounterPartyName == data)[0].RequestId + '">' + data + '</a>';
+           return '<a href="/documents/' + this.props.documents.filter(el => el.CounterPartyName === data)[0].RequestId + '">' + data + '</a>';
          },
       },
       {
@@ -62,13 +61,14 @@ class DocumentList extends Component {
       processing: true,
       language: {
         "sProcessing": "<h1>...</h1>",
-        "sLengthMenu": "Показати _MENU_ записів",
-        "sZeroRecords": "Записи відсутні.",
+        "sLengthMenu": "_MENU_ Записів",
+        "sZeroRecords": "",
         "sInfo": "Записи з _START_ по _END_ із _TOTAL_ записів",
         "sInfoEmpty": "Записи з 0 по 0 із 0 записів",
         "sInfoFiltered": "(відфільтровано з _MAX_ записів)",
         "sInfoPostFix": "",
-        "sSearch": "Пошук",
+        "sSearch": "",
+        "searchPlaceholder": "Пошук",
         "sUrl": "",
         "oPaginate": {
           "sFirst": "Перша",
@@ -85,8 +85,6 @@ class DocumentList extends Component {
     })
    
   }
-
-
   componentWillUnmount() {
     $('.dataTables_wrapper')
       .find('table')
@@ -95,23 +93,16 @@ class DocumentList extends Component {
   }
 
   shouldComponentUpdate(nextProps) {
-   // reloadTableData(nextProps.documents)
     return true
   }
 
 
   render() {
-    //  if (this.props.documents > 0) {
       return (
         <div>
           <table ref="main" />
         </div>
       )
-  //   } else {
-  //     return (
-  //       <Preloader />
-  //     )
-  //  }
   }
 }
 

@@ -25,7 +25,7 @@
 }
 
 .fake-options button:hover {
-    background: DodgerBlue;
+    background: #909090;
     color: white;
     cursor: default;
 }
@@ -44,7 +44,7 @@
     -webkit-transform: rotate(45deg);
     transition: 100ms;
     position: absolute;
-    left: 570px;
+    left: 810px;
     margin-top: 14px;
 }
 .arrow-down{

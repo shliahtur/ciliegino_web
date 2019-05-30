@@ -1,20 +1,19 @@
 .side-bar{
-    width: 170px;
-    position: fixed;
+    width: 200px;
     height: 100vh;
     padding-top: 30px;
     background: var(--darkGrey);
     color: var(--lightBlue);
+    position: fixed;
+    top: 0;
   }
-  .side-bar ul{
-    padding: 0;
-  }
+
   .side-bar li{
     list-style: none;
   }
   .side-bar button{
       color: white;
-      width: 170px;
+      width: 100%;
       height: 50px;
       border: none;
       font-family: inherit;
@@ -36,7 +35,7 @@
     height: 40px;
     width: 40px;
     background-size: 30px;
-    margin-left: 120px;
+    margin-left: 146px;
     margin-top: -10px;
     margin-bottom: 15px;
   }

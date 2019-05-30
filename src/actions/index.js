@@ -10,9 +10,7 @@ export const UPDATE_DOCUMENT = 'UPDATE_DOCUMENT';
 export const REPLACE_DOCUMENT = 'REPLACE_DOCUMENT';
 export const RECEIVE_DICTIONARIES = 'RECEIVE_DICTIONARIES';
 
-
-
-const apiUrl = 'https://localhost:44326/api/RequestData';
+const apiUrl = 'https://localhost:44309/api/RequestData';
 
 export const getDocuments = () => {
   return (dispatch) => {
@@ -32,13 +30,14 @@ export const addDocument = (props) => {
     dispatch(showLoading())
     axios.post(`${apiUrl}/RegRequestCreate`, props)
       .then(({ data }) => {
-         (dispatch) => {    
+       //  (dispatch) => {    
             dispatch({
                 type: ADD_DOCUMENT,
                 payload: data
             });
             dispatch(hideLoading())
-      }})
+    //  }
+    })
       .then(() => {
         history.push("/")
       })
@@ -48,11 +47,9 @@ export const addDocument = (props) => {
 
 export const getDocument = (RequestId) => {
   return (dispatch) => {
-    dispatch(showLoading())
     return axios.get(`${apiUrl}/RegRequestsSelectById/${RequestId}`)
       .then(response => {
         dispatch({ type: RECEIVE_DOCUMENT, document: response.data });
-        dispatch(hideLoading())
       })
       .catch(error => {
         throw (error);
@@ -83,6 +80,7 @@ export const updateDocument = (document) => {
     dispatch(showLoading())
     return axios.put(`${apiUrl}/RegRequestUpdate/${document.RequestId}`, { 
       RequestId: document.RequestId,
+      RequestTypeId: document.RequestTypeId,
       CounterPartyCode: document.CounterPartyCode,
       CounterPartyName: document.CounterPartyName,
       InNum: document.InNum,
@@ -99,6 +97,7 @@ export const updateDocument = (document) => {
       DigitType_1: document.DigitType_1,
       DigitType_2: document.DigitType_2,
       DigitType_3: document.DigitType_3,
+      IsTerm: document.IsTerm,
       WithBank: document.WithBank,
       WithTemp: document.WithTemp,
       IsTerm: document.IsTerm,
@@ -114,6 +113,7 @@ export const updateDocument = (document) => {
         const data = response.data;
         dispatch({ type: UPDATE_DOCUMENT, payload: { 
           RequestId: data.RequestId,
+          RequestTypeId: data.RequestTypeId,
           CounterPartyCode: data.CounterPartyCode,
           CounterPartyName: data.CounterPartyName,
           InNum: data.InNum,
@@ -143,6 +143,7 @@ export const updateDocument = (document) => {
           } })
         dispatch({ type: REPLACE_DOCUMENT, payload: { 
           RequestId: data.RequestId,
+          RequestTypeId: data.RequestTypeId,
           CounterPartyCode: data.CounterPartyCode,
           CounterPartyName: data.CounterPartyName,
           InNum: data.InNum,

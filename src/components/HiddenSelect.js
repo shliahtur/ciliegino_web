@@ -33,13 +33,13 @@ class Select extends Component {
 
 render() {
     const {
-     onChange, value, defaultValue, width, options, id, className, label, error, ...attrs
+    hiddenValue, onChange, value, defaultValue, width, options, id, className, label, error, ...attrs
     } = this.props;
 
     if(defaultValue != null && defaultValue.legth > 0){
         this.state.selectedItem = defaultValue
     }
-
+   
     const classes = classNames(
         'select',
         className,
@@ -47,11 +47,11 @@ render() {
     );
 
      const optionClasses = classNames('fake-options', {
-        'show-modal': this.state.on == true
+        'show-modal': this.state.on === true
     })
     
      const arrowClasses = classNames('fake-arrow', {
-        'arrow-down': this.state.on == true
+        'arrow-down': this.state.on === true
     })
 
     return (
@@ -69,10 +69,10 @@ render() {
             <input type="text" readOnly value={this.state.selectedItem} className={classes} {...attrs} placeholder={'Оберіть значення'} spellCheck="false" style={{width: `${width}px`}} onClick={this.toggle} />
             <input type="hidden" value={this.state.reasonCode} /> 
             {
-                options != undefined &&
+                options !== undefined &&
                 <div className={optionClasses}>
                 {this.props.options.map(opt =>
-                    <button type="button" onClick={(e) => this.handleClick(e, opt.Description, opt.Code)} key={opt.Id} name={id} value={opt.Code} style={{width: `${width}px`}}>
+                    <button type="button" onClick={(e) => this.handleClick(e, opt.Description, opt.Code)} key={opt.Id} name={id} value={eval(`opt.${hiddenValue}`)} style={{width: `${width}px`}}>
                       {opt.Description} 
                     </button>)}
                 </div>

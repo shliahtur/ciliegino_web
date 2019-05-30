@@ -1,14 +1,8 @@
 .document-info-container{
   margin-left: 15px;
-  margin-top: 40px;
+  margin-top: 60px;
 }
 
-
-.document-info-container span{
-    font-weight: 600;
-    margin: 0 15px 15px 0;
-    color: gray;
-}
   .btn-group{
     display: flex;
   }
@@ -62,8 +56,22 @@
   .input-block{
     overflow: auto;
   }
+  .submit-btn{
+    width: 150px;
+    height: 45px;
+    color: white;
+    background: #00ca63;
+    border: none;
+    font-family: inherit;
+    font-size: 15px;
+    margin-top: 40px;
+    cursor: pointer;
+  }
+  .submit-btn:hover{
+    background: #00a04d;
+  }
   .cancel-btn{
-    background: #b9b9b9;
+    background: #d4d4d4;
   }
   .cancel-btn:hover{
     background: #929292;
@@ -84,3 +92,57 @@
     top: 12px;
     left: 39px;
   }
+.info-item{
+
+}
+.info-label{
+  font-weight: 600;
+}
+.info-item-value{
+  position: relative;
+  left: 200px;
+  bottom: 21px;
+  width: 400px;
+}
+.info-block-header{
+  background: var(--cyan);
+  color: white;
+  padding: 4px 25px 6px;
+  font-size: 22px;
+  font-weight: 600;
+}
+.info-block{
+  margin: 30px 0 30px 20px;
+}
+
+.bool-btn-block{
+  display: flex;
+  width: 470px;
+  justify-content: space-between;
+  margin-top: 30px;
+}
+
+.bool-btn{
+  width: 150px;
+  height: 31px;
+  color: #545454;
+  background: #dedede;
+  border-radius: 6px;
+  text-align: center;
+  padding-top: 8px;
+  cursor: default;
+}
+
+.chk-container{
+  margin-top: 30px;
+}
+.chk{
+  width: 40px;
+  height: 20px;
+  position: relative;
+  top: 4px;
+  left: -4px;
+  border-radius: 0;
+  background: grey;
+  border: 1px solid black;
+}

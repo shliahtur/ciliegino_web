@@ -2,7 +2,7 @@
     --mainGrey: #9ea399;
     --link: #377bb9;
     --activeLink: #337ab7;
-    --cyan: #9f90ab;
+    --cyan: #c1b9d8;
     --darkGrey: #464e58;
     --lightBlue: #eef3f7;
     --hover: #ffa602;
@@ -20,11 +20,12 @@
     outline: none;
   }
 
+  .container{ 
+
+  }
   .content-wrapper{
-      position: absolute;
-      top: 80px;
-      left: 230px;
-      width: 80%;
+    margin-left: 230px;
+    padding: 40px 40px 0 10px; 
   }
 
   .form-container{
