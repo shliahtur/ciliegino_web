@@ -3,9 +3,9 @@ import { connect } from 'react-redux';
 import { updateDocument, getDictionaries } from '../actions';
 import Input from './Input';
 import DatePicker from './DatePicker';
-import Select from './Select';
 import HiddenSelect from './HiddenSelect';
 import "../styles/Document.css";
+import { getDate } from 'date-fns/esm';
 
 class DocumentEdit extends React.Component {
 
@@ -51,10 +51,11 @@ class DocumentEdit extends React.Component {
   };
 
   handleDocumentDate = (date) => {
+    console.log(date)
     this.setState({
-      DocumentDate: date
+      DocumentDate: date 
     });
-    console.log("result: " + this.state.DocumentDate)
+    console.log(this.state.DocumentDate)
   }
   handleReceiveDate = (date) => {
     this.setState({
@@ -77,24 +78,18 @@ class DocumentEdit extends React.Component {
     });
   }
   handleChangeCheck = (event) => {
-   let i = !this.state[event.target.name]
     this.setState({
-      [event.target.name]: i ? 1 : 0
+      [event.target.name]: !this.state[event.target.name] ? 1 : 0
     })
-  }
-  handleClick = () =>{
-    console.log(this.state.WithBank +'\n'+
-                 this.state.WithTemp +'\n'+
-                 this.state.IsTerm )
   }
 
   handleSubmit = (event) => {
     event.preventDefault();
     const RequestId = this.props.document.RequestId;
-    const RequestTypeId = this.props.document.RequestTypeId;
+    const RequestTypeId = this.state.RequestTypeId ? this.state.RequestTypeId : this.props.document.RequestTypeId;
     const CounterPartyCode = this.state.CounterPartyCode ? this.state.CounterPartyCode : this.props.document.CounterPartyCode;
     const CounterPartyName = this.state.CounterPartyName ? this.state.CounterPartyName : this.props.document.CounterPartyName;
-    const DocumentDate = this.state.DocumentDate ? this.state.DocumentDate : this.props.document.DocumentDate;;
+    const DocumentDate =  Date.parse(this.state.DocumentDate + 1);
     const ReceiveDate = this.state.RecieveDate ? this.state.ReceiveDate : this.props.document.ReceiveDate;
     const InNum = this.state.InNum ? this.state.InNum : this.props.document.InNum;
     const OutNum = this.state.OutNum ? this.state.OutNum : this.props.document.OutNum;
@@ -112,9 +107,9 @@ class DocumentEdit extends React.Component {
     const DigitType_1 = this.state.DigitType_1 ? this.state.DigitType_1 : this.props.document.DigitType_1;
     const DigitType_2 = this.state.DigitType_2 ? this.state.DigitType_2 : this.props.document.DigitType_2;
     const DigitType_3 = this.state.DigitType_3 ? this.state.DigitType_3 : this.props.document.DigitType_3;
-    const WithBank = this.state.WithBank ? this.state.WithBank : this.props.document.WithBank;
-    const WithTemp = this.state.WithTemp ? this.state.WithTemp : this.props.document.WithTemp;
-    const IsTerm = this.state.IsTerm ? this.state.IsTerm : this.props.document.IsTerm;
+    const WithBank = this.state.WithBank;
+    const WithTemp = this.state.WithTemp;
+    const IsTerm = this.state.IsTerm;
     const ReasonCode = this.state.ReasonCode ? this.state.ReasonCode : this.props.document.ReasonCode;
     const ReasonText = this.state.ReasonText ? this.state.ReasonText : this.props.document.ReasonText;
     const Code = this.state.Code ? this.state.Code : this.props.document.Code;
@@ -154,39 +149,39 @@ class DocumentEdit extends React.Component {
 
           <input type="hidden" name="RequestId" value={this.state.RequestId}/>
  
-          <HiddenSelect width={600} id="ReasonCode" hiddenValue={"Code"} options={dictionaries.Item1} value={this.state.defaultReason} onChange={this.handleChange} label="ReasonText / Code"/> 
+          <HiddenSelect width={600} id="ReasonCode" hiddenValue={"Code"} options={dictionaries.Item1} value={this.state.defaultReason} onChange={this.handleChange} label="Підстава"/> 
           
-          <Select width={600} id="Code" value={this.state.defaultCode} options={dictionaries.Item2} label="Code (RequestState)" onChange={this.handleChange} />
+          <HiddenSelect width={600} id="Code" hiddenValue={"Code"} value={this.state.defaultCode} options={dictionaries.Item2} label="Стан запиту" onChange={this.handleChange} />
 
-          <HiddenSelect width={600}  id="RequestTypeId" hiddenValue={"Id"} options={dictionaries.Item3} value={this.state.defaultType} onChange={this.handleChange} label="RequestTypeId"/>     
+          <HiddenSelect width={600} id="RequestTypeId" hiddenValue={"Id"} options={dictionaries.Item3} value={this.state.defaultType} onChange={this.handleChange} label="Тип"/>     
 
-          <Input width={600} id="counterPartyCode" label="CounterPartyCode" name="CounterPartyCode" defaultValue={this.state.CounterPartyCode} type="text" onChange={this.handleChange} />
+          <Input width={600} id="counterPartyCode" label="Код за ЄДРПОУ" name="CounterPartyCode" defaultValue={this.state.CounterPartyCode} type="text" onChange={this.handleChange} />
 
-          <Input width={600} id="counterPartyName" label="CounterPartyName" name="CounterPartyName" defaultValue={this.state.CounterPartyName} type="text" onChange={this.handleChange} />
+          <Input width={600} id="counterPartyName" label="Найменування" name="CounterPartyName" defaultValue={this.state.CounterPartyName} type="text" onChange={this.handleChange} />
 
-          <DatePicker width={600}  id="documentDate" maxDate={Date.now()} label="DocumentDate" data={this.state.DocumentDate} onChange={this.handleDocumentDate} />
+          <DatePicker width={600} id="DocumentDate" maxDate={Date.now()} label="Дата запиту" data={this.state.DocumentDate} onChange={this.handleDocumentDate} />
 
-          <DatePicker width={600}  id="receiveDate" maxDate={Date.now()} label="RecieveDate" data={this.state.ReceiveDate} onChange={this.handleReceiveDate} />
+          <DatePicker width={600} id="ReceiveDate" maxDate={Date.now()} label="Дата отримання" data={this.state.ReceiveDate} onChange={this.handleReceiveDate} />
 
-          <Input width={600} id="inNum" label="InNum" type="text" name="InNum" defaultValue={this.state.InNum} onChange={this.handleChange} />
+          <Input width={600} id="inNum" label="Вхідний номер" type="text" name="InNum" defaultValue={this.state.InNum} onChange={this.handleChange} />
 
-          <Input width={600} id="outNum" label="OutNum" type="text" name="OutNum" defaultValue={this.state.OutNum} onChange={this.handleChange} />
+          <Input width={600} id="outNum" label="Вихідний номер" type="text" name="OutNum" defaultValue={this.state.OutNum} onChange={this.handleChange} />
 
-          <DatePicker width={600} id="inDate" maxDate={Date.now()} label="InDate" data={this.state.InDate} onChange={this.handleInDate} />
+          <DatePicker width={600} id="InDate" maxDate={Date.now()} label="Вхідна дата" data={this.state.InDate} onChange={this.handleInDate} />
 
-          <DatePicker width={600} id="outDate" maxDate={Date.now()} label="OutDate" data={this.state.OutDate} onChange={this.handleOutDate} />
+          <DatePicker width={600} id="OutDate" maxDate={Date.now()} label="Вихідна дата" data={this.state.OutDate} onChange={this.handleOutDate} />
 
-          <DatePicker width={600} id="recordDate" label="RecordDate" data={this.state.RecordDate} onChange={this.handleRecordDate} />
+          <DatePicker width={600} id="RecordDate" label="Дата обліку" data={this.state.RecordDate} onChange={this.handleRecordDate} />
 
-          <Input width={600} id="issuerCode" label="issuerCode" type="text" name="IssuerCode" defaultValue={this.state.IssuerCode} onChange={this.handleChange} />
+          <Input width={600} id="issuerCode" label="Код за ЄДРПОУ" type="text" name="IssuerCode" defaultValue={this.state.IssuerCode} onChange={this.handleChange} />
 
           <Input width={600} id="issuerEdrici" label="issuerEdrici" type="text" name="IssuerEdrici" defaultValue={this.state.IssuerEdrici} onChange={this.handleChange} />
 
           <Input width={600} id="issuerName" label="issuerName" type="text" name="IssuerName" defaultValue={this.state.IssuerName} onChange={this.handleChange} />
 
-          <Input width={600} id="issin" label="issin" type="text" name="Isin" defaultValue={this.state.Isin} onChange={this.handleChange} />
+          <Input width={600} id="issin" label="ISIN" type="text" name="Isin" defaultValue={this.state.Isin} onChange={this.handleChange} />
 
-          <Input width={600} id="fitext" label="fitext" type="text" name="Fitext" defaultValue={this.state.Fitext} onChange={this.handleChange} />
+          <Input width={600} id="fitext" label="Найменування" type="text" name="Fitext" defaultValue={this.state.Fitext} onChange={this.handleChange} />
          
           <div className="chk-container">
             <label>
@@ -206,10 +201,7 @@ class DocumentEdit extends React.Component {
               за ТГС
             </label>
           </div>
-
-          <input type="button" value="ok" onClick={this.handleClick}/>
           <button type="submit" className="submit-btn">Редагувати</button>
-
         </form>
       </div>
     );

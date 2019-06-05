@@ -3,6 +3,8 @@ import { loadingBarReducer } from 'react-redux-loading-bar'
 import documents from './documentsReducer';
 import document from './documentReducer';
 import dictionaries from './dictionariesReducer';
+import isins from './isinsReducer';
+import companies from './companiesReducer';
 
 
 export default combineReducers({
@@ -10,4 +12,6 @@ export default combineReducers({
   documents: documents,
   document: document,
   dictionaries: dictionaries,
+  isins: isins,
+  companies: companies,
 });

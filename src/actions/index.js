@@ -9,6 +9,8 @@ export const REMOVE_DOCUMENT = 'REMOVE_DOCUMENT';
 export const UPDATE_DOCUMENT = 'UPDATE_DOCUMENT';
 export const REPLACE_DOCUMENT = 'REPLACE_DOCUMENT';
 export const RECEIVE_DICTIONARIES = 'RECEIVE_DICTIONARIES';
+export const RECEIVE_ISINS = 'RECIEVE_ISINS';
+export const RECIEVE_COMPANIES = 'RECIEVE_COMPANIES'
 
 const apiUrl = 'https://localhost:44309/api/RequestData';
 
@@ -30,13 +32,11 @@ export const addDocument = (props) => {
     dispatch(showLoading())
     axios.post(`${apiUrl}/RegRequestCreate`, props)
       .then(({ data }) => {
-       //  (dispatch) => {    
-            dispatch({
+             dispatch({
                 type: ADD_DOCUMENT,
                 payload: data
             });
             dispatch(hideLoading())
-    //  }
     })
       .then(() => {
         history.push("/")
@@ -187,6 +187,28 @@ export const getDictionaries = () => {
       .then(response => {
         dispatch({ type: RECEIVE_DICTIONARIES, dictionaries: response.data })
         dispatch(hideLoading())
+      })
+      .catch(error => { throw (error); });
+  };
+};
+
+export const getIsins = (startWith) => {
+  return (dispatch) => {
+    startWith = startWith.toUpperCase();
+    return axios.get(`${apiUrl}/GetISINs/${startWith}`)
+      .then(response => {
+        dispatch({ type: RECEIVE_ISINS, isins: response.data })
+      })
+      .catch(error => { throw (error); });
+  };
+};
+
+export const getCompanies = (startWith) => {
+  return (dispatch) => {
+    startWith = startWith;
+    return axios.get(`${apiUrl}/GetCompanies/${startWith}`)
+      .then(response => {
+        dispatch({ type: RECIEVE_COMPANIES, companies: response.data })
       })
       .catch(error => { throw (error); });
   };

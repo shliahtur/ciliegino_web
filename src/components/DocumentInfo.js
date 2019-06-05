@@ -81,7 +81,7 @@ class DocumentInfo extends Component {
                 </div>
                 <div className="info-item">
                   <div className="info-label">Підстава</div>
-                  <div className="info-item-value">{dictionaries.Item1 ? dictionaries.Item1.filter(x => x.Code === document.ReasonCode)[0].Description : ""}</div>
+                    <div className="info-item-value">{dictionaries.Item1 ? dictionaries.Item1.filter(x => x.Code === document.ReasonCode)[0].Description : ""}</div> 
                 </div>
                 <div className="info-item">
                   <div className="info-label">Стан запиту</div>
@@ -108,7 +108,7 @@ class DocumentInfo extends Component {
               <div className="info-block">
                 <div className="info-item">
                   <div className="info-label">Вихідна дата</div>
-                  <div className="info-item-value">{document.OutDate.substring(0, 10)}</div>
+                  <div className="info-item-value">{document.OutDate ? document.OutDate.substring(0, 10): ''}</div>
                 </div>
                 <div className="info-item">
                   <div className="info-label">Дата обліку</div>
@@ -167,13 +167,13 @@ class DocumentInfo extends Component {
                     </div>
                      <div className="info-item">
                     {
-                      document.WithBank ? <div className="bool-btn" style={{ background: "#f73e3e", color: "white" }}>З реквізитами</div> :
+                      document.WithBank ? <div className="bool-btn" style={{ background: "#5bc129", color: "white" }}>З реквізитами</div> :
                         <div className="bool-btn">Без реквізитів</div>
                     }
                     </div>
                      <div className="info-item">
                     {
-                      document.WithTemp ? <div className="bool-btn" style={{ background: "#f73e3e", color: "white" }}>За ТГС</div> :
+                      document.WithTemp ? <div className="bool-btn" style={{ background: "#5bc129", color: "white" }}>За ТГС</div> :
                         <div className="bool-btn">Не за ТГС</div>
                     }
                   </div>

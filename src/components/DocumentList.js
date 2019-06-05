@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { getDictionaries } from '../actions';
 import '../styles/datatables.css';
+import { da } from 'date-fns/esm/locale';
+import '../styles/Document.css'
 
 const $ = require('jquery');
 $.DataTable = require('datatables.net');
@@ -19,9 +22,38 @@ class DocumentList extends Component {
   }
 
   componentDidMount() {
+
+    this.props.getDictionaries();
+
     $(this.refs.main).DataTable({  
       data: this.props.documents,  
-      columns: [   
+      columns: [ 
+        {
+          title: 'Тип',
+          width: 120,
+          data: 'RequestTypeId',
+          render: (data) => {
+            return this.props.dictionaries.Item3 ? this.props.dictionaries.Item3.filter(x => x.Id === data)[0].Description : ""
+          }
+        },  
+        {
+          title: 'Стан запиту',
+          width: 120,
+          data: 'Code',
+          render: (data) => {
+            return this.props.dictionaries.Item2 ? this.props.dictionaries.Item2.filter(x => x.Code === data)[0].Description : ""
+          }
+          // render: (data) => {
+          //   return this.props.dictionaries.Item2 ?
+          //    '<div class="state-label">' + this.props.dictionaries.Item2.filter(x => x.Code === data)[0].Description + '</div>'
+          //     : ""
+          // }
+        },  
+        {
+          title: 'Код за ЄДРПОУ',
+          width: 120,
+          data: 'CounterPartyCode'
+        },
        {
         title: 'Найменування',
         width: 120,
@@ -30,11 +62,7 @@ class DocumentList extends Component {
            return '<a href="/documents/' + this.props.documents.filter(el => el.CounterPartyName === data)[0].RequestId + '">' + data + '</a>';
          },
       },
-      {
-        title: 'Код за ЄДРПОУ',
-        width: 120,
-        data: 'CounterPartyCode'
-      },
+     
       {
         title: 'Дата запиту',
         width: 70,
@@ -49,6 +77,22 @@ class DocumentList extends Component {
         data: 'ReceiveDate',
         render: (data) => {
           return data.substring(0, 10)
+        }
+      },
+      {
+        title: 'Вхідні номер/ дата',
+        width: 70,
+        data: 'InNumDate',
+        render: (data) => {
+          return data.substring(0, data.length - 8)
+        }
+      },
+      {
+        title: 'Вихідні номер/ дата',
+        width: 70,
+        data: 'OutNumDate',
+        render: (data) => {
+          return data.substring(0, data.length - 8)
         }
       },
       {
@@ -106,7 +150,8 @@ class DocumentList extends Component {
   }
 }
 
+const mapDispatchToProps = { getDictionaries };
 
-const mapStateToProps = (state) => ({ documents: state.documents });
+const mapStateToProps = (state) => ({dictionaries: state.dictionaries, documents: state.documents });
 
-export default connect(mapStateToProps)(DocumentList);
+export default connect(mapStateToProps, mapDispatchToProps)(DocumentList);

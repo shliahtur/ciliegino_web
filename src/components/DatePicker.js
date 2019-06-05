@@ -34,9 +34,18 @@ const DatePicker = ({
                 selected={data}
                 onChange={onChange}     
                 locale="uk"
-                dateFormat="dd.MM.yyyy"          
+                dateFormat="dd-MM-yyyy"          
                 name={id}
                 maxDate={maxDate}
+                popperModifiers={{
+                  flip: {
+                    enabled: false
+                  },
+                  preventOverflow: {
+                    enabled: true,
+                    escapeWithReference: false
+                  }
+                }}
             />   
             </div>
     );

@@ -53,9 +53,7 @@
     left: 19px;
     cursor: pointer;
   }
-  .input-block{
-    overflow: auto;
-  }
+
   .submit-btn{
     width: 150px;
     height: 45px;
@@ -145,4 +143,12 @@
   border-radius: 0;
   background: grey;
   border: 1px solid black;
+}
+
+.state-label{
+  padding: 10px;
+  border-radius: 50px;
+  color: white;
+  background: green;
+  
 }
