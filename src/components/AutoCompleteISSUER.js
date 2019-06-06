@@ -20,8 +20,7 @@ export default class AutoComplete extends React.Component {
         }
     }
 
-    onTextChange = (e) => {
-        
+    onTextChange = (e) => {      
         const value = e.target.value;
         let suggestions = [];
 
@@ -42,7 +41,6 @@ export default class AutoComplete extends React.Component {
                 text: ''
             })
         }
-
     }
 
     suggestionSelected(edrpou, name) {
@@ -50,8 +48,9 @@ export default class AutoComplete extends React.Component {
             text: edrpou,
             suggestions: [],
             closeBtnVisible: false,
+            preloaderOn: false,
         }))
-        this.props.setIssuerName(name)
+        this.props.setIssuer(edrpou, name)
     }
 
     renderSuggestions() {
@@ -73,12 +72,7 @@ export default class AutoComplete extends React.Component {
             suggestions: [],
         })
     }
-    toggleClose = (e) =>{
-        if(e.target.value.lenght > 0)
-        this.setState({
-            closeBtnVisible: !this.state.closeBtnVisible
-        })
-    }
+
 
 
     render() {
@@ -97,7 +91,7 @@ export default class AutoComplete extends React.Component {
                 </div>
                 <div>
                     {this.state.closeBtnVisible ? <div className="search-close-btn" style={{ left: `${eval(width) - 30}px` }} onClick={this.onCancel}></div> : ''}
-                    <input type="text" style={{ width: `${width}px` }} name={id} value={text} onClick={this.toggleClose} onChange={this.onTextChange} type="text" />
+                    <input type="text" style={{ width: `${width}px` }} name={id} value={text} onChange={this.onTextChange} type="text" />
                     {this.state.preloaderOn ? <div className="preloader-container" style={{ width: `${width}px` }}><Preloader size={4} className="autocomplete-preloader" /></div> : ""}
                 </div>
 

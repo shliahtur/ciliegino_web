@@ -90,9 +90,7 @@
     top: 12px;
     left: 39px;
   }
-.info-item{
 
-}
 .info-label{
   font-weight: 600;
 }
@@ -146,9 +144,9 @@
 }
 
 .state-label{
-  padding: 10px;
   border-radius: 50px;
   color: white;
-  background: green;
-  
+  width: fit-content;
+  padding: 4px 20px;
+  margin: 0 auto;
 }

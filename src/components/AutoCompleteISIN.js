@@ -22,8 +22,7 @@ export default class AutoComplete extends React.Component {
         }
     }
 
-    onTextChange = (e) => {
-        
+    onTextChange = (e) => {  
         const value = e.target.value;
         let suggestions = [];
 
@@ -31,7 +30,7 @@ export default class AutoComplete extends React.Component {
             this.props.onChange(value);
             this.setState({
                 closeBtnVisible: true,
-                preloaderOn: false,
+                preloaderOn: false,   
             })
             
             this.setState(() => ({ suggestions, text: value, preloaderOn: true }))
@@ -52,8 +51,10 @@ export default class AutoComplete extends React.Component {
             text: isin,
             suggestions: [],
             closeBtnVisible: false,
+            preloaderOn: false,
         }))
-        this.props.setFiText(text)
+        
+        this.props.setIsin(isin, text)
     }
 
     renderSuggestions () {

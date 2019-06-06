@@ -22,14 +22,11 @@ const Input = ({
           && <span className="inputRequired">Required</span>
         }
       </div>
-      <input
-        name={id}
-        id={id}
-        value={defaultValue}
-        className={classes}
-        style={{width:  `${width}px`}}
-        {...attrs}
-      />
+      {defaultValue ?
+        <input name={id} id={id} value={defaultValue} className={classes} style={{ width: `${width}px` }} {...attrs} /> :
+        <input name={id} id={id} value={""} className={classes} style={{ width: `${width}px` }} {...attrs} />
+      }
+
       {error
         && <span className="inputError">{error}</span>
       }

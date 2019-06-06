@@ -95,15 +95,17 @@ class DocumentAdd extends React.Component {
     })
   }
 
-  setFiText = (value) => {
+  setIsin = (isin, text) => {
     this.setState({
-      Fitext : value
+      Fitext : text,
+      Isin: isin
     })
   }
 
-   setIssuerName = (value) => {
+   setIssuer = (edrpou, name) => {
      this.setState({
-       IssuerName: value
+       IssuerName: name,
+       IssuerCode: edrpou
      })
    }
 
@@ -129,7 +131,6 @@ class DocumentAdd extends React.Component {
           <div className="form-container">
             <div className="input-block">
 
-
               <HiddenSelect width={600} id="ReasonCode" hiddenValue={"Code"} width={600} options={dictionaries.Item1} value={this.state.ReasonCode} onChange={this.handleChange} label="ReasonText / Code" />
 
               <HiddenSelect width={600} id="RequestTypeId" hiddenValue={"Id"} width={600} options={dictionaries.Item3} value={this.state.RequestTypeId} onChange={this.handleChange} label="RequestTypeId" /> 
@@ -152,13 +153,13 @@ class DocumentAdd extends React.Component {
 
               <DatePicker width={600} id="recordDate" label="RecordDate" data={this.state.RecordDate} onChange={this.handleRecordDate} />
     
-              <AutoCompleteISSUER width={600} items={companies} id="issuerCode" label="issuerCode" name="issuerCode" setIssuerName={this.setIssuerName} value={this.state.issuerCode} onChange={this.handleIssuerChange}/>
+              <AutoCompleteISSUER width={600} items={companies} id="issuerCode" label="issuerCode" name="issuerCode" setIssuer={this.setIssuer} value={this.state.issuerCode} onChange={this.handleIssuerChange}/>
 
               <Input width={600} id="issuerName" label="issuerName" type="text" name="IssuerName" value={this.state.IssuerName} onChange={this.handleChange} />
 
               <Input width={600} id="issuerEdrici" label="issuerEdrici" type="text" name="IssuerEdrici" value={this.state.IssuerEdrici} onChange={this.handleChange} />
 
-              <AutoCompleteISIN width={600} items={isins} id="isin" label="Isin" name="Isin" setFiText={this.setFiText} value={this.state.Isin} onChange={this.handleIsinChange}/>
+              <AutoCompleteISIN width={600} items={isins} id="isin" label="Isin" name="Isin" setIsin={this.setIsin} value={this.state.Isin} onChange={this.handleIsinChange}/>
 
               <Input width={600} id="fitext" readOnly label="fitext" type="text" name="Fitext" value={this.state.Fitext} onChange={this.handleChange} />
 

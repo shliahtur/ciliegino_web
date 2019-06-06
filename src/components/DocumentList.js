@@ -14,6 +14,16 @@ function reloadTableData(documents){
   table.rows.add(documents)
   table.draw()
 }
+const colors = [
+  
+  { code: "Created", color: "#45b145"},
+  { code: "WaitForAccept", color: "red"},
+  { code: "Accepted", color: "blue"},
+  { code: "Rejected", color: "blue"},
+  { code: "WaitForDate", color: "blue"},
+  { code: "SendTo", color: "blue"},
+  { code: "Finished", color: "blue"},
+]
 
 class DocumentList extends Component {
 
@@ -29,40 +39,26 @@ class DocumentList extends Component {
       data: this.props.documents,  
       columns: [ 
         {
+          title: 'Найменування',
+          width: 120,
+          data: 'CounterPartyName',
+          render: (data) => {
+             return '<a href="/documents/' + this.props.documents.filter(el => el.CounterPartyName === data)[0].RequestId + '">' + data + '</a>';
+           },
+        },
+        {
           title: 'Тип',
           width: 120,
           data: 'RequestTypeId',
           render: (data) => {
             return this.props.dictionaries.Item3 ? this.props.dictionaries.Item3.filter(x => x.Id === data)[0].Description : ""
           }
-        },  
-        {
-          title: 'Стан запиту',
-          width: 120,
-          data: 'Code',
-          render: (data) => {
-            return this.props.dictionaries.Item2 ? this.props.dictionaries.Item2.filter(x => x.Code === data)[0].Description : ""
-          }
-          // render: (data) => {
-          //   return this.props.dictionaries.Item2 ?
-          //    '<div class="state-label">' + this.props.dictionaries.Item2.filter(x => x.Code === data)[0].Description + '</div>'
-          //     : ""
-          // }
-        },  
+        },   
         {
           title: 'Код за ЄДРПОУ',
           width: 120,
           data: 'CounterPartyCode'
         },
-       {
-        title: 'Найменування',
-        width: 120,
-        data: 'CounterPartyName',
-        render: (data) => {
-           return '<a href="/documents/' + this.props.documents.filter(el => el.CounterPartyName === data)[0].RequestId + '">' + data + '</a>';
-         },
-      },
-     
       {
         title: 'Дата запиту',
         width: 70,
@@ -99,7 +95,18 @@ class DocumentList extends Component {
         title: 'ISIN',
         width: 70,
         data: 'ISIN'
-      }],
+      },
+      {
+        title: 'Стан запиту',
+        width: 120,
+        data: 'Code',
+        render: (data) => {
+          console.log(data)
+          return this.props.dictionaries.Item2 ?
+           `<div class="state-label" style="background: ${colors.filter(x => x.code === data)[0].color}">` + this.props.dictionaries.Item2.filter(x => x.Code === data)[0].Description + '</div>'
+            : ""
+        }
+      },  ],
       // processing : true,
       // serverSide : true,
       processing: true,
