@@ -1,3 +1,18 @@
+.preloader-overlay {
+  background-color: rgba(255, 255, 255, 0.2);
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+.preloader-window{
+  position: absolute !important;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
 .preloader{
   position: absolute;
   margin-top: 200px;

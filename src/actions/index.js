@@ -1,7 +1,6 @@
 import axios from 'axios';
 import history from '../history';
-import { showLoading, hideLoading } from 'react-redux-loading-bar'
-
+import { showLoading, hideLoading } from 'react-redux-loading-bar';
 export const RECEIVE_DOCUMENTS = 'GET_DOCUMENTS';
 export const ADD_DOCUMENT = 'ADD_DOCUMENT';
 export const RECEIVE_DOCUMENT = 'RECEIVE_DOCUMENT';
@@ -10,9 +9,12 @@ export const UPDATE_DOCUMENT = 'UPDATE_DOCUMENT';
 export const REPLACE_DOCUMENT = 'REPLACE_DOCUMENT';
 export const RECEIVE_DICTIONARIES = 'RECEIVE_DICTIONARIES';
 export const RECEIVE_ISINS = 'RECIEVE_ISINS';
-export const RECIEVE_COMPANIES = 'RECIEVE_COMPANIES'
+export const RECIEVE_COMPANIES = 'RECIEVE_COMPANIES';
+export const SHOW_ALERT = 'SHOW_ALERT';
+
 
 const apiUrl = 'https://localhost:44309/api/RequestData';
+
 
 export const getDocuments = () => {
   return (dispatch) => {
@@ -36,14 +38,26 @@ export const addDocument = (props) => {
                 type: ADD_DOCUMENT,
                 payload: data
             });
-            dispatch(hideLoading())
+            dispatch(hideLoading());
+        
     })
       .then(() => {
         history.push("/")
+        dispatch({  
+          type: SHOW_ALERT,
+          payload: "ok"});
       })
-      .catch(error => { throw (error) });
+      .catch(error => {
+        dispatch(showAlert(error.message));
+        dispatch(hideLoading());
+      });
   };
 };
+
+export const showAlert = (message) => ({
+  type: SHOW_ALERT,
+  payload: message
+})
 
 export const getDocument = (RequestId) => {
   return (dispatch) => {

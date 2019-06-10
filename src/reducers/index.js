@@ -5,6 +5,7 @@ import document from './documentReducer';
 import dictionaries from './dictionariesReducer';
 import isins from './isinsReducer';
 import companies from './companiesReducer';
+import alert from './alertReducer';
 
 
 export default combineReducers({
@@ -14,4 +15,5 @@ export default combineReducers({
   dictionaries: dictionaries,
   isins: isins,
   companies: companies,
+  alert: alert,
 });

@@ -1,11 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { updateDocument, getDictionaries } from '../actions';
+import { updateDocument, getDictionaries, getIsins, getCompanies } from '../actions';
 import Input from './Input';
 import DatePicker from './DatePicker';
 import HiddenSelect from './HiddenSelect';
+import AutoCompleteISIN from './AutoCompleteISIN';
+import AutoCompleteISSUER from './AutoCompleteISSUER';
 import "../styles/Document.css";
-import { getDate } from 'date-fns/esm';
 
 class DocumentEdit extends React.Component {
 
@@ -36,6 +37,8 @@ class DocumentEdit extends React.Component {
     defaultCode: this.props.dictionaries.Item2 ? this.props.dictionaries.Item2.filter(x => x.Code === this.props.document.Code)[0].Description : "",
     defaultType: this.props.dictionaries.Item3 ? this.props.dictionaries.Item3.filter(x => x.Id === this.props.document.RequestTypeId)[0].Description : "",
     dictionaries: this.props.dictionaries,
+    isins: [],
+    companies: [],
   };
 
   componentDidMount() {
@@ -82,6 +85,32 @@ class DocumentEdit extends React.Component {
       [event.target.name]: !this.state[event.target.name] ? 1 : 0
     })
   }
+  handleIsinChange = (value) => {
+    this.props.getIsins(value);
+    this.setState({
+      Isin: value
+    })
+  }
+  handleIssuerChange = (value) => {
+    this.props.getCompanies(value);
+    this.setState({
+      IssuerCode: value,
+    })
+  }
+
+  setIsin = (isin, text) => {
+    this.setState({
+      Fitext : text,
+      Isin: isin
+    })
+  }
+
+   setIssuer = (edrpou, name) => {
+     this.setState({
+       IssuerName: name,
+       IssuerCode: edrpou
+     })
+   }
 
   handleSubmit = (event) => {
     event.preventDefault();
@@ -89,7 +118,7 @@ class DocumentEdit extends React.Component {
     const RequestTypeId = this.state.RequestTypeId ? this.state.RequestTypeId : this.props.document.RequestTypeId;
     const CounterPartyCode = this.state.CounterPartyCode ? this.state.CounterPartyCode : this.props.document.CounterPartyCode;
     const CounterPartyName = this.state.CounterPartyName ? this.state.CounterPartyName : this.props.document.CounterPartyName;
-    const DocumentDate =  Date.parse(this.state.DocumentDate + 1);
+    const DocumentDate =  this.state.DocumentDate;
     const ReceiveDate = this.state.RecieveDate ? this.state.ReceiveDate : this.props.document.ReceiveDate;
     const InNum = this.state.InNum ? this.state.InNum : this.props.document.InNum;
     const OutNum = this.state.OutNum ? this.state.OutNum : this.props.document.OutNum;
@@ -137,6 +166,9 @@ class DocumentEdit extends React.Component {
 
   render() {
     const dictionaries = this.props.dictionaries;
+    const isins = this.props.isins;
+    const companies = this.props.companies;
+
     return (
       <div>
         <div>
@@ -173,13 +205,13 @@ class DocumentEdit extends React.Component {
 
           <DatePicker width={600} id="RecordDate" label="Дата обліку" data={this.state.RecordDate} onChange={this.handleRecordDate} />
 
-          <Input width={600} id="issuerCode" label="Код за ЄДРПОУ" type="text" name="IssuerCode" defaultValue={this.state.IssuerCode} onChange={this.handleChange} />
+          <AutoCompleteISSUER width={600} items={companies} id="issuerCode" label="issuerCode" name="issuerCode" setIssuer={this.setIssuer} value={this.state.issuerCode} onChange={this.handleIssuerChange}/>         
 
           <Input width={600} id="issuerEdrici" label="issuerEdrici" type="text" name="IssuerEdrici" defaultValue={this.state.IssuerEdrici} onChange={this.handleChange} />
 
           <Input width={600} id="issuerName" label="issuerName" type="text" name="IssuerName" defaultValue={this.state.IssuerName} onChange={this.handleChange} />
 
-          <Input width={600} id="issin" label="ISIN" type="text" name="Isin" defaultValue={this.state.Isin} onChange={this.handleChange} />
+          <AutoCompleteISIN width={600} items={isins} id="isin" label="Isin" name="Isin" setIsin={this.setIsin} value={this.state.Isin} onChange={this.handleIsinChange}/>
 
           <Input width={600} id="fitext" label="Найменування" type="text" name="Fitext" defaultValue={this.state.Fitext} onChange={this.handleChange} />
          
@@ -208,8 +240,8 @@ class DocumentEdit extends React.Component {
   }
 }
 
-const mapDispatchToProps = { getDictionaries, updateDocument };
+const mapDispatchToProps = { getDictionaries, updateDocument, getIsins, getCompanies};
 
-const mapStateToProps = (state) => ({dictionaries: state.dictionaries, document: state.document });
+const mapStateToProps = (state) => ({dictionaries: state.dictionaries, document: state.document, isins: state.isins, companies: state.companies});
 
 export default connect(mapStateToProps, mapDispatchToProps)(DocumentEdit);

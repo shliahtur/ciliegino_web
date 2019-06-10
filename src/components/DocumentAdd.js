@@ -1,12 +1,14 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { addDocument, getDictionaries, getIsins, getCompanies } from '../actions';
+import { addDocument, getDictionaries, getIsins, getCompanies, showAlert } from '../actions';
 import Input from './Input';
 import DatePicker from './DatePicker';
 import HiddenSelect from './HiddenSelect';
 import AutoCompleteISIN from './AutoCompleteISIN';
 import AutoCompleteISSUER from './AutoCompleteISSUER';
 import Mask from './Mask';
+import Alert from './Alert';
+import Preloader from './Preloader';
 
 import '../styles/Document.css';
 
@@ -40,11 +42,18 @@ class DocumentAdd extends React.Component {
     DigitType_3: 0,
     WithBank: 0,
     WithTemp: 0,
-    IsTerm: 0,
-    dictionaries: [], 
+    IsTerm: 0, 
     isins: [],
     companies: [],
+    isAlert: false,
+    isPreloader: false,
+    alertMessage: ""
   };
+
+  componentDidMount() {
+     this.props.getDictionaries();
+     this.props.showAlert();
+  }
 
   handleChange = (event) => {
     console.log("works!  " + event.target.name + " " + event.target.value)
@@ -111,13 +120,26 @@ class DocumentAdd extends React.Component {
 
   handleSubmit = (event) => {
     event.preventDefault();
+
+    this.setState({
+      isPreloader: true
+    })
+
     this.props.addDocument(this.state);
+
+    this.props.showAlert();
   };
 
-  componentDidMount() {
-    this.props.getDictionaries();
+  openModal = () => {
+    this.setState({ isAlert: true });
   }
 
+  handleAlertCancel = (e) => {
+    if (e.target.className === 'modalOverlay' || e.target.className === 'close-btn') {
+      this.setState({ isAlert: false });
+    }
+  }
+  
   render() {
     const dictionaries = this.props.dictionaries;
     const isins = this.props.isins;
@@ -126,7 +148,6 @@ class DocumentAdd extends React.Component {
     return (
       <div>
         <h1>Новый запрос</h1>
-
         <form onSubmit={this.handleSubmit}>
           <div className="form-container">
             <div className="input-block">
@@ -185,13 +206,18 @@ class DocumentAdd extends React.Component {
           </div>
           <button type="submit" className="submit-btn">Створити</button>
         </form>
+         <Alert isOpen={this.state.isAlert} alertMessage={this.state.alertMessage} onCancel={this.handleAlertCancel} /> 
+         {this.state.isPreloader ? <Preloader/> : ''}
       </div>
     );
   }
 }
 
-const mapDispatchToProps = { getDictionaries, getIsins, getCompanies, addDocument };
+const mapDispatchToProps = { getDictionaries, getIsins, getCompanies, addDocument, showAlert };
 
-const mapStateToProps = (state) => ({ dictionaries: state.dictionaries, isins: state.isins, companies: state.companies });
+const mapStateToProps = (state) => ({ dictionaries: state.dictionaries, isins: state.isins,
+   companies: state.companies, alertMessage: state.alertMessage, isAlert: state.isAlert,
+   isPreloader: state.isPreloader 
+  });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DocumentAdd);
