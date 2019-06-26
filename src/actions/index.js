@@ -11,10 +11,11 @@ export const RECEIVE_DICTIONARIES = 'RECEIVE_DICTIONARIES';
 export const RECEIVE_ISINS = 'RECIEVE_ISINS';
 export const RECIEVE_COMPANIES = 'RECIEVE_COMPANIES';
 export const SHOW_ALERT = 'SHOW_ALERT';
+export const SHOW_SPINNER = 'SHOW_SPINNER';
+export const GET_CORP_ACTIONS = 'GET_CORP_ACTIONS';
 
 
 const apiUrl = 'https://localhost:44309/api/RequestData';
-
 
 export const getDocuments = () => {
   return (dispatch) => {
@@ -28,35 +29,35 @@ export const getDocuments = () => {
   };
 };
 
-
 export const addDocument = (props) => {
   return (dispatch) => {
-    dispatch(showLoading())
+    dispatch(showSpinner(true))   
     axios.post(`${apiUrl}/RegRequestCreate`, props)
       .then(({ data }) => {
              dispatch({
                 type: ADD_DOCUMENT,
                 payload: data
-            });
-            dispatch(hideLoading());
-        
+            });  
+            dispatch(showSpinner(false))   
+            dispatch(showAlert(undefined))   
     })
       .then(() => {
         history.push("/")
-        dispatch({  
-          type: SHOW_ALERT,
-          payload: "ok"});
       })
       .catch(error => {
+        dispatch(showSpinner(false))   
         dispatch(showAlert(error.message));
-        dispatch(hideLoading());
       });
   };
 };
 
 export const showAlert = (message) => ({
   type: SHOW_ALERT,
-  payload: message
+  payload: message,
+})
+export const showSpinner = (isShow) => ({
+  type: SHOW_SPINNER,
+  payload: isShow
 })
 
 export const getDocument = (RequestId) => {
@@ -73,11 +74,11 @@ export const getDocument = (RequestId) => {
 
 export const deleteDocument = (RequestId) => {
   return (dispatch) => {
-    dispatch(showLoading())
+    dispatch(showSpinner(true))   
     return axios.delete(`${apiUrl}/RegRequestDelete/${RequestId}`)
       .then(response => {
         dispatch({ type: REMOVE_DOCUMENT, payload: { RequestId } })
-        dispatch(hideLoading())
+        dispatch(showSpinner(false))   
       })
       .then(() => {
         history.push("/")
@@ -91,7 +92,7 @@ export const deleteDocument = (RequestId) => {
 export const updateDocument = (document) => {
   const documentId = document.RequestId;
   return (dispatch) => {
-    dispatch(showLoading())
+    dispatch(showSpinner(true))   
     return axios.put(`${apiUrl}/RegRequestUpdate/${document.RequestId}`, { 
       RequestId: document.RequestId,
       RequestTypeId: document.RequestTypeId,
@@ -114,7 +115,6 @@ export const updateDocument = (document) => {
       IsTerm: document.IsTerm,
       WithBank: document.WithBank,
       WithTemp: document.WithTemp,
-      IsTerm: document.IsTerm,
       ReasonCode: document.ReasonCode,
       ReasonText: document.ReasonText,
       Code: document.Code,
@@ -185,12 +185,16 @@ export const updateDocument = (document) => {
           DocumentDate: data.DocumentDate,
           RecieveDate: data.RecieveDate, 
         } })
-        dispatch(hideLoading())
+        dispatch(showSpinner(false))   
+        dispatch(showAlert(undefined))   
       })
       .then(() => {
         history.push(`/documents/${documentId}`)
       })
-      .catch(error => { throw (error) });
+      .catch(error => {
+        dispatch(showSpinner(false))   
+        dispatch(showAlert(error.message));
+      });
   };
 };
 
@@ -219,11 +223,22 @@ export const getIsins = (startWith) => {
 
 export const getCompanies = (startWith) => {
   return (dispatch) => {
-    startWith = startWith;
-    return axios.get(`${apiUrl}/GetCompanies/${startWith}`)
+    return axios.get(`${apiUrl}/GetEmitents/${startWith}`)
       .then(response => {
         dispatch({ type: RECIEVE_COMPANIES, companies: response.data })
       })
       .catch(error => { throw (error); });
+  };
+};
+
+export const getCorpActions = (RequestId) => {
+  return (dispatch) => {
+    return axios.get(`${apiUrl}/GetCAForRequest/${RequestId}`)
+      .then(response => {
+        dispatch({ type: GET_CORP_ACTIONS, corpActions: response.data });
+      })
+      .catch(error => {
+        throw (error);
+      });
   };
 };

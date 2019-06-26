@@ -21,15 +21,15 @@
   }
 
   .container{ 
-
+    background: #f7f7f7;
   }
   .content-wrapper{
-    margin-left: 230px;
-    padding: 40px 40px 0 10px; 
+    margin-left: 200px;
+    margin-top: -40px;
+    padding-top: 40px;
+    background: white;
   }
 
   .form-container{
-    width: 600px;
-    display: flex;
-    justify-content: space-around;
+    width: 800px;
   }

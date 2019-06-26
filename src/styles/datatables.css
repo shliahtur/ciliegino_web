@@ -254,6 +254,7 @@ table.dataTable {
     clear: both;
     *zoom: 1;
     zoom: 1;
+    margin: 40px 40px 0 40px;
   }
   .dataTables_wrapper .dataTables_length {
     position: absolute;
@@ -430,7 +431,6 @@ table.dataTable {
       text-align: center;
     }
   
-  
   @media screen and (max-width: 767px) {
     .dataTables_wrapper .dataTables_info,
     .dataTables_wrapper .dataTables_paginate {
@@ -467,7 +467,7 @@ table.dataTable {
 
   select{
     padding: 10px 4px 10px 10px;
-    border: 1px solid #ebebeb;
+    border: 1px solid #d0d0d0;
     margin-right: 10px;
   }
   select:focus{

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { getDocument, deleteDocument, getDictionaries } from '../actions';
+import { getDocument, deleteDocument, getDictionaries, getCorpActions } from '../actions';
 import Preloader from './Preloader';
 import Modal from './Modal';
 
@@ -10,39 +10,45 @@ import "../styles/Document.css";
 class DocumentInfo extends Component {
 
   state = {
-    isOpen: false,
-    dictionaries: []
+    isOpenDelete: false,
+    isOpenCorpAction: false,
+    dictionaries: [],
+    corpActions: [],
   }
 
-  openModal = () => {
-    this.setState({ isOpen: true });
+  openDeleteModal = () => {
+    this.setState({ isOpenDelete: true });
+  }
+  openCorpAction = () => {
+    this.setState({ isOpenCorpAction: true })
   }
 
   handleSubmit = () => {
-    this.setState({ isOpen: false });
+    this.setState({ isOpenDelete: false });
     this.props.deleteDocument(this.props.document.RequestId)
   }
 
   handleCancel = (e) => {
-    if (e.target.className === 'modalOverlay' || e.target.className === 'close-btn') {
-      this.setState({ isOpen: false });
+    if (e.target.className === 'modalOverlay' || e.target.className === 'close-btn' || e.target.className === 'modal-btn modal-cancel-btn') {
+      this.setState({ isOpenDelete: false, isOpenCorpAction: false });
     }
   }
 
   componentDidMount() {
     this.props.getDictionaries();
     this.props.getDocument(this.props.match.params.RequestId);
+    this.props.getCorpActions(this.props.match.params.RequestId);
   }
 
   render() {
     const document = this.props.document;
     const dictionaries = this.props.dictionaries;
+    const corpActions = this.props.corpActions;
 
     if (this.props.document.RequestId !== undefined) {
       return (
         <React.Fragment>
-
-          <div>
+          <div style={{ padding: "40px" }}>
             <div className="btn-group">
               <Link to="/" className="btn btn-secondary">
                 <div style={{ position: "relative" }}>
@@ -50,15 +56,22 @@ class DocumentInfo extends Component {
                   <button type="button" className="action-btn cancel-btn"><i className="arrow-left"></i><div className="innerText">До списку</div></button>
                 </div>
               </Link>
-              <Link to={{ pathname: `/documents/${document.RequestId}/edit`, state: { document: document } }}>
+              <Link to={{ pathname: `/edit/${document.RequestId}`, state: { document: document } }}>
                 <div style={{ position: "relative" }}>
                   <div className="edit-btn-icon"></div>
                   <input type="button" value="Редагувати" className="action-btn edit-btn" />
                 </div>
               </Link>
               <div style={{ position: "relative" }}>
-                <div className="delete-btn-icon" tabIndex="-1" onClick={this.openModal}></div>
-                <button className="action-btn delete-btn" type="button" onClick={this.openModal}>Видалити</button>
+                <div className="delete-btn-icon" tabIndex="-1" onClick={this.openDeleteModal}></div>
+                <button className="action-btn delete-btn" type="button" onClick={this.openDeleteModal}>Видалити</button>
+              </div>
+              <div style={{ position: "relative" }}>
+                <button className="action-btn corpAction-btn" type="button" onClick={this.openCorpAction}>CorpActions</button>
+              </div>
+              <div style={{ position: "relative" }}>
+                <div className="pdf-btn-icon" tabIndex="-1" ></div>
+                <button className="action-btn pdf-btn" type="button">PDF-експорт</button>
               </div>
             </div>
 
@@ -81,7 +94,7 @@ class DocumentInfo extends Component {
                 </div>
                 <div className="info-item">
                   <div className="info-label">Підстава</div>
-                    <div className="info-item-value">{dictionaries.Item1 ? dictionaries.Item1.filter(x => x.Code === document.ReasonCode)[0].Description : ""}</div> 
+                  <div className="info-item-value">{dictionaries.Item1 ? dictionaries.Item1.filter(x => x.Code === document.ReasonCode)[0].Description : ""}</div>
                 </div>
                 <div className="info-item">
                   <div className="info-label">Стан запиту</div>
@@ -108,7 +121,7 @@ class DocumentInfo extends Component {
               <div className="info-block">
                 <div className="info-item">
                   <div className="info-label">Вихідна дата</div>
-                  <div className="info-item-value">{document.OutDate ? document.OutDate.substring(0, 10): ''}</div>
+                  <div className="info-item-value">{document.OutDate ? document.OutDate.substring(0, 10) : ''}</div>
                 </div>
                 <div className="info-item">
                   <div className="info-label">Дата обліку</div>
@@ -158,25 +171,19 @@ class DocumentInfo extends Component {
                   <div className="info-label">DigitType3</div>
                   <div className="info-item-value">{document.DigitType3}</div>
                 </div> : ""}
-                <div className="bool-btn-block">  
-                  <div className="info-item">
-                    {
-                      document.IsTerm ? <div className="bool-btn" style={{ background: "#f73e3e", color: "white" }}>Терміново</div> :
-                        <div className="bool-btn">Не терміново</div>
-                    }
-                    </div>
-                     <div className="info-item">
-                    {
-                      document.WithBank ? <div className="bool-btn" style={{ background: "#5bc129", color: "white" }}>З реквізитами</div> :
-                        <div className="bool-btn">Без реквізитів</div>
-                    }
-                    </div>
-                     <div className="info-item">
-                    {
-                      document.WithTemp ? <div className="bool-btn" style={{ background: "#5bc129", color: "white" }}>За ТГС</div> :
-                        <div className="bool-btn">Не за ТГС</div>
-                    }
-                  </div>
+                <div className="bool-btn-block">
+                  {
+                    document.IsTerm ? <div className="bool-block"><div className="bool-radio" style={{ background: "#f73e3e" }}></div><div>Терміново</div></div> :
+                      <div className="bool-block"><div className="bool-radio" style={{ background: "#cccccc" }}></div><div>Не терміново</div></div>
+                  }
+                  {
+                    document.WithBank ? <div className="bool-block"><div className="bool-radio" style={{ background: "#5bc129" }}></div><div>З реквізитами</div></div> :
+                      <div className="bool-block"><div className="bool-radio" style={{ background: "#cccccc" }}></div><div>Без реквізитів</div></div>
+                  }
+                  {
+                    document.WithTemp ? <div className="bool-block"><div className="bool-radio" style={{ background: "#5bc129" }}></div><div>За ТГС</div></div> :
+                      <div className="bool-block"><div className="bool-radio" style={{ background: "#cccccc" }}></div><div>Не за ТГС</div></div>
+                  }
                 </div>
               </div>
             </div>
@@ -184,9 +191,26 @@ class DocumentInfo extends Component {
 
           <Modal className="modal-form"
             title="Ви впевнені?"
-            isOpen={this.state.isOpen}
+            isOpen={this.state.isOpenDelete}
             onCancel={this.handleCancel}
             onSubmit={this.handleSubmit}
+            withDeleteBtns={true}
+          >
+          </Modal>
+
+          <Modal className="modal-form"
+            title="Corp Actions"
+            isOpen={this.state.isOpenCorpAction}
+            onCancel={this.handleCancel}
+            onSubmit={this.handleSubmit}
+            children={
+              <div className="corpActions">
+                <div>EVENT_REFERENCE: {corpActions.EVENT_REFERENCE}</div>
+                <div>EVENT_TYPE: {corpActions.EVENT_REFERENCE}</div>
+                <div>CORPACT_RECORD_DATE: {corpActions.EVENT_REFERENCE}</div>
+                <div>ISIN_CODE: {corpActions.EVENT_REFERENCE}</div>
+              </div>
+            }
           >
           </Modal>
         </React.Fragment>
@@ -199,8 +223,8 @@ class DocumentInfo extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({ document: state.document, dictionaries: state.dictionaries });
+const mapStateToProps = (state) => ({ document: state.document, dictionaries: state.dictionaries, corpActions: state.corpActions });
 
-const mapDispatchToProps = { getDocument, deleteDocument, getDictionaries };
+const mapDispatchToProps = { getDocument, deleteDocument, getDictionaries, getCorpActions };
 
 export default connect(mapStateToProps, mapDispatchToProps)(DocumentInfo);

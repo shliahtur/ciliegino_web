@@ -39,6 +39,3 @@
     margin-top: -10px;
     margin-bottom: 15px;
   }
-  .logo:hover{
-    filter: sepia() hue-rotate(317deg) saturate(17);
-  }

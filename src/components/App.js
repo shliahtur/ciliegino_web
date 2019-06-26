@@ -4,22 +4,26 @@ import DocumentAdd from './DocumentAdd';
 import DocumentInfo from './DocumentInfo';
 import DocumentList from './DocumentList';
 import DocumentEdit from './DocumentEdit';
-import {Router, Route, Switch} from 'react-router-dom'
+import { Router, Route, Switch } from 'react-router-dom'
 import history from '../history';
 import LoadingBar from './LoadingBar';
+import Alert from './Alert';
+import Spinner from './Spinner';
 
 import '../styles/App.css'
 
 class App extends Component {
   render() {
     return (
-      <Router history={history}>
+      <Router history={history}>   
         <div className="container">
-          <LoadingBar style={{ backgroundColor: 'blue', height: '5px' }}/>
+          <LoadingBar style={{ backgroundColor: 'blue', height: '5px' }} />
           <SideBar />
           <div className="content-wrapper">
-          <Main />
-          <Footer />
+            <Main />
+            <Alert />
+            <Spinner />
+            <Footer />
           </div>
         </div>
       </Router>
@@ -28,15 +32,15 @@ class App extends Component {
 }
 
 const Footer = () => (
-  <div style={{height: "100px"}}></div>
+  <div style={{ height: "100px", backgroundColor: "white" }}></div>
 )
 
 const Main = () => (
   <Switch>
-    <Route exact path="/" component={DocumentList} />
-    <Route exact path="/documents/new" component={DocumentAdd} />
-    <Route exact path="/documents/:RequestId" component={DocumentInfo} />
-    <Route exact path="/documents/:RequestId/edit" component={DocumentEdit} />
+    <Route path="/" render={() => <DocumentList />} exact />
+    <Route path="/documents/new" render={() => <DocumentAdd />} />
+    <Route path="/documents/:RequestId" render={(props) => <DocumentInfo  {...props}/>} />
+    <Route exact path="/edit/:RequestId/" render={() =>{return <DocumentEdit/>}} />
   </Switch>
 );
 

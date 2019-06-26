@@ -1,12 +1,22 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { updateDocument, getDictionaries, getIsins, getCompanies } from '../actions';
+import history from '../history';
+import { updateDocument, getDictionaries, getIsins, getCompanies, getDocument } from '../actions';
 import Input from './Input';
 import DatePicker from './DatePicker';
 import HiddenSelect from './HiddenSelect';
 import AutoCompleteISIN from './AutoCompleteISIN';
 import AutoCompleteISSUER from './AutoCompleteISSUER';
+import Mask from './Mask';
 import "../styles/Document.css";
+
+
+const validationMessages = {
+  empty: "Це обов`язкове поле",
+  emptySelect: "Оберіть пункт із випадаючого списку",
+  numOnly: "Допускаються лише цифри",
+  charsOnly: "Допускаются лише букви",
+}
 
 class DocumentEdit extends React.Component {
 
@@ -39,45 +49,62 @@ class DocumentEdit extends React.Component {
     dictionaries: this.props.dictionaries,
     isins: [],
     companies: [],
+    isPreloader: false,
+    EditIssuerBtn: false,
+    issuerNameEditable: false,
+
+    /// validation
+    errors: false,
+    errorCounterPartyName: '',
+    errorInNum: '',
+    errorOutNum: '',
+    errorIssuerEdrici: '',
+    errorCounterPartyCode: '',
+    errorFiText: '',
+    errorIsin: '',
+    errorRequestTypeId: '',
+    errorReasonCode: '',
+    errorIssuerCode: '',
+    errorIssuerName: '',
   };
 
   componentDidMount() {
     this.props.getDictionaries();
+    if(!this.state.RequestId){
+      this.props.getDocument(history.params.RequestId)
+    }
   }
-  shouldComponentUpdate(){
+  shouldComponentUpdate() {
     return true
   }
 
   handleChange = (event) => {
-    console.log("works!  " + event.target.name + " " + event.target.value)
-    this.setState({ [event.target.name]: event.target.value });
-  };
+    let errorHandler = "error" + event.target.name
+    this.setState({
+      [event.target.name]: event.target.value
+    });
 
-  handleDocumentDate = (date) => {
-    console.log(date)
+    if (event.target.value.length > 0) {
+      this.setState({
+        [errorHandler]: '',
+      })
+    }
+    else {
+      this.setState({
+        [errorHandler]: validationMessages.empty,
+      })
+    }
+    if (!this.state.errorCounterPartyName && !this.state.errorInNum && !this.state.errorOutNum && !this.state.errorIssuerEdrici &&
+      !this.state.errorCounterPartyCode && !this.state.errorFiText && !this.state.errorIsin && !this.state.errorRequestTypeId &&
+      !this.state.errorReasonCode && !this.state.errorIssuerCode && !this.state.errorIssuerName) {
+      this.setState({
+        errors: false
+      })
+    }
+  };
+  handleDate = (date, name) => {
     this.setState({
-      DocumentDate: date 
-    });
-    console.log(this.state.DocumentDate)
-  }
-  handleReceiveDate = (date) => {
-    this.setState({
-      ReceiveDate: date
-    });
-  }
-  handleRecordDate = (date) => {
-    this.setState({
-      RecordDate: date
-    });
-  }
-  handleInDate = (date) => {
-    this.setState({
-      InDate: date
-    });
-  }
-  handleOutDate = (date) => {
-    this.setState({
-      OutDate: date
+      [name]: date
     });
   }
   handleChangeCheck = (event) => {
@@ -100,67 +127,145 @@ class DocumentEdit extends React.Component {
 
   setIsin = (isin, text) => {
     this.setState({
-      Fitext : text,
-      Isin: isin
+      Fitext: text,
+      Isin: isin,
+      errorFiText: '',
+      errorIsin: '',
     })
   }
 
-   setIssuer = (edrpou, name) => {
-     this.setState({
-       IssuerName: name,
-       IssuerCode: edrpou
-     })
-   }
+  setIssuer = (edrpou, name) => {
+    this.setState({
+      IssuerName: name,
+      IssuerCode: edrpou,
+      EditIssuerBtn: true,
+      errorIssuerCode: '',
+      errorIssuerName: '',
+    })
+  }
+  editIssuer = () => {
+    this.setState({
+      issuerNameEditable: true
+    })
+  }
+
+  validate = () => {
+    let errorCounterPartyName = '';
+    let errorInNum = '';
+    let errorOutNum = '';
+    let errorIssuerEdrici = '';
+    let errorCounterPartyCode = '';
+    let errorIsin = '';
+    let errorFiText = '';
+    let errorRequestTypeId = '';
+    let errorReasonCode = '';
+    let errorIssuerCode = '';
+    let errorIssuerName = '';
+
+
+    if (!this.state.CounterPartyName) {
+      errorCounterPartyName = validationMessages.empty;
+    }
+    if (!this.state.InNum) {
+      errorInNum = validationMessages.empty;
+    }
+    if (!this.state.OutNum) {
+      errorOutNum = validationMessages.empty;
+    }
+    if (!this.state.IssuerEdrici) {
+      errorIssuerEdrici = validationMessages.empty;
+    }
+    if (!this.state.CounterPartyCode) {
+      errorCounterPartyCode = validationMessages.empty;
+    }
+    if (!this.state.Isin) {
+      errorIsin = validationMessages.empty;
+    }
+    if (!this.state.Fitext) {
+      errorFiText = validationMessages.empty;
+    }
+    if (!this.state.RequestTypeId) {
+      errorRequestTypeId = validationMessages.emptySelect;
+    }
+    if (!this.state.ReasonCode) {
+      errorReasonCode = validationMessages.emptySelect;
+    }
+    if (!this.state.IssuerName) {
+      errorIssuerName = validationMessages.empty;
+    }
+    if (!this.state.IssuerCode) {
+      errorIssuerCode = validationMessages.empty;
+    }
+
+
+    if (errorCounterPartyName || errorInNum || errorOutNum || errorIssuerEdrici || errorCounterPartyCode ||
+      errorFiText || errorIsin || errorRequestTypeId || errorReasonCode || errorIssuerName || errorIssuerCode
+    ) {
+      this.setState({
+        errors: true, errorCounterPartyName, errorInNum, errorOutNum, errorIssuerEdrici,
+        errorCounterPartyCode, errorFiText, errorIsin, errorRequestTypeId, errorReasonCode, errorIssuerName, errorIssuerCode
+      });
+      return false;
+    }
+
+    return true;
+  };
 
   handleSubmit = (event) => {
     event.preventDefault();
-    const RequestId = this.props.document.RequestId;
-    const RequestTypeId = this.state.RequestTypeId ? this.state.RequestTypeId : this.props.document.RequestTypeId;
-    const CounterPartyCode = this.state.CounterPartyCode ? this.state.CounterPartyCode : this.props.document.CounterPartyCode;
-    const CounterPartyName = this.state.CounterPartyName ? this.state.CounterPartyName : this.props.document.CounterPartyName;
-    const DocumentDate =  this.state.DocumentDate;
-    const ReceiveDate = this.state.RecieveDate ? this.state.ReceiveDate : this.props.document.ReceiveDate;
-    const InNum = this.state.InNum ? this.state.InNum : this.props.document.InNum;
-    const OutNum = this.state.OutNum ? this.state.OutNum : this.props.document.OutNum;
-    const InDate = this.state.InDate ? this.state.InDate : this.props.document.InDate;
-    const OutDate = this.state.OutDate ? this.state.OutDate : this.props.document.OutDate;
-    const RecordDate = this.state.RecordDate ? this.state.OutDate : this.props.document.OutDate;
-    const IssuerCode = this.state.IssuerCode ? this.state.IssuerCode : this.props.document.IssuerCode;
-    const IssuerEdrici = this.state.IssuerEdrici ? this.state.IssuerEdrici : this.props.document.IssuerEdrici;
-    const IssuerName = this.state.IssuerName ? this.state.IssuerName : this.props.document.IssuerName;
-    const Isin = this.state.Isin ? this.state.Isin : this.props.document.Isin;
-    const Fitext = this.state.Fitext ? this.state.Fitext : this.props.document.Fitext;
-    const PaperType_1 = this.state.PaperType_1 ? this.state.PaperType_1 : this.props.document.PaperType_1;
-    const PaperType_2 = this.state.PaperType_2 ? this.state.PaperType_2 : this.props.document.PaperType_2;
-    const PaperType_3 = this.state.PaperType_3 ? this.state.PaperType_3 : this.props.document.PaperType_3;
-    const DigitType_1 = this.state.DigitType_1 ? this.state.DigitType_1 : this.props.document.DigitType_1;
-    const DigitType_2 = this.state.DigitType_2 ? this.state.DigitType_2 : this.props.document.DigitType_2;
-    const DigitType_3 = this.state.DigitType_3 ? this.state.DigitType_3 : this.props.document.DigitType_3;
-    const WithBank = this.state.WithBank;
-    const WithTemp = this.state.WithTemp;
-    const IsTerm = this.state.IsTerm;
-    const ReasonCode = this.state.ReasonCode ? this.state.ReasonCode : this.props.document.ReasonCode;
-    const ReasonText = this.state.ReasonText ? this.state.ReasonText : this.props.document.ReasonText;
-    const Code = this.state.Code ? this.state.Code : this.props.document.Code;
+    const isValid = this.validate();
+    if (isValid) {
 
-    const document = {
-      RequestId: RequestId, RequestTypeId: RequestTypeId, CounterPartyCode: CounterPartyCode, CounterPartyName: CounterPartyName, InNum: InNum,
-      OutNum: OutNum, RecordDate: RecordDate, IssuerCode: IssuerCode, IssuerEdrici: IssuerEdrici, IssuerName: IssuerName, Isin: Isin,
-      Fitext: Fitext, PaperType_1: PaperType_1, PaperType_2: PaperType_2, PaperType_3: PaperType_3, DigitType_1: DigitType_1,
-      DigitType_2: DigitType_2, DigitType_3: DigitType_3, WithBank: WithBank, WithTemp: WithTemp, IsTerm: IsTerm, ReasonCode: ReasonCode,
-      ReasonText: ReasonText, Code: Code, InDate: InDate, OutDate: OutDate, DocumentDate: DocumentDate, ReceiveDate: ReceiveDate,
+      this.setState({
+        isPreloader: true
+      })
+      const RequestId = this.props.document.RequestId;
+      const RequestTypeId = this.state.RequestTypeId ? this.state.RequestTypeId : this.props.document.RequestTypeId;
+      const CounterPartyCode = this.state.CounterPartyCode ? this.state.CounterPartyCode : this.props.document.CounterPartyCode;
+      const CounterPartyName = this.state.CounterPartyName ? this.state.CounterPartyName : this.props.document.CounterPartyName;
+      const DocumentDate = this.state.DocumentDate;
+      const ReceiveDate = this.state.RecieveDate ? this.state.ReceiveDate : this.props.document.ReceiveDate;
+      const InNum = this.state.InNum ? this.state.InNum : this.props.document.InNum;
+      const OutNum = this.state.OutNum ? this.state.OutNum : this.props.document.OutNum;
+      const InDate = this.state.InDate ? this.state.InDate : this.props.document.InDate;
+      const OutDate = this.state.OutDate ? this.state.OutDate : this.props.document.OutDate;
+      const RecordDate = this.state.RecordDate ? this.state.OutDate : this.props.document.OutDate;
+      const IssuerCode = this.state.IssuerCode ? this.state.IssuerCode : this.props.document.IssuerCode;
+      const IssuerEdrici = this.state.IssuerEdrici ? this.state.IssuerEdrici : this.props.document.IssuerEdrici;
+      const IssuerName = this.state.IssuerName ? this.state.IssuerName : this.props.document.IssuerName;
+      const Isin = this.state.Isin ? this.state.Isin : this.props.document.Isin;
+      const Fitext = this.state.Fitext ? this.state.Fitext : this.props.document.Fitext;
+      const PaperType_1 = this.state.PaperType_1 ? this.state.PaperType_1 : this.props.document.PaperType_1;
+      const PaperType_2 = this.state.PaperType_2 ? this.state.PaperType_2 : this.props.document.PaperType_2;
+      const PaperType_3 = this.state.PaperType_3 ? this.state.PaperType_3 : this.props.document.PaperType_3;
+      const DigitType_1 = this.state.DigitType_1 ? this.state.DigitType_1 : this.props.document.DigitType_1;
+      const DigitType_2 = this.state.DigitType_2 ? this.state.DigitType_2 : this.props.document.DigitType_2;
+      const DigitType_3 = this.state.DigitType_3 ? this.state.DigitType_3 : this.props.document.DigitType_3;
+      const WithBank = this.state.WithBank;
+      const WithTemp = this.state.WithTemp;
+      const IsTerm = this.state.IsTerm;
+      const ReasonCode = this.state.ReasonCode ? this.state.ReasonCode : this.props.document.ReasonCode;
+      const ReasonText = this.state.ReasonText ? this.state.ReasonText : this.props.document.ReasonText;
+      const Code = this.state.Code ? this.state.Code : this.props.document.Code;
+
+      const document = {
+        RequestId: RequestId, RequestTypeId: RequestTypeId, CounterPartyCode: CounterPartyCode, CounterPartyName: CounterPartyName, InNum: InNum,
+        OutNum: OutNum, RecordDate: RecordDate, IssuerCode: IssuerCode, IssuerEdrici: IssuerEdrici, IssuerName: IssuerName, Isin: Isin,
+        Fitext: Fitext, PaperType_1: PaperType_1, PaperType_2: PaperType_2, PaperType_3: PaperType_3, DigitType_1: DigitType_1,
+        DigitType_2: DigitType_2, DigitType_3: DigitType_3, WithBank: WithBank, WithTemp: WithTemp, IsTerm: IsTerm, ReasonCode: ReasonCode,
+        ReasonText: ReasonText, Code: Code, InDate: InDate, OutDate: OutDate, DocumentDate: DocumentDate, ReceiveDate: ReceiveDate,
+      }
+      this.props.updateDocument(document);
     }
-
-    this.props.updateDocument(document);
   };
 
 
   handleCancel = () => {
     if (this.props.document.RequestId !== undefined) {
-      this.props.history.push(`/documents/${this.props.document.RequestId}`);
+      history.push(`/documents/${this.props.document.RequestId}`);
     }
     else {
-      this.props.history.push(`/`);
+      history.push(`/`);
     }
   }
 
@@ -170,78 +275,95 @@ class DocumentEdit extends React.Component {
     const companies = this.props.companies;
 
     return (
-      <div>
-        <div>
-        <div style={{ position: "relative" }}>
-          <div className="cancel-btn-icon"></div>
-          <button type="button" onClick={this.handleCancel} className="action-btn cancel-btn"><i className="arrow-left"></i><div className="innerText">Відмінити</div></button>
-          </div>
-        </div>
+      <div className="document-wrapper">
+
         <form onSubmit={this.handleSubmit}>
 
-          <input type="hidden" name="RequestId" value={this.state.RequestId}/>
- 
-          <HiddenSelect width={600} id="ReasonCode" hiddenValue={"Code"} options={dictionaries.Item1} value={this.state.defaultReason} onChange={this.handleChange} label="Підстава"/> 
-          
-          <HiddenSelect width={600} id="Code" hiddenValue={"Code"} value={this.state.defaultCode} options={dictionaries.Item2} label="Стан запиту" onChange={this.handleChange} />
+          <div className="form-container">
+            <div className="input-block">
+              <div style={{ position: "relative" }}>
+                <div className="cancel-btn-icon"></div>
+                <button type="button" onClick={this.handleCancel} className="action-btn cancel-btn cancel-btn-edit"><i className="arrow-left arrow-edit"></i><div className="innerText-edit">Відмінити</div></button>
+              </div>
+              <div className="date-block">
 
-          <HiddenSelect width={600} id="RequestTypeId" hiddenValue={"Id"} options={dictionaries.Item3} value={this.state.defaultType} onChange={this.handleChange} label="Тип"/>     
+                <Input error={this.state.errorOutNum} width={250} id="outNum" label="Вихідний номер" type="text" name="OutNum" defaultValue={this.state.OutNum} onChange={this.handleChange} />
 
-          <Input width={600} id="counterPartyCode" label="Код за ЄДРПОУ" name="CounterPartyCode" defaultValue={this.state.CounterPartyCode} type="text" onChange={this.handleChange} />
+                <DatePicker width={250} id="OutDate" maxDate={Date.now()} label="Вихідна дата" data={this.state.OutDate} onChange={this.handleDate} />
 
-          <Input width={600} id="counterPartyName" label="Найменування" name="CounterPartyName" defaultValue={this.state.CounterPartyName} type="text" onChange={this.handleChange} />
+                <div className="chk-container">
+                  <input type="checkbox" className="chk" name="IsTerm" defaultChecked={this.state.IsTerm} onChange={this.handleChangeCheck} />
+                  Терміново
+                  </div>
+              </div>
+              <div className="pair-block">
+                <Input error={this.state.errorInNum} width={250} id="inNum" label="Вхідний номер" type="text" defaultValue={this.state.InNum} name="InNum" onChange={this.handleChange} />
 
-          <DatePicker width={600} id="DocumentDate" maxDate={Date.now()} label="Дата запиту" data={this.state.DocumentDate} onChange={this.handleDocumentDate} />
+                <DatePicker width={250} id="InDate" maxDate={Date.now()} label="Вхідна дата" data={this.state.InDate} onChange={this.handleDate} />
+              </div>
+            </div>
+            <div className="input-block">
+              <DatePicker width={600} id="RecordDate" label="Дата обліку" data={this.state.RecordDate} onChange={this.handleDate} />
 
-          <DatePicker width={600} id="ReceiveDate" maxDate={Date.now()} label="Дата отримання" data={this.state.ReceiveDate} onChange={this.handleReceiveDate} />
+              <Input error={this.state.errorCounterPartyName} width={400} id="counterPartyName" label="Найменування" name="CounterPartyName" defaultValue={this.state.CounterPartyName}  type="text" onChange={this.handleChange} />
 
-          <Input width={600} id="inNum" label="Вхідний номер" type="text" name="InNum" defaultValue={this.state.InNum} onChange={this.handleChange} />
+              <Mask error={this.state.errorCounterPartyCode} width={150} label="Код за ЄДРПОУ" mask="11111111" placeholder="XXXXXXXX" id="CounterPartyCode" size="8" defaultValue={this.state.CounterPartyCode} onChange={this.handleChange} />
 
-          <Input width={600} id="outNum" label="Вихідний номер" type="text" name="OutNum" defaultValue={this.state.OutNum} onChange={this.handleChange} />
+              <AutoCompleteISIN error={this.state.errorIsin} width={400} items={isins} id="isin" label="Isin" name="Isin" setIsin={this.setIsin} value={this.state.Isin} onChange={this.handleIsinChange} />
 
-          <DatePicker width={600} id="InDate" maxDate={Date.now()} label="Вхідна дата" data={this.state.InDate} onChange={this.handleInDate} />
+              <Input width={400} error={this.state.errorFiText} placeholder="за ISIN" id="fitext" className={'input-disabled'} readOnly label="fitext" type="text" name="Найменування" value={this.state.Fitext} onChange={this.handleChange} />
+            </div>
 
-          <DatePicker width={600} id="OutDate" maxDate={Date.now()} label="Вихідна дата" data={this.state.OutDate} onChange={this.handleOutDate} />
+            <div className="input-block">
 
-          <DatePicker width={600} id="RecordDate" label="Дата обліку" data={this.state.RecordDate} onChange={this.handleRecordDate} />
+            <HiddenSelect error={this.state.errorReasonCode} width={600} id="ReasonCode" hiddenValue={"Code"} options={dictionaries.Item1} value={this.state.defaultReason} onChange={this.handleChange} label="Підстава" />
 
-          <AutoCompleteISSUER width={600} items={companies} id="issuerCode" label="issuerCode" name="issuerCode" setIssuer={this.setIssuer} value={this.state.issuerCode} onChange={this.handleIssuerChange}/>         
+            <HiddenSelect width={600} id="Code" hiddenValue={"Code"} value={this.state.defaultCode} options={dictionaries.Item2} label="Стан запиту" onChange={this.handleChange} />
 
-          <Input width={600} id="issuerEdrici" label="issuerEdrici" type="text" name="IssuerEdrici" defaultValue={this.state.IssuerEdrici} onChange={this.handleChange} />
+            <HiddenSelect error={this.state.errorRequestTypeId} width={600} id="RequestTypeId" hiddenValue={"Id"} options={dictionaries.Item3} value={this.state.defaultType} onChange={this.handleChange} label="Тип" />
 
-          <Input width={600} id="issuerName" label="issuerName" type="text" name="IssuerName" defaultValue={this.state.IssuerName} onChange={this.handleChange} />
+            <DatePicker width={250} id="DocumentDate" maxDate={Date.now()} label="Дата запиту" data={this.state.DocumentDate} onChange={this.handleDate} />
 
-          <AutoCompleteISIN width={600} items={isins} id="isin" label="Isin" name="Isin" setIsin={this.setIsin} value={this.state.Isin} onChange={this.handleIsinChange}/>
+            <DatePicker width={250} id="ReceiveDate" maxDate={Date.now()} label="Дата отримання" data={this.state.ReceiveDate} onChange={this.handleDate} />
 
-          <Input width={600} id="fitext" label="Найменування" type="text" name="Fitext" defaultValue={this.state.Fitext} onChange={this.handleChange} />
-         
-          <div className="chk-container">
-            <label>
-             <input type="checkbox" className="chk" name="IsTerm" defaultChecked={this.state.IsTerm} onChange={this.handleChangeCheck}/>
-              Терміново
+            <AutoCompleteISSUER error={this.state.errorIssuerCode} width={600} items={companies} id="issuerCode" label="issuerCode" name="issuerCode" setIssuer={this.setIssuer} value={this.state.issuerCode} onChange={this.handleIssuerChange} />
+
+            <Input width={250} id="issuerEdrici" label="issuerEdrici" type="text" name="IssuerEdrici" defaultValue={this.state.IssuerEdrici} onChange={this.handleChange} />
+
+            <Input width={400} id="issuerName" label="issuerName" type="text" name="IssuerName" defaultValue={this.state.IssuerName} onChange={this.handleChange} />
+
+            <Input width={600} id="fitext" label="Найменування" type="text" name="Fitext" defaultValue={this.state.Fitext} onChange={this.handleChange} />
+
+            <div className="chk-container">
+              <label>
+                <input type="checkbox" className="chk" name="IsTerm" defaultChecked={this.state.IsTerm} onChange={this.handleChangeCheck} />
+                Терміново
             </label>
-          </div>
-          <div className="chk-container">
-            <label>
-              <input type="checkbox" className="chk" name="WithBank" defaultChecked={this.state.WithBank} onChange={this.handleChangeCheck} />
-              З банківськими реквізитами
+            </div>
+            <div className="chk-container">
+              <label>
+                <input type="checkbox" className="chk" name="WithBank" defaultChecked={this.state.WithBank} onChange={this.handleChangeCheck} />
+                З банківськими реквізитами
             </label>
-          </div>
-          <div className="chk-container">
-            <label>
-              <input type="checkbox" className="chk" name="WithTemp" defaultChecked={this.state.WithTemp} onChange={this.handleChangeCheck} />
-              за ТГС
+            </div>
+            <div className="chk-container">
+              <label>
+                <input type="checkbox" className="chk" name="WithTemp" defaultChecked={this.state.WithTemp} onChange={this.handleChangeCheck} />
+                за ТГС
             </label>
+            </div>
+            <button type="submit" className="submit-btn">Редагувати</button>
+            {this.state.errors && <div className="validation-error-message">Виправте помилки при заповненні форми!</div>}
           </div>
-          <button type="submit" className="submit-btn">Редагувати</button>
+          </div>
         </form>
-      </div>
+      </div >
     );
   }
 }
 
-const mapDispatchToProps = { getDictionaries, updateDocument, getIsins, getCompanies};
+const mapDispatchToProps = { getDictionaries, updateDocument, getIsins, getCompanies, getDocument };
 
-const mapStateToProps = (state) => ({dictionaries: state.dictionaries, document: state.document, isins: state.isins, companies: state.companies});
+const mapStateToProps = (state) => ({ dictionaries: state.dictionaries, document: state.document, isins: state.isins, companies: state.companies });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DocumentEdit);

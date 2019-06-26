@@ -6,6 +6,8 @@ import dictionaries from './dictionariesReducer';
 import isins from './isinsReducer';
 import companies from './companiesReducer';
 import alert from './alertReducer';
+import spinner from './spinnerReducer';
+import corpActions from './corpActionsReducer';
 
 
 export default combineReducers({
@@ -16,4 +18,6 @@ export default combineReducers({
   isins: isins,
   companies: companies,
   alert: alert,
+  spinner: spinner,
+  corpActions: corpActions,
 });

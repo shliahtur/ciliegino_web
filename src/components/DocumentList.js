@@ -1,19 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { getDictionaries } from '../actions';
+import { getDictionaries, getDocuments } from '../actions';
 import '../styles/datatables.css';
-import { da } from 'date-fns/esm/locale';
 import '../styles/Document.css'
 
-const $ = require('jquery');
-$.DataTable = require('datatables.net');
 
-function reloadTableData(documents){
-  const table = $('.dataTables_wrapper').find('table').DataTable()
-  table.clear()
-  table.rows.add(documents)
-  table.draw()
-}
 const colors = [
   
   { code: "Created", color: "#45b145"},
@@ -25,15 +16,31 @@ const colors = [
   { code: "Finished", color: "blue"},
 ]
 
+const $ = require('jquery');
+$.DataTable = require('datatables.net');
+
+function reloadTableData(documents){
+  const table = $('.dataTables_wrapper').find('table').DataTable()
+  table.clear()
+  table.rows.add(documents)
+  table.draw()
+}
+
 class DocumentList extends Component {
 
   componentDidUpdate(){
     reloadTableData(this.props.documents)
   }
 
-  componentDidMount() {
+  shouldComponentUpdate() {
+    return true
+  }
 
+  componentDidMount() {
+    this.props.getDocuments();
     this.props.getDictionaries();
+
+    if(this.props.documents && this.props.dictionaries){
 
     $(this.refs.main).DataTable({  
       data: this.props.documents,  
@@ -51,7 +58,7 @@ class DocumentList extends Component {
           width: 120,
           data: 'RequestTypeId',
           render: (data) => {
-            return this.props.dictionaries.Item3 ? this.props.dictionaries.Item3.filter(x => x.Id === data)[0].Description : ""
+            return this.props.dictionaries.Item3 ? this.props.dictionaries.Item3.filter(x => x.Id === data)[0].Name : ""
           }
         },   
         {
@@ -101,7 +108,6 @@ class DocumentList extends Component {
         width: 120,
         data: 'Code',
         render: (data) => {
-          console.log(data)
           return this.props.dictionaries.Item2 ?
            `<div class="state-label" style="background: ${colors.filter(x => x.code === data)[0].color}">` + this.props.dictionaries.Item2.filter(x => x.Code === data)[0].Description + '</div>'
             : ""
@@ -113,7 +119,7 @@ class DocumentList extends Component {
       language: {
         "sProcessing": "<h1>...</h1>",
         "sLengthMenu": "_MENU_ Записів",
-        "sZeroRecords": "",
+        "sZeroRecords": "...",
         "sInfo": "Записи з _START_ по _END_ із _TOTAL_ записів",
         "sInfoEmpty": "Записи з 0 по 0 із 0 записів",
         "sInfoFiltered": "(відфільтровано з _MAX_ записів)",
@@ -134,7 +140,7 @@ class DocumentList extends Component {
 
       }
     })
-   
+  }
   }
   componentWillUnmount() {
     $('.dataTables_wrapper')
@@ -143,21 +149,16 @@ class DocumentList extends Component {
       .destroy(true)
   }
 
-  shouldComponentUpdate(nextProps) {
-    return true
-  }
-
-
   render() {
       return (
-        <div>
+        <div style={{backgroundColor: "white"}}>
           <table ref="main" />
         </div>
       )
   }
 }
 
-const mapDispatchToProps = { getDictionaries };
+const mapDispatchToProps = { getDictionaries, getDocuments};
 
 const mapStateToProps = (state) => ({dictionaries: state.dictionaries, documents: state.documents });
 

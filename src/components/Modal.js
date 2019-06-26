@@ -5,7 +5,7 @@ import Portal from './Portal';
 import '../styles/Modal.css';
 
 const Modal = ({
-  title, isOpen, onSubmit, children, onCancel
+  title, isOpen, onSubmit, children, onCancel, withDeleteBtns
 }) => {
 
   return (
@@ -21,10 +21,13 @@ const Modal = ({
               <div className="modalBody">
                 {children}
               </div>
+              { withDeleteBtns &&
               <div className="modalFooter">
-                <button className="modal-btn modal-cancel-btn" onClick={onCancel}>Назад</button>
-                <button className="modal-btn modal-delete-btn" onClick={onSubmit}>Видалити</button>
-              </div>
+              <button className="modal-btn modal-cancel-btn" onClick={onCancel}>Назад</button>
+              <button className="modal-btn modal-delete-btn" onClick={onSubmit}>Видалити</button>
+               </div>
+              }
+
             </div>
           </div>
         </Portal>

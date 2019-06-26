@@ -44,13 +44,12 @@
     -webkit-transform: rotate(45deg);
     transition: 100ms;
     position: absolute;
-    left: 810px;
-    margin-top: 14px;
+    top: 14px;
 }
 .arrow-down{
     transform: rotate(225deg); 
     -webkit-transform: rotate(225deg);
-    margin-top: 17px
+    margin-top: 4px;
 }
 
 input { 
@@ -60,9 +59,14 @@ input {
     width: 100%;
     padding: 12px;
     padding-right: 38px;
-    border: 1px solid #EBEBEB;
+    border: 1px solid #d0d0d0;
   }
-  
+  .error{
+      background: #fff5e8;
+  }
+  input:focus{
+    box-shadow: 0 0 3px 1px #abadff;
+  }
   .input[disabled] {
     cursor: not-allowed;
   }
@@ -73,12 +77,7 @@ input {
     height: 40px;
     margin: 0 auto;
   }
-  
-  .input.error {
-    border-color: #D43728;
-    background-color: rgba(212, 55, 40, 0.2);
-  }
-  
+
   .inputWrapper {
     display: flex;
     flex-direction: column;
@@ -103,9 +102,11 @@ input {
     margin-top: 20px;
     margin-bottom: 8px;
   }
-  
-  .inputError {
+  .selectError{
     margin-top: 5px;
-    color: #D43728;
-    font-size: 12px;
+    color: #ff0000;
+    font-size: 13px;
+  }
+  .non-outline{
+    box-shadow: none !important;
   }

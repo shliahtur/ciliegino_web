@@ -32,7 +32,7 @@ const DatePicker = ({
             <ReactDatePicker 
                 className={classes}
                 selected={data}
-                onChange={onChange}     
+                onChange={(data) => onChange(data, id)}          
                 locale="uk"
                 dateFormat="dd-MM-yyyy"          
                 name={id}

@@ -1,14 +1,27 @@
+.document-wrapper{
+  padding: 40px;
+  background: #f7f7f7;
+}
+
 .document-info-container{
   margin-left: 15px;
   margin-top: 60px;
 }
 
+.input-block{
+  width: 100%;
+  padding: 20px 60px 56px 40px;
+  background-color: white;
+  margin-bottom: 10px;
+  box-shadow: 3px 3px 9px #ececec;
+  border-radius: 5px;
+}
   .btn-group{
     display: flex;
   }
   .action-btn{
     cursor: pointer;
-    width: 130px;
+    width: 140px;
     height: 40px;
     border-radius: 40px;
     border: none;
@@ -20,11 +33,24 @@
   
   .edit-btn{
     background-color: #8adcba;
-    padding-left: 36px;
+    padding-left: 40px;
   }
   .edit-btn:hover{
     background-color: #3dc18a;
 }
+  .document-title{
+    color: white;
+    background: var(--cyan);
+    height: 60px;
+    width: 870px;
+    margin-bottom: -3px;
+    display: inline-block;
+    line-height: 57px;
+    font-size: 23px;
+    font-weight: 600;
+    padding-left: 30px;
+    border-radius: 5px 5px 0 0;
+  }
   
   .edit-btn-icon{
     width: 20px;
@@ -32,8 +58,9 @@
     background: url('../img/edit_icon.svg') no-repeat;
     background-size: 16px;
     position: absolute;
-    left: 14px;
+    left: 16px;
     top: 11px;
+    pointer-events: none;
   }
   .delete-btn{
     background-color: #ff8d8d;
@@ -50,8 +77,23 @@
     background-size: 14px;
     position: absolute;
     top: 13px;
-    left: 19px;
+    left: 22px;
+    pointer-events: none;
+  }
+  .pdf-btn-icon{
+    width: 19px;
+    height: 19px;
+    background: url('../img/pdf_icon.svg') no-repeat;
+    background-size: 19px;
+    position: absolute;
+    top: 10px;
+    left: 15px;
     cursor: pointer;
+    pointer-events: none;
+  }
+  .pdf-btn{
+    background: #c78fe8;
+    padding-left: 30px;
   }
 
   .submit-btn{
@@ -65,14 +107,21 @@
     margin-top: 40px;
     cursor: pointer;
   }
+
   .submit-btn:hover{
     background: #00a04d;
   }
   .cancel-btn{
     background: #d4d4d4;
   }
+  .cancel-btn-edit{
+    margin: 20px 0;
+  }
   .cancel-btn:hover{
     background: #929292;
+  }
+  .pdf-btn:hover{
+    background: #a16cc0;
   }
   .arrow-left{
     border: solid white;
@@ -89,6 +138,15 @@
     position: absolute;
     top: 12px;
     left: 39px;
+  }
+  .innerText-edit{
+    position: absolute;
+    top: 32px;
+    left: 42px;
+  }
+  .arrow-edit{
+    top: 34px;
+    left: 25px;
   }
 
 .info-label{
@@ -111,26 +169,21 @@
   margin: 30px 0 30px 20px;
 }
 
-.bool-btn-block{
+.bool-block{
   display: flex;
-  width: 470px;
-  justify-content: space-between;
   margin-top: 30px;
 }
 
-.bool-btn{
-  width: 150px;
-  height: 31px;
-  color: #545454;
-  background: #dedede;
-  border-radius: 6px;
-  text-align: center;
-  padding-top: 8px;
+.bool-radio{
+  width: 30px;
+  height: 30px;
+  border-radius: 100%;
   cursor: default;
+  margin-right: 30px;
+  margin-top: -3px;
 }
-
 .chk-container{
-  margin-top: 30px;
+  margin-top: 45px;
 }
 .chk{
   width: 40px;
@@ -141,6 +194,7 @@
   border-radius: 0;
   background: grey;
   border: 1px solid black;
+  box-shadow: none !important;
 }
 
 .state-label{
@@ -149,4 +203,42 @@
   width: fit-content;
   padding: 4px 20px;
   margin: 0 auto;
+}
+
+.validation-error-message{
+  color: red;
+  position: relative;
+  left: 180px;
+  bottom: 33px;
+}
+
+.date-block{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.edit-issuer-btn{
+  width: 20px;
+  height: 20px;
+  background: url('../img/edit_issuer.svg') no-repeat;
+  background-size: 16px;
+  position: absolute;
+  top: 63px;
+  z-index: 1;
+  cursor: pointer;
+}
+.pair-block{
+  display: flex;
+  justify-content: space-between;
+  width: 585px;
+  margin-top: 20px;
+}
+.corpAction-btn{
+  background: grey;
+  padding-left: 0;
+}
+.corpActions{
+  text-align: left;
+  padding: 5px;
 }

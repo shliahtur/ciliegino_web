@@ -1,6 +1,7 @@
 import React from 'react';
 import '../styles/AutoComplete.css';
 import Preloader from './Preloader';
+import Mask from './Mask';
 
 export default class AutoComplete extends React.Component {
     state = {
@@ -11,7 +12,7 @@ export default class AutoComplete extends React.Component {
         closeBtnVisible: false,
         preloaderOn: false,
     }
-    componentWillReceiveProps(nextProps){
+     componentWillReceiveProps(nextProps){
         if(nextProps.items !== this.props.items){
             this.setState({items: nextProps.items})
             let suggestions = [];
@@ -20,8 +21,9 @@ export default class AutoComplete extends React.Component {
         }
     }
 
-    onTextChange = (e) => {      
-        const value = e.target.value;
+    onTextChange = (e) => {     
+        let value = e.target.value;
+        value = value.replace(/_/g, "");
         let suggestions = [];
 
         if (value.length > 0) {
@@ -59,8 +61,8 @@ export default class AutoComplete extends React.Component {
             return null;
         }
         return (
-            <ul className='search-list' style={{ width: this.props.width }}>
-                {suggestions.map((item) => <li key={item.id} className='search-list-item' onClick={() => this.suggestionSelected(item.EDRPOU, item.Name)}>{item.EDRPOU} <span>{item.Name}</span></li>)}
+            <ul className='search-list' style={{ width: this.props.width }} >
+                {suggestions.map((item) => <li className='search-list-item' onClick={() => this.suggestionSelected(item.EDRPOU, item.Name)}>{item.EDRPOU} <span>{item.Name}</span></li>)}
             </ul>
         )
     }
@@ -73,14 +75,33 @@ export default class AutoComplete extends React.Component {
         })
     }
 
+        /////////////// toggle onBlur ///////////////////////////////////////////////////////
+        issuerRef = React.createRef();
+
+        componentDidMount() {                                                       
+            document.addEventListener('mousedown', (event)=>{
+                
+                if (this.issuerRef && !this.issuerRef.contains(event.target) ) {
+                    this.setState({
+                        suggestions: [],
+                        preloaderOn: false,
+                    })
+                }
+            });
+        }
+
+        componentWillUnmount() {
+            document.removeEventListener('mousedown', this.handleClickOutside);
+        }
+        ///////////////////////////////////////////////////////////////////////////////////////
 
 
     render() {
-        const { width, label, id, onChange, ...attrs } = this.props
+        const { width, label, id, onChange, error, ...attrs } = this.props
         const { text } = this.state;
 
         return (
-            <div>
+            <div ref={elem => this.issuerRef = elem}>
                 <div className="labelsWrapper">
                     {label
                         && <label className="selectLabel" htmlFor={id}>{label}</label>
@@ -90,8 +111,8 @@ export default class AutoComplete extends React.Component {
                     }
                 </div>
                 <div>
-                    {this.state.closeBtnVisible ? <div className="search-close-btn" style={{ left: `${eval(width) - 30}px` }} onClick={this.onCancel}></div> : ''}
-                    <input type="text" style={{ width: `${width}px` }} name={id} value={text} onChange={this.onTextChange} type="text" />
+                    {this.state.closeBtnVisible ? <div className="search-close-btn" style={{ left: `${+width - 30}px` }} onClick={this.onCancel}></div> : ''}
+                    <Mask error={error} width={width} mask="11111111" placeholder="XXXXXXXX" name={id} size="8" value={text} onChange={this.onTextChange}/>
                     {this.state.preloaderOn ? <div className="preloader-container" style={{ width: `${width}px` }}><Preloader size={4} className="autocomplete-preloader" /></div> : ""}
                 </div>
 
