@@ -53,6 +53,9 @@
     text-align: center;
   }
   
+  .modalBody {
+    padding: 30px 45px;
+  }
   .modalHeader {
     min-height: 60px;
     display: flex;

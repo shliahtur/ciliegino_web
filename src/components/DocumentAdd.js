@@ -259,7 +259,7 @@ class DocumentAdd extends React.Component {
 
               <Input error={this.state.errorCounterPartyName} width={400} id="counterPartyName" label="Найменування" name="CounterPartyName" value={this.state.CounterPartyName} type="text" onChange={this.handleChange} />
 
-              <Mask error={this.state.errorCounterPartyCode} width={150} label="Код за ЄДРПОУ" mask="11111111" placeholder="XXXXXXXX" id="CounterPartyCode" size="8" value={this.state.CounterPartyCode} onChange={this.handleChange} />
+              <Mask error={this.state.errorCounterPartyCode} width={150} label="Код за ЄДРПОУ" mask="11111111" placeholder="XXXXXXXX" id="CounterPartyCode" name="CounterPartyCode" size="8" value={this.state.CounterPartyCode} onChange={this.handleChange} />
 
               <AutoCompleteISIN error={this.state.errorIsin} width={400} items={isins} id="isin" label="Isin" name="Isin" setIsin={this.setIsin} value={this.state.Isin} onChange={this.handleIsinChange} />
 

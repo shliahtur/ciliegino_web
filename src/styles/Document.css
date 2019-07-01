@@ -201,7 +201,7 @@
   border-radius: 50px;
   color: white;
   width: fit-content;
-  padding: 4px 20px;
+  padding: 4px 10px;
   margin: 0 auto;
 }
 
@@ -238,7 +238,62 @@
   background: grey;
   padding-left: 0;
 }
-.corpActions{
-  text-align: left;
-  padding: 5px;
+
+.corpTable{
+  margin: auto;
+  width: 800px;
+  margin-top: -30px;
+  margin-bottom: 70px;
+  border-spacing: 0;
+}
+.corpTable thead th, .corpTable thead td{
+  padding: 5px 18px;
+  background: var(--cyan); 
+  color: white; 
+  font-weight: bold; 
+}
+.corpTable tbody tr{
+  line-height: 40px;
+  cursor: pointer;
+}
+.corpTable tbody tr:hover{
+  background: #e0e0e0;
+}
+.selectedCorpAction{
+  background: #ffb445 !important;
+  color: white;
+}
+
+.corp-btn{
+  width: 165px;
+  height: 45px;
+  color: white;
+  border: none;
+  font-family: inherit;
+  font-size: 15px;
+  margin-top: 30px;
+  cursor: pointer;
+}
+
+.corp-action-submit{
+  float: right;
+  background: #00ca63;
+}
+.corp-action-submit:hover{
+  background: #06a854;
+}
+.corp-command-btns{
+  float: left;
+}
+.corp-action-accounts{
+  background: #adadad;
+  margin-right: 15px;
+}
+.corp-action-participants{
+  background: #adadad;
+}
+
+.corp-action-accounts:hover, 
+.corp-action-participants:hover{
+  background: grey
 }

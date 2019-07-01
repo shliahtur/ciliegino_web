@@ -13,6 +13,10 @@ export const RECIEVE_COMPANIES = 'RECIEVE_COMPANIES';
 export const SHOW_ALERT = 'SHOW_ALERT';
 export const SHOW_SPINNER = 'SHOW_SPINNER';
 export const GET_CORP_ACTIONS = 'GET_CORP_ACTIONS';
+export const ADD_CORP_ACTION = 'ADD_CORP_ACTION';
+export const GET_ACCOUNTS_BY_REQUEST = 'GET_ACCOUNTS_BY_REQUEST';
+export const UPDATE_PARTICIPANTS_BY_REQUEST = 'UPDATE_PARTICIPANTS_BY_REQUEST';
+
 
 
 const apiUrl = 'https://localhost:44309/api/RequestData';
@@ -31,22 +35,25 @@ export const getDocuments = () => {
 
 export const addDocument = (props) => {
   return (dispatch) => {
-    dispatch(showSpinner(true))   
+    dispatch(showSpinner(true))
     axios.post(`${apiUrl}/RegRequestCreate`, props)
       .then(({ data }) => {
-             dispatch({
-                type: ADD_DOCUMENT,
-                payload: data
-            });  
-            dispatch(showSpinner(false))   
-            dispatch(showAlert(undefined))   
-    })
+        dispatch({
+          type: ADD_DOCUMENT,
+          payload: data
+        });
+
+      })
+      .then(response => {
+        dispatch(showSpinner(false))
+        dispatch(showAlert(response));
+      })
       .then(() => {
         history.push("/")
       })
       .catch(error => {
-        dispatch(showSpinner(false))   
-        dispatch(showAlert(error.message));
+        dispatch(showSpinner(false))
+        dispatch(showAlert(error.response));
       });
   };
 };
@@ -74,11 +81,11 @@ export const getDocument = (RequestId) => {
 
 export const deleteDocument = (RequestId) => {
   return (dispatch) => {
-    dispatch(showSpinner(true))   
+    dispatch(showSpinner(true))
     return axios.delete(`${apiUrl}/RegRequestDelete/${RequestId}`)
       .then(response => {
         dispatch({ type: REMOVE_DOCUMENT, payload: { RequestId } })
-        dispatch(showSpinner(false))   
+        dispatch(showSpinner(false))
       })
       .then(() => {
         history.push("/")
@@ -92,8 +99,8 @@ export const deleteDocument = (RequestId) => {
 export const updateDocument = (document) => {
   const documentId = document.RequestId;
   return (dispatch) => {
-    dispatch(showSpinner(true))   
-    return axios.put(`${apiUrl}/RegRequestUpdate/${document.RequestId}`, { 
+    dispatch(showSpinner(true))
+    return axios.put(`${apiUrl}/RegRequestUpdate/${document.RequestId}`, {
       RequestId: document.RequestId,
       RequestTypeId: document.RequestTypeId,
       CounterPartyCode: document.CounterPartyCode,
@@ -125,75 +132,79 @@ export const updateDocument = (document) => {
     })
       .then(response => {
         const data = response.data;
-        dispatch({ type: UPDATE_DOCUMENT, payload: { 
-          RequestId: data.RequestId,
-          RequestTypeId: data.RequestTypeId,
-          CounterPartyCode: data.CounterPartyCode,
-          CounterPartyName: data.CounterPartyName,
-          InNum: data.InNum,
-          OutNum: data.OutNum,
-          RecordDate: data.RecordDate,
-          IssuerCode: data.IssuerCode,
-          IssuerEdrici: data.IssuerEdrici,
-          IssuerName: data.IssuerName,
-          Isin: data.Isin,
-          Fitext: data.Fitext,
-          PaperType_1: data.PaperType_1,
-          PaperType_2: data.PaperType_2,
-          PaperType_3: data.PaperType_3,
-          DigitType_1: data.DigitType_1,
-          DigitType_2: data.DigitType_2,
-          DigitType_3: data.DigitType_3,
-          WithBank: data.WithBank,
-          WithTemp: data.WithTemp,
-          IsTerm: data.IsTerm,
-          ReasonCode: data.ReasonCode,
-          ReasonText: data.ReasonText,
-          Code: data.Code,
-          InDate: data.InDate,
-          OutDate: data.OutDate,
-          DocumentDate: data.DocumentDate,
-          RecieveDate: data.RecieveDate,
-          } })
-        dispatch({ type: REPLACE_DOCUMENT, payload: { 
-          RequestId: data.RequestId,
-          RequestTypeId: data.RequestTypeId,
-          CounterPartyCode: data.CounterPartyCode,
-          CounterPartyName: data.CounterPartyName,
-          InNum: data.InNum,
-          OutNum: data.OutNum,
-          RecordDate: data.RecordDate,
-          IssuerCode: data.IssuerCode,
-          IssuerEdrici: data.IssuerEdrici,
-          IssuerName: data.IssuerName,
-          Isin: data.Isin,
-          Fitext: data.Fitext,
-          PaperType_1: data.PaperType_1,
-          PaperType_2: data.PaperType_2,
-          PaperType_3: data.PaperType_3,
-          DigitType_1: data.DigitType_1,
-          DigitType_2: data.DigitType_2,
-          DigitType_3: data.DigitType_3,
-          WithBank: data.WithBank,
-          WithTemp: data.WithTemp,
-          IsTerm: data.IsTerm,
-          ReasonCode: data.ReasonCode,
-          ReasonText: data.ReasonText,
-          Code: data.Code,
-          InDate: data.InDate,
-          OutDate: data.OutDate,
-          DocumentDate: data.DocumentDate,
-          RecieveDate: data.RecieveDate, 
-        } })
-        dispatch(showSpinner(false))   
-        dispatch(showAlert(undefined))   
+        dispatch({
+          type: UPDATE_DOCUMENT, payload: {
+            RequestId: data.RequestId,
+            RequestTypeId: data.RequestTypeId,
+            CounterPartyCode: data.CounterPartyCode,
+            CounterPartyName: data.CounterPartyName,
+            InNum: data.InNum,
+            OutNum: data.OutNum,
+            RecordDate: data.RecordDate,
+            IssuerCode: data.IssuerCode,
+            IssuerEdrici: data.IssuerEdrici,
+            IssuerName: data.IssuerName,
+            Isin: data.Isin,
+            Fitext: data.Fitext,
+            PaperType_1: data.PaperType_1,
+            PaperType_2: data.PaperType_2,
+            PaperType_3: data.PaperType_3,
+            DigitType_1: data.DigitType_1,
+            DigitType_2: data.DigitType_2,
+            DigitType_3: data.DigitType_3,
+            WithBank: data.WithBank,
+            WithTemp: data.WithTemp,
+            IsTerm: data.IsTerm,
+            ReasonCode: data.ReasonCode,
+            ReasonText: data.ReasonText,
+            Code: data.Code,
+            InDate: data.InDate,
+            OutDate: data.OutDate,
+            DocumentDate: data.DocumentDate,
+            RecieveDate: data.RecieveDate,
+          }
+        })
+        dispatch({
+          type: REPLACE_DOCUMENT, payload: {
+            RequestId: data.RequestId,
+            RequestTypeId: data.RequestTypeId,
+            CounterPartyCode: data.CounterPartyCode,
+            CounterPartyName: data.CounterPartyName,
+            InNum: data.InNum,
+            OutNum: data.OutNum,
+            RecordDate: data.RecordDate,
+            IssuerCode: data.IssuerCode,
+            IssuerEdrici: data.IssuerEdrici,
+            IssuerName: data.IssuerName,
+            Isin: data.Isin,
+            Fitext: data.Fitext,
+            PaperType_1: data.PaperType_1,
+            PaperType_2: data.PaperType_2,
+            PaperType_3: data.PaperType_3,
+            DigitType_1: data.DigitType_1,
+            DigitType_2: data.DigitType_2,
+            DigitType_3: data.DigitType_3,
+            WithBank: data.WithBank,
+            WithTemp: data.WithTemp,
+            IsTerm: data.IsTerm,
+            ReasonCode: data.ReasonCode,
+            ReasonText: data.ReasonText,
+            Code: data.Code,
+            InDate: data.InDate,
+            OutDate: data.OutDate,
+            DocumentDate: data.DocumentDate,
+            RecieveDate: data.RecieveDate,
+          }
+        })
+        dispatch(showSpinner(false))
+        dispatch(showAlert(response));
       })
       .then(() => {
         history.push(`/documents/${documentId}`)
       })
       .catch(error => {
-        dispatch(showSpinner(false))   
-        dispatch(showAlert(error.message));
+        dispatch(showSpinner(false))
+        dispatch(showAlert(error.response));
       });
   };
 };
@@ -242,3 +253,59 @@ export const getCorpActions = (RequestId) => {
       });
   };
 };
+
+export const addCorpAction = (props) => {
+  return (dispatch) => {
+    dispatch(showSpinner(true))
+    axios.post(`${apiUrl}/MatchRequestAndCA`, props)
+      .then(({ data }) => {
+        dispatch({
+          type: ADD_CORP_ACTION,
+          payload: data
+        });
+
+      })
+      .then(response => {
+        dispatch(showSpinner(false))
+        dispatch(showAlert(response));
+      })
+      .catch(error => {
+        dispatch(showSpinner(false))
+        dispatch(showAlert(error.response));
+      });
+  };
+};
+
+export const getAccountsByRequest = (RequestId) => {
+  return (dispatch) => {
+    dispatch(showSpinner(true))
+    return axios.get(`${apiUrl}/CommandGetAccountsByRequest/${RequestId}`)
+      .then(response => {
+        dispatch({ type: GET_ACCOUNTS_BY_REQUEST, accountsResponse: response.data })
+        dispatch(showSpinner(false))
+        dispatch(showAlert(response));
+      })
+
+      .catch(error => {
+        dispatch(showSpinner(false))
+        dispatch(showAlert(error.response));
+      });
+  };
+};
+
+export const updateParticipantsByRequest = (RequestId) => {
+  return (dispatch) => {
+    dispatch(showSpinner(true))
+    return axios.get(`${apiUrl}/CommandUpdateParticipantsByRequest/${RequestId}`)
+      .then(response => {
+        dispatch({ type: UPDATE_PARTICIPANTS_BY_REQUEST, participantsResponce: response.data })
+        dispatch(showSpinner(false))
+        dispatch(showAlert(response))
+      })
+      .catch(error => {
+        dispatch(showSpinner(false))
+        dispatch(showAlert(error.response));
+      });
+  };
+};
+

@@ -8,6 +8,7 @@ import companies from './companiesReducer';
 import alert from './alertReducer';
 import spinner from './spinnerReducer';
 import corpActions from './corpActionsReducer';
+import commands from './commandsReducer';
 
 
 export default combineReducers({
@@ -20,4 +21,5 @@ export default combineReducers({
   alert: alert,
   spinner: spinner,
   corpActions: corpActions,
+  commands: commands,
 });

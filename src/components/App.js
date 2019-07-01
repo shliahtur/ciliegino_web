@@ -40,7 +40,7 @@ const Main = () => (
     <Route path="/" render={() => <DocumentList />} exact />
     <Route path="/documents/new" render={() => <DocumentAdd />} />
     <Route path="/documents/:RequestId" render={(props) => <DocumentInfo  {...props}/>} />
-    <Route exact path="/edit/:RequestId/" render={() =>{return <DocumentEdit/>}} />
+    <Route exact path="/edit/:RequestId/" render={(props) =>{return <DocumentEdit {...props}/>}} />
   </Switch>
 );
 

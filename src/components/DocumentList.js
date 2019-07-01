@@ -37,8 +37,9 @@ class DocumentList extends Component {
   }
 
   componentDidMount() {
-    this.props.getDocuments();
+    
     this.props.getDictionaries();
+    this.props.getDocuments();
 
     if(this.props.documents && this.props.dictionaries){
 
@@ -119,7 +120,7 @@ class DocumentList extends Component {
       language: {
         "sProcessing": "<h1>...</h1>",
         "sLengthMenu": "_MENU_ Записів",
-        "sZeroRecords": "...",
+        "sZeroRecords": "Зачекайте...",
         "sInfo": "Записи з _START_ по _END_ із _TOTAL_ записів",
         "sInfoEmpty": "Записи з 0 по 0 із 0 записів",
         "sInfoFiltered": "(відфільтровано з _MAX_ записів)",

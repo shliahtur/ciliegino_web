@@ -5,7 +5,7 @@ import Portal from './Portal';
 import '../styles/Modal.css';
 
 const Modal = ({
-  title, isOpen, onSubmit, children, onCancel, withDeleteBtns
+  title, isOpen, onSubmit, children, onCancel, withDeleteBtns, width
 }) => {
 
   return (
@@ -13,7 +13,8 @@ const Modal = ({
       { isOpen &&
         <Portal>
           <div className="modalOverlay" onClick={onCancel}>
-            <div className="modalWindow">
+                <div className="modalWindow" style={{width: `${width}px`}}> 
+      
               <div className="modalHeader">
                 <div className="modalTitle">{title}</div>
                 <div className="close-btn" name="times" onClick={onCancel}></div>

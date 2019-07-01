@@ -8,23 +8,28 @@ import '../styles/Modal.css';
 class Alert extends React.Component {
 
   state = {
-    alert: {},
     isAlert: false,
-    alertMessage: undefined
+    response: {},
   }
 
   componentDidUpdate(prevProps) {
-    if (prevProps.alert !== this.props.alert) {
+    if (prevProps !== this.props) {
       this.setState({
-        isAlert: this.props.alert.isAlert, 
-        alertMessage: this.props.alert.alertMessage
+        isAlert: this.props.alert.isAlert,
+        response: this.props.alert.response
       })
-        if(this.state.alertMessage !== undefined){    
-          setTimeout(() => this.setState({isAlert: false}), 1000);   // Auto hide if success message
-        }
-      
+      if(!this.props.alert.response){
+        this.setState({
+          response: {
+            status: '200'
+          }
+        })
+      }
+      if(this.props.alert.status === '200' || this.props.alert.response === undefined){        
+        setTimeout(() => { this.setState({isAlert: false})}, 1000)   // Auto hide if success message
+      }
     }
-  }
+  }  
 
   closeAlert = () => {
     this.setState({
@@ -34,36 +39,40 @@ class Alert extends React.Component {
 
   render() {
 
-    const { isAlert, alertMessage } = this.state
+    const { isAlert, response } = this.state
 
     return (
       <Fragment>
         {isAlert &&
-          <Portal>   
+          <Portal>
             <div className="modalOverlay" onClick={this.closeAlert}>
-            {alertMessage ? 
-            <div className="modalWindow">
-                <div className="modalHeader modal-error-header">
-                  <div className="modal-circle">
-                  <div className="alert-close-btn"></div>    
+              {response.status === '200'?
+                <div className="modalWindow">
+                  <div className="modalHeader modal-success-header">
+                    <div className="modal-circle">
+                      <div className="modal-checkmark"></div>
+                    </div>
                   </div>
-                  <div className="close-btn-white" name="times" onClick={this.closeAlert}></div>
+                  <div className="modalBody">Успішно!</div>
                 </div>
-                <div className="modalBody">{alertMessage}</div>
-                <div className="modalFooter">
-                  <button className="modal-btn modal-cancel-btn" onClick={this.closeAlert}>ок</button>
-                </div>
-              </div>
-              :
-              <div className="modalWindow">
-                <div className="modalHeader modal-success-header">
-                <div className="modal-circle">
-                  <div className="modal-checkmark"></div>  
+                :
+                <div className="modalWindow">
+                  <div className="modalHeader modal-error-header">
+                    <div className="modal-circle">
+                      <div className="alert-close-btn"></div>
+                    </div>
+                    <div className="close-btn-white" name="times" onClick={this.closeAlert}></div>
+                  </div>
+                  {response.data ?
+                  <div className="modalBody">{response.data}</div>
+                  :
+                  <div className="modalBody">Помилка!</div>
+                  }
+                  <div className="modalFooter">
+                    <button className="modal-btn modal-cancel-btn" onClick={this.closeAlert}>ок</button>
                   </div>
                 </div>
-                <div className="modalBody">Успішно!</div>
-              </div>
-            }
+              }
             </div>
           </Portal>
         }

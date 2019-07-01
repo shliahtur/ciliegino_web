@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { getDocument, deleteDocument, getDictionaries, getCorpActions } from '../actions';
+import { getDocument, deleteDocument, getDictionaries,
+         getCorpActions, addCorpAction, getAccountsByRequest,
+         updateParticipantsByRequest }
+from '../actions';
 import Preloader from './Preloader';
 import Modal from './Modal';
 
@@ -13,14 +16,42 @@ class DocumentInfo extends Component {
     isOpenDelete: false,
     isOpenCorpAction: false,
     dictionaries: [],
-    corpActions: [],
+    selectedCorpAction: '',
+    corpActions: this.props.corpActions[0],
   }
+
+  openCorpAction = () => {
+    this.setState({ isOpenCorpAction: true })
+  }
+
+  selectCorpAction = (event, reference) => {
+    let selectedRow = event.target.parentNode;
+    let rows = selectedRow.parentNode.children;
+    
+    for (let i = 0; i < rows.length; i++) {
+      rows[i].className = ""
+    }
+    selectedRow.className = "selectedCorpAction"
+    this.setState({
+        selectedCorpAction: reference
+     })
+  }
+
+  handleCorpActionSubmit = (event) => {
+    event.preventDefault();
+      this.setState({
+        isPreloader: true,
+        isOpenCorpAction: false,
+      })
+      let upload = {
+        RequestId: this.props.document.RequestId,
+        CARef: this.state.selectedCorpAction
+      }
+      this.props.addCorpAction(upload);
+  };
 
   openDeleteModal = () => {
     this.setState({ isOpenDelete: true });
-  }
-  openCorpAction = () => {
-    this.setState({ isOpenCorpAction: true })
   }
 
   handleSubmit = () => {
@@ -32,6 +63,14 @@ class DocumentInfo extends Component {
     if (e.target.className === 'modalOverlay' || e.target.className === 'close-btn' || e.target.className === 'modal-btn modal-cancel-btn') {
       this.setState({ isOpenDelete: false, isOpenCorpAction: false });
     }
+  }
+
+  getAccountsByRequest = () => {
+    this.props.getAccountsByRequest(this.props.match.params.RequestId);
+  }
+
+  updateParticipantsByRequest = () => {
+    this.props.updateParticipantsByRequest(this.props.match.params.RequestId);
   }
 
   componentDidMount() {
@@ -197,22 +236,50 @@ class DocumentInfo extends Component {
             withDeleteBtns={true}
           >
           </Modal>
-
+         
           <Modal className="modal-form"
             title="Corp Actions"
             isOpen={this.state.isOpenCorpAction}
             onCancel={this.handleCancel}
             onSubmit={this.handleSubmit}
+            width={900}
             children={
-              <div className="corpActions">
-                <div>EVENT_REFERENCE: {corpActions.EVENT_REFERENCE}</div>
-                <div>EVENT_TYPE: {corpActions.EVENT_REFERENCE}</div>
-                <div>CORPACT_RECORD_DATE: {corpActions.EVENT_REFERENCE}</div>
-                <div>ISIN_CODE: {corpActions.EVENT_REFERENCE}</div>
+              <form onSubmit={this.handleCorpActionSubmit}>
+              <table className="corpTable">
+                <thead>
+                  <tr>
+                    <th>Id події</th>
+                    <th>Reference події</th>
+                    <th>Тип події</th>
+                    <th>Дата події</th>
+                    <th>ISIN Код ЦП</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {corpActions.length > 0 && corpActions.map(el => {
+                   return (
+                      <tr key={el.EVENT_ID} onClick={(event) => this.selectCorpAction(event, el.EVENT_REFERENCE)}>
+                        <td>{el.EVENT_ID}</td>
+                        <td>{el.EVENT_REFERENCE}</td>
+                        <td>{el.EVENT_TYPE}</td>
+                        <td>{el.CORPACT_RECORD_DATE}</td>
+                        <td>{el.ISIN_CODE}</td>  
+                      </tr>                
+                     )
+                   })
+                  }
+                </tbody>
+              </table>
+              <div className="corp-command-btns">
+              <button type="button" className="corp-btn corp-action-accounts" onClick={this.getAccountsByRequest}>Оновити власників</button>
+              <button type="button" className="corp-btn corp-action-participants" onClick={this.updateParticipantsByRequest}>Оновити ДУ</button>
               </div>
+              <button className="corp-btn corp-action-submit">Отправить</button>
+              </form>
             }
           >
           </Modal>
+          
         </React.Fragment>
       )
     } else {
@@ -225,6 +292,6 @@ class DocumentInfo extends Component {
 
 const mapStateToProps = (state) => ({ document: state.document, dictionaries: state.dictionaries, corpActions: state.corpActions });
 
-const mapDispatchToProps = { getDocument, deleteDocument, getDictionaries, getCorpActions };
+const mapDispatchToProps = { getDocument, deleteDocument, getDictionaries, getCorpActions, addCorpAction, getAccountsByRequest, updateParticipantsByRequest };
 
 export default connect(mapStateToProps, mapDispatchToProps)(DocumentInfo);

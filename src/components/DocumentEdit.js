@@ -69,12 +69,18 @@ class DocumentEdit extends React.Component {
   };
 
   componentDidMount() {
-    this.props.getDictionaries();
-    if(!this.state.RequestId){
-      this.props.getDocument(history.params.RequestId)
+
+    const {getDictionaries, getDocument, match} = this.props;
+   
+    // history.params !== undefined ?
+    // getDocument(history.params.RequestId)
+    // :
+   //   getDictionaries();
+    if(!this.props.RequestId){
+      getDocument(match.params.RequestId)
     }
   }
-  shouldComponentUpdate() {
+  shouldComponentUpdate(){
     return true
   }
 
@@ -311,7 +317,7 @@ class DocumentEdit extends React.Component {
 
               <AutoCompleteISIN error={this.state.errorIsin} width={400} items={isins} id="isin" label="Isin" name="Isin" setIsin={this.setIsin} value={this.state.Isin} onChange={this.handleIsinChange} />
 
-              <Input width={400} error={this.state.errorFiText} placeholder="за ISIN" id="fitext" className={'input-disabled'} readOnly label="fitext" type="text" name="Найменування" value={this.state.Fitext} onChange={this.handleChange} />
+              <Input width={400} error={this.state.errorFiText} placeholder="за ISIN" id="fitext" className={'input-disabled'} readOnly label="Найменування" type="text" name="FiText" value={this.state.Fitext} onChange={this.handleChange} />
             </div>
 
             <div className="input-block">
@@ -331,8 +337,7 @@ class DocumentEdit extends React.Component {
             <Input width={250} id="issuerEdrici" label="issuerEdrici" type="text" name="IssuerEdrici" defaultValue={this.state.IssuerEdrici} onChange={this.handleChange} />
 
             <Input width={400} id="issuerName" label="issuerName" type="text" name="IssuerName" defaultValue={this.state.IssuerName} onChange={this.handleChange} />
-
-            <Input width={600} id="fitext" label="Найменування" type="text" name="Fitext" defaultValue={this.state.Fitext} onChange={this.handleChange} />
+ 
 
             <div className="chk-container">
               <label>
